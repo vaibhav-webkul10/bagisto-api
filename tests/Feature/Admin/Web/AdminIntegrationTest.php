@@ -11,6 +11,7 @@ use Webkul\BagistoApi\Admin\Mail\AdminTokenNotification;
 use Webkul\BagistoApi\Admin\Models\AdminPersonalAccessToken;
 use Webkul\BagistoApi\Admin\Services\AdminTokenService;
 use Webkul\User\Models\Admin;
+use Webkul\User\Models\Role;
 
 /**
  * Feature coverage for the admin "API Integration" plugin:
@@ -100,6 +101,33 @@ class AdminIntegrationTest extends TestCase
             'status' => AdminPersonalAccessToken::STATUS_DRAFT,
             'token' => null,
         ]);
+    }
+
+    public function test_custom_role_with_create_and_edit_can_store_and_update(): void
+    {
+        $role = Role::factory()->create([
+            'permission_type' => 'custom',
+            'permissions' => ['integration', 'integration.view', 'integration.create', 'integration.edit'],
+        ]);
+
+        $admin = Admin::factory()->create(['role_id' => $role->id]);
+
+        $this->actingAs($admin, 'admin');
+
+        $this->post(route('admin.integration.store'), [
+            'name' => 'Custom Role Integration',
+            'admin_id' => $admin->id,
+            'permission_type' => 'all',
+        ])->assertRedirect();
+
+        $token = AdminPersonalAccessToken::where('admin_id', $admin->id)->firstOrFail();
+
+        $this->put(route('admin.integration.update', $token->id), [
+            'name' => 'Renamed Integration',
+            'permission_type' => 'all',
+        ])->assertRedirect(route('admin.integration.token.index'));
+
+        $this->assertSame('Renamed Integration', $token->fresh()->name);
     }
 
     public function test_store_validation_fails_without_required_fields(): void

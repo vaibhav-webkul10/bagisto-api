@@ -236,71 +236,6 @@ return [
             'tokens' => 'Fichas',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'História',
-            ],
-
-            'acl' => [
-                'title' => 'Histórico de alterações da API',
-                'view' => 'Visualizar',
-                'delete' => 'Excluir histórico',
-            ],
-
-            'index' => [
-                'title' => 'Histórico de alterações da API',
-                'info' => 'Cada criação, atualização e exclusão feita por meio da API admin, com quem fez isso, qual token e o que mudou.',
-                'cleanup-btn' => 'Excluir registros mais antigos',
-                'cleanup-days' => 'Excluir registros anteriores a esse número de dias',
-                'cleanup-confirm' => 'Excluir todo o histórico anterior ao número de dias determinado? Isto não pode ser desfeito.',
-            ],
-
-            'view' => [
-                'title' => 'Mudança',
-                'back-btn' => 'Voltar',
-                'admin' => 'Administrador',
-                'token' => 'Símbolo',
-                'action' => 'Ação',
-                'resource' => 'Recurso',
-                'method' => 'Método',
-                'ip' => 'Endereço IP',
-                'date' => 'Data',
-                'version' => 'Versão',
-                'url' => 'Ponto final',
-                'request-details' => 'Detalhes da solicitação',
-                'changes' => 'Mudanças',
-                'field' => 'Campo',
-                'old' => 'Valor antigo',
-                'new' => 'Novo valor',
-                'no-field-changes' => 'Nenhuma alteração em nível de campo foi registrada para esta entrada.',
-                'same-request' => 'Outras alterações na mesma solicitação',
-                'version-chain' => 'Histórico de versões deste registro',
-            ],
-
-            'datagrid' => [
-                'id' => 'ID',
-                'date' => 'Data',
-                'admin' => 'Administrador',
-                'token' => 'Símbolo',
-                'action' => 'Ação',
-                'operation' => 'Operação',
-                'resource' => 'Recurso',
-                'version' => 'Versão',
-                'method' => 'Método',
-                'ip' => 'PI',
-                'view' => 'Ver',
-                'delete' => 'Excluir',
-            ],
-
-            'events' => [
-                'created' => 'Criado',
-                'updated' => 'Atualizado',
-                'deleted' => 'Excluído',
-            ],
-
-            'deleted' => ':count registros de histórico excluídos.',
-            'cleanup-input-required' => 'Forneça um número de dias ou uma data para a limpeza.',
-        ],
 
         'acl' => [
             'title' => 'Integração',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Regenerar token',
             'revoke-btn' => 'Revogar token',
             'copy-btn' => 'Copiar',
-            'token-warning' => 'Salve este token agora – ele não será mostrado novamente.',
+            'token-copied' => 'Token copiado para a área de transferência.',
+            'token-warning' => 'Salve este token agora - ele não será mostrado novamente.',
             'token-label' => 'Símbolo',
             'not-generated' => 'Ainda não gerado',
-            'masked' => '(Armazenado — mostrado apenas uma vez na geração)',
+            'masked' => '(Armazenado - mostrado apenas uma vez na geração)',
             'history-banner' => 'Este token não está mais ativo.',
+            'view-successor' => 'Ver sucessor',
         ],
 
         'fields' => [
@@ -356,7 +293,7 @@ return [
             'requests-per-minute' => 'solicitações/minuto',
             'requests-per-day' => 'solicitações / dia',
             'select-admin' => 'Selecione um administrador',
-            'no-available-admins' => 'Nenhum administrador disponível – cada administrador já possui um token ativo.',
+            'no-available-admins' => 'Nenhum administrador disponível - cada administrador já possui um token ativo.',
             'same-as-web-hint' => 'O token espelhará as permissões de função atuais do administrador atribuído ao vivo.',
             'ip-allowlist' => 'Lista de permissões de IP',
             'ip-any' => 'Qualquer IP (padrão)',
@@ -394,8 +331,8 @@ return [
         'messages' => [
             'draft-created' => 'Integração criada. Gere o token para começar a usá-lo.',
             'updated' => 'Integração atualizada com sucesso.',
-            'generated' => 'Token gerado. Copie agora – ele não será mostrado novamente.',
-            'regenerated' => 'Token regenerado. Copie o novo token agora – ele não será mostrado novamente.',
+            'generated' => 'Token gerado. Copie agora - ele não será mostrado novamente.',
+            'regenerated' => 'Token regenerado. Copie o novo token agora - ele não será mostrado novamente.',
             'revoked' => 'Token revogado com sucesso.',
             'generate-only-draft' => 'Apenas rascunhos de integrações podem ter seu token gerado.',
             'regenerate-only-active' => 'Apenas tokens ativos podem ser regenerados.',
@@ -435,7 +372,7 @@ return [
             ],
             'regenerated' => [
                 'subject' => 'Seu token de API foi regenerado: :name',
-                'greeting' => 'O token de integração da API denominado ":name" acabou de ser regenerado. O token anterior parou de funcionar — apenas o novo é válido.',
+                'greeting' => 'O token de integração da API denominado ":name" acabou de ser regenerado. O token anterior parou de funcionar - apenas o novo é válido.',
             ],
             'revoked' => [
                 'subject' => 'Seu token de API foi revogado: :name',
@@ -451,7 +388,7 @@ return [
             'revoke-hint' => 'Se você não esperava por isso, revogue o token imediatamente usando o botão abaixo.',
             'revoke-btn' => 'Revogar este token',
             'revoke-expiry' => 'Este link de revogação é válido por 7 dias. Depois disso, faça login no painel de administração para gerenciar o token.',
-            'no-action' => 'Nenhuma ação é necessária – este e-mail é apenas uma confirmação.',
+            'no-action' => 'Nenhuma ação é necessária - este e-mail é apenas uma confirmação.',
         ],
 
         'revoke-confirmation' => [
@@ -465,7 +402,7 @@ return [
         'confirm' => [
             'generate' => [
                 'title' => 'Gerar token',
-                'message' => 'Gerar o token agora? O texto simples será mostrado apenas uma vez – copie-o antes de sair da página.',
+                'message' => 'Gerar o token agora? O texto simples será mostrado apenas uma vez - copie-o antes de sair da página.',
             ],
             'regenerate' => [
                 'title' => 'Regenerar token',

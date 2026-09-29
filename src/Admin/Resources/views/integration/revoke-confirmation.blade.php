@@ -1,27 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@lang('bagistoapi::app.integration.revoke-confirmation.title')</title>
-</head>
-<body style="font-family: Arial, sans-serif;background: #F2F4F7;margin: 0;padding: 0;">
-    <div style="max-width: 480px;margin: 80px auto;background: #ffffff;border-radius: 8px;padding: 40px;text-align: center;box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
-        @if ($alreadyInactive)
-            <h1 style="font-size: 20px;color: #121A26;margin-bottom: 16px;">
-                @lang('bagistoapi::app.integration.revoke-confirmation.already-inactive-title')
-            </h1>
-            <p style="font-size: 14px;color: #384860;line-height: 22px;">
-                @lang('bagistoapi::app.integration.revoke-confirmation.already-inactive-message', ['name' => $token->name])
-            </p>
-        @else
-            <h1 style="font-size: 20px;color: #15803D;margin-bottom: 16px;">
-                @lang('bagistoapi::app.integration.revoke-confirmation.success-title')
-            </h1>
-            <p style="font-size: 14px;color: #384860;line-height: 22px;">
-                @lang('bagistoapi::app.integration.revoke-confirmation.success-message', ['name' => $token->name])
-            </p>
-        @endif
+<x-admin::layouts.anonymous>
+    <x-slot:title>
+        @lang('bagistoapi::app.integration.revoke-confirmation.title')
+    </x-slot>
+
+    <div class="flex h-[100vh] items-center justify-center">
+        <div class="flex flex-col items-center gap-5">
+            @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
+                <img
+                    class="h-10 w-[110px]"
+                    src="{{ Storage::url($logo) }}"
+                    alt="{{ config('app.name') }}"
+                />
+            @else
+                <img
+                    class="w-max"
+                    src="{{ bagisto_asset('images/logo.svg') }}"
+                    alt="{{ config('app.name') }}"
+                />
+            @endif
+
+            <div class="box-shadow flex w-[400px] max-w-[calc(100vw-32px)] flex-col rounded-md bg-white dark:bg-gray-900">
+                @if ($alreadyInactive)
+                    <div class="flex items-center gap-2.5 p-4">
+                        <span class="icon-information text-2xl text-yellow-600"></span>
+
+                        <p class="text-xl font-bold text-gray-800 dark:text-white">
+                            @lang('bagistoapi::app.integration.revoke-confirmation.already-inactive-title')
+                        </p>
+                    </div>
+
+                    <p class="border-t p-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-300">
+                        @lang('bagistoapi::app.integration.revoke-confirmation.already-inactive-message', ['name' => $token->name])
+                    </p>
+                @else
+                    <div class="flex items-center gap-2.5 p-4">
+                        <span class="icon-done text-2xl text-green-600"></span>
+
+                        <p class="text-xl font-bold text-gray-800 dark:text-white">
+                            @lang('bagistoapi::app.integration.revoke-confirmation.success-title')
+                        </p>
+                    </div>
+
+                    <p class="border-t p-4 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-300">
+                        @lang('bagistoapi::app.integration.revoke-confirmation.success-message', ['name' => $token->name])
+                    </p>
+                @endif
+            </div>
+
+            <div class="text-sm font-normal">
+                @lang('admin::app.users.sessions.powered-by-description', [
+                    'bagisto' => '<a class="text-blue-600 hover:underline" href="https://bagisto.com/en/">Bagisto</a>',
+                    'webkul' => '<a class="text-blue-600 hover:underline" href="https://webkul.com/">Webkul</a>',
+                ])
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</x-admin::layouts.anonymous>

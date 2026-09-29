@@ -236,71 +236,6 @@ return [
             'tokens' => 'Fichas',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Historia',
-            ],
-
-            'acl' => [
-                'title' => 'Historial de cambios de API',
-                'view' => 'Ver',
-                'delete' => 'Eliminar historial',
-            ],
-
-            'index' => [
-                'title' => 'Historial de cambios de API',
-                'info' => 'Cada creación, actualización y eliminación realizada a través de la API de administración, con quién lo hizo, qué token y qué cambió.',
-                'cleanup-btn' => 'Eliminar registros antiguos',
-                'cleanup-days' => 'Eliminar registros que tengan más de estos días',
-                'cleanup-confirm' => '¿Eliminar todo el historial anterior al número de días indicado? Esto no se puede deshacer.',
-            ],
-
-            'view' => [
-                'title' => 'Cambiar',
-                'back-btn' => 'Atrás',
-                'admin' => 'administrador',
-                'token' => 'ficha',
-                'action' => 'acción',
-                'resource' => 'Recurso',
-                'method' => 'Método',
-                'ip' => 'Dirección IP',
-                'date' => 'Fecha',
-                'version' => 'Versión',
-                'url' => 'Punto final',
-                'request-details' => 'Detalles de la solicitud',
-                'changes' => 'Cambios',
-                'field' => 'campo',
-                'old' => 'valor antiguo',
-                'new' => 'Nuevo valor',
-                'no-field-changes' => 'No se registraron cambios a nivel de campo para esta entrada.',
-                'same-request' => 'Otros cambios en la misma solicitud',
-                'version-chain' => 'Historial de versiones de este registro',
-            ],
-
-            'datagrid' => [
-                'id' => 'identificación',
-                'date' => 'Fecha',
-                'admin' => 'administrador',
-                'token' => 'ficha',
-                'action' => 'acción',
-                'operation' => 'Operación',
-                'resource' => 'Recurso',
-                'version' => 'Versión',
-                'method' => 'Método',
-                'ip' => 'IP',
-                'view' => 'Ver',
-                'delete' => 'Eliminar',
-            ],
-
-            'events' => [
-                'created' => 'Creado',
-                'updated' => 'Actualizado',
-                'deleted' => 'Eliminado',
-            ],
-
-            'deleted' => ':count registros del historial eliminados.',
-            'cleanup-input-required' => 'Proporcione una cantidad de días o una fecha para limpiar.',
-        ],
 
         'acl' => [
             'title' => 'Integración',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Regenerar token',
             'revoke-btn' => 'Revocar token',
             'copy-btn' => 'Copiar',
+            'token-copied' => 'Token copiado al portapapeles.',
             'token-warning' => 'Guarde este token ahora; no se volverá a mostrar.',
             'token-label' => 'ficha',
             'not-generated' => 'Aún no generado',
             'masked' => '(Almacenado: solo se muestra una vez en la generación)',
             'history-banner' => 'Este token ya no está activo.',
+            'view-successor' => 'Ver sucesor',
         ],
 
         'fields' => [

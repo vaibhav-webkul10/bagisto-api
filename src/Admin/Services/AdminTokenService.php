@@ -221,7 +221,7 @@ class AdminTokenService
     public function maskedPreview(AdminPersonalAccessToken $token): string
     {
         if ($token->token_preview === null) {
-            return '—';
+            return '-';
         }
 
         return $token->id.'|'.$token->token_preview.'...xxxx';

@@ -236,71 +236,6 @@ return [
             'tokens' => 'Token',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Sejarah',
-            ],
-
-            'acl' => [
-                'title' => 'Riwayat Perubahan API',
-                'view' => 'Lihat',
-                'delete' => 'Hapus Riwayat',
-            ],
-
-            'index' => [
-                'title' => 'Riwayat Perubahan API',
-                'info' => 'Setiap pembuatan, pembaruan, dan penghapusan dilakukan melalui admin API, dengan siapa yang melakukannya, token apa, dan apa yang berubah.',
-                'cleanup-btn' => 'Hapus log lama',
-                'cleanup-days' => 'Hapus log yang lebih lama dari beberapa hari ini',
-                'cleanup-confirm' => 'Hapus semua riwayat yang lebih lama dari jumlah hari yang ditentukan? Hal ini tidak dapat dibatalkan.',
-            ],
-
-            'view' => [
-                'title' => 'Perubahan',
-                'back-btn' => 'Kembali',
-                'admin' => 'Admin',
-                'token' => 'Tanda',
-                'action' => 'Tindakan',
-                'resource' => 'Sumber daya',
-                'method' => 'Metode',
-                'ip' => 'Alamat IP',
-                'date' => 'Tanggal',
-                'version' => 'Versi',
-                'url' => 'Titik akhir',
-                'request-details' => 'Detail Permintaan',
-                'changes' => 'Perubahan',
-                'field' => 'Bidang',
-                'old' => 'Nilai lama',
-                'new' => 'Nilai baru',
-                'no-field-changes' => 'Tidak ada perubahan tingkat bidang yang dicatat untuk entri ini.',
-                'same-request' => 'Perubahan lain dalam permintaan yang sama',
-                'version-chain' => 'Riwayat versi catatan ini',
-            ],
-
-            'datagrid' => [
-                'id' => 'tanda pengenal',
-                'date' => 'Tanggal',
-                'admin' => 'Admin',
-                'token' => 'Tanda',
-                'action' => 'Tindakan',
-                'operation' => 'Operasi',
-                'resource' => 'Sumber daya',
-                'version' => 'Versi',
-                'method' => 'Metode',
-                'ip' => 'IP',
-                'view' => 'Lihat',
-                'delete' => 'Hapus',
-            ],
-
-            'events' => [
-                'created' => 'Dibuat',
-                'updated' => 'Diperbarui',
-                'deleted' => 'Dihapus',
-            ],
-
-            'deleted' => ':count catatan riwayat dihapus.',
-            'cleanup-input-required' => 'Cantumkan jumlah hari atau tanggal untuk membersihkan.',
-        ],
 
         'acl' => [
             'title' => 'Integrasi',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Regenerasi Token',
             'revoke-btn' => 'Cabut Token',
             'copy-btn' => 'Salin',
-            'token-warning' => 'Simpan token ini sekarang — token ini tidak akan ditampilkan lagi.',
+            'token-copied' => 'Token disalin ke papan klip.',
+            'token-warning' => 'Simpan token ini sekarang - token ini tidak akan ditampilkan lagi.',
             'token-label' => 'Tanda',
             'not-generated' => 'Belum dihasilkan',
-            'masked' => '(Disimpan — hanya ditampilkan sekali pada generasi)',
+            'masked' => '(Disimpan - hanya ditampilkan sekali pada generasi)',
             'history-banner' => 'Token ini sudah tidak aktif.',
+            'view-successor' => 'Lihat pengganti',
         ],
 
         'fields' => [
@@ -356,7 +293,7 @@ return [
             'requests-per-minute' => 'permintaan / menit',
             'requests-per-day' => 'permintaan / hari',
             'select-admin' => 'Pilih admin',
-            'no-available-admins' => 'Tidak ada admin yang tersedia — setiap admin sudah memiliki token aktif.',
+            'no-available-admins' => 'Tidak ada admin yang tersedia - setiap admin sudah memiliki token aktif.',
             'same-as-web-hint' => 'Token akan mencerminkan izin peran admin yang ditugaskan saat ini secara langsung.',
             'ip-allowlist' => 'Daftar IP yang Diizinkan',
             'ip-any' => 'IP apa pun (default)',
@@ -394,8 +331,8 @@ return [
         'messages' => [
             'draft-created' => 'Integrasi tercipta. Hasilkan token untuk mulai menggunakannya.',
             'updated' => 'Integrasi berhasil diperbarui.',
-            'generated' => 'Token dihasilkan. Salin sekarang — itu tidak akan ditampilkan lagi.',
-            'regenerated' => 'Token dibuat ulang. Salin token baru sekarang — token tidak akan ditampilkan lagi.',
+            'generated' => 'Token dihasilkan. Salin sekarang - itu tidak akan ditampilkan lagi.',
+            'regenerated' => 'Token dibuat ulang. Salin token baru sekarang - token tidak akan ditampilkan lagi.',
             'revoked' => 'Token berhasil dicabut.',
             'generate-only-draft' => 'Hanya draf integrasi yang dapat membuat tokennya.',
             'regenerate-only-active' => 'Hanya token aktif yang dapat dibuat ulang.',
@@ -435,7 +372,7 @@ return [
             ],
             'regenerated' => [
                 'subject' => 'Token API Anda telah dibuat ulang: :name',
-                'greeting' => 'Token integrasi API bernama ":name" baru saja dibuat ulang. Token sebelumnya telah berhenti berfungsi — hanya token baru yang valid.',
+                'greeting' => 'Token integrasi API bernama ":name" baru saja dibuat ulang. Token sebelumnya telah berhenti berfungsi - hanya token baru yang valid.',
             ],
             'revoked' => [
                 'subject' => 'Token API Anda telah dicabut: :name',
@@ -451,7 +388,7 @@ return [
             'revoke-hint' => 'Jika Anda tidak menduganya, segera cabut token menggunakan tombol di bawah.',
             'revoke-btn' => 'Cabut Token Ini',
             'revoke-expiry' => 'Tautan pencabutan ini berlaku selama 7 hari. Setelah itu, masuk ke panel admin untuk mengelola token.',
-            'no-action' => 'Tidak diperlukan tindakan apa pun — email ini hanya konfirmasi.',
+            'no-action' => 'Tidak diperlukan tindakan apa pun - email ini hanya konfirmasi.',
         ],
 
         'revoke-confirmation' => [
@@ -465,7 +402,7 @@ return [
         'confirm' => [
             'generate' => [
                 'title' => 'Hasilkan Token',
-                'message' => 'Hasilkan token sekarang? Teks biasa hanya akan ditampilkan sekali — salin sebelum meninggalkan halaman.',
+                'message' => 'Hasilkan token sekarang? Teks biasa hanya akan ditampilkan sekali - salin sebelum meninggalkan halaman.',
             ],
             'regenerate' => [
                 'title' => 'Regenerasi Token',

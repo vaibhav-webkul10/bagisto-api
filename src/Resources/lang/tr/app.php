@@ -236,71 +236,6 @@ return [
             'tokens' => 'Jetonlar',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Tarih',
-            ],
-
-            'acl' => [
-                'title' => 'API Değişiklik Geçmişi',
-                'view' => 'Görüntüle',
-                'delete' => 'Geçmişi Sil',
-            ],
-
-            'index' => [
-                'title' => 'API Değişiklik Geçmişi',
-                'info' => 'Admin API aracılığıyla yapılan her oluşturma, güncelleme ve silme işlemi, bunu kimin yaptığı, hangi jetonla yapıldığı ve nelerin değiştiği.',
-                'cleanup-btn' => 'Eski günlükleri silin',
-                'cleanup-days' => 'Bu sayıdan daha eski günlükleri silin',
-                'cleanup-confirm' => 'Belirtilen gün sayısından daha eski olan tüm geçmiş silinsin mi? Bu geri alınamaz.',
-            ],
-
-            'view' => [
-                'title' => 'Değiştir',
-                'back-btn' => 'Geri',
-                'admin' => 'Yönetici',
-                'token' => 'Jeton',
-                'action' => 'Eylem',
-                'resource' => 'Kaynak',
-                'method' => 'Yöntem',
-                'ip' => 'IP Adresi',
-                'date' => 'Tarih',
-                'version' => 'Sürüm',
-                'url' => 'Uç nokta',
-                'request-details' => 'Ayrıntıları Talep Et',
-                'changes' => 'Değişiklikler',
-                'field' => 'Alan',
-                'old' => 'Eski değer',
-                'new' => 'Yeni değer',
-                'no-field-changes' => 'Bu giriş için alan düzeyinde değişiklik kaydedilmedi.',
-                'same-request' => 'Aynı istekteki diğer değişiklikler',
-                'version-chain' => 'Bu kaydın sürüm geçmişi',
-            ],
-
-            'datagrid' => [
-                'id' => 'kimlik',
-                'date' => 'Tarih',
-                'admin' => 'Yönetici',
-                'token' => 'Jeton',
-                'action' => 'Eylem',
-                'operation' => 'Operasyon',
-                'resource' => 'Kaynak',
-                'version' => 'Sürüm',
-                'method' => 'Yöntem',
-                'ip' => 'IP',
-                'view' => 'Görüntüle',
-                'delete' => 'Sil',
-            ],
-
-            'events' => [
-                'created' => 'Oluşturuldu',
-                'updated' => 'Güncellendi',
-                'deleted' => 'Silindi',
-            ],
-
-            'deleted' => ':count geçmiş kaydı silindi.',
-            'cleanup-input-required' => 'Temizlemek için birkaç gün veya tarih belirtin.',
-        ],
 
         'acl' => [
             'title' => 'Entegrasyon',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Jetonu Yeniden Oluştur',
             'revoke-btn' => 'Jetonu İptal Et',
             'copy-btn' => 'Kopyala',
+            'token-copied' => 'Jeton panoya kopyalandı.',
             'token-warning' => 'Bu jetonu şimdi kaydedin; bir daha gösterilmeyecek.',
             'token-label' => 'Jeton',
             'not-generated' => 'Henüz oluşturulmadı',
-            'masked' => '(Saklanır — oluşturma sırasında yalnızca bir kez gösterilir)',
+            'masked' => '(Saklanır - oluşturma sırasında yalnızca bir kez gösterilir)',
             'history-banner' => 'Bu jeton artık aktif değil.',
+            'view-successor' => 'Halefi görüntüle',
         ],
 
         'fields' => [

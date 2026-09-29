@@ -14,12 +14,18 @@ return [
     ], [
         'key' => 'integration.create',
         'name' => 'bagistoapi::app.integration.acl.create',
-        'route' => 'admin.integration.create',
+        'route' => [
+            'admin.integration.create',
+            'admin.integration.store',
+        ],
         'sort' => 2,
     ], [
         'key' => 'integration.edit',
         'name' => 'bagistoapi::app.integration.acl.edit',
-        'route' => 'admin.integration.edit',
+        'route' => [
+            'admin.integration.edit',
+            'admin.integration.update',
+        ],
         'sort' => 3,
     ], [
         'key' => 'integration.delete',
@@ -36,20 +42,5 @@ return [
         'name' => 'bagistoapi::app.integration.acl.regenerate',
         'route' => 'admin.integration.regenerate',
         'sort' => 6,
-    ], [
-        'key' => 'integration.history',
-        'name' => 'bagistoapi::app.integration.history.acl.title',
-        'route' => 'admin.integration.history.index',
-        'sort' => 7,
-    ], [
-        'key' => 'integration.history.view',
-        'name' => 'bagistoapi::app.integration.history.acl.view',
-        'route' => 'admin.integration.history.index',
-        'sort' => 1,
-    ], [
-        'key' => 'integration.history.delete',
-        'name' => 'bagistoapi::app.integration.history.acl.delete',
-        'route' => 'admin.integration.history.mass_delete',
-        'sort' => 2,
     ],
 ];

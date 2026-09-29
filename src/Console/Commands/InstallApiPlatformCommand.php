@@ -156,6 +156,15 @@ class InstallApiPlatformCommand extends Command
                 return;
             }
 
+            (new Process([
+                'php',
+                'artisan',
+                'vendor:publish',
+                '--tag=bagistoapi-build',
+                '--force',
+                '--no-interaction',
+            ]))->run();
+
             $this->line(__('bagistoapi::app.graphql.install.assets-published'));
         } catch (\Exception $e) {
             $this->warn(__('bagistoapi::app.graphql.install.publish-assets-warning', ['error' => $e->getMessage()]));

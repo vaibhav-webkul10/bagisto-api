@@ -236,71 +236,6 @@ return [
             'tokens' => 'Gettoni',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Storia',
-            ],
-
-            'acl' => [
-                'title' => 'Cronologia modifiche API',
-                'view' => 'Visualizza',
-                'delete' => 'Elimina cronologia',
-            ],
-
-            'index' => [
-                'title' => 'Cronologia modifiche API',
-                'info' => 'Ogni creazione, aggiornamento ed eliminazione effettuata tramite l\'API di amministrazione, con chi l\'ha fatto, quale token e cosa è cambiato.',
-                'cleanup-btn' => 'Elimina i registri più vecchi',
-                'cleanup-days' => 'Elimina i log più vecchi di questo numero di giorni',
-                'cleanup-confirm' => 'Eliminare tutta la cronologia precedente al numero di giorni specificato? Questa operazione non può essere annullata.',
-            ],
-
-            'view' => [
-                'title' => 'Cambiare',
-                'back-btn' => 'Indietro',
-                'admin' => 'Ammin',
-                'token' => 'Gettone',
-                'action' => 'Azione',
-                'resource' => 'Risorsa',
-                'method' => 'Metodo',
-                'ip' => 'Indirizzo IP',
-                'date' => 'Data',
-                'version' => 'Versione',
-                'url' => 'Punto finale',
-                'request-details' => 'Richiedi dettagli',
-                'changes' => 'Cambiamenti',
-                'field' => 'Campo',
-                'old' => 'Vecchio valore',
-                'new' => 'Nuovo valore',
-                'no-field-changes' => 'Per questa voce non sono state registrate modifiche a livello di campo.',
-                'same-request' => 'Altre modifiche nella stessa richiesta',
-                'version-chain' => 'Cronologia delle versioni di questo record',
-            ],
-
-            'datagrid' => [
-                'id' => 'ID',
-                'date' => 'Data',
-                'admin' => 'Ammin',
-                'token' => 'Gettone',
-                'action' => 'Azione',
-                'operation' => 'Operazione',
-                'resource' => 'Risorsa',
-                'version' => 'Versione',
-                'method' => 'Metodo',
-                'ip' => 'IP',
-                'view' => 'Visualizza',
-                'delete' => 'Elimina',
-            ],
-
-            'events' => [
-                'created' => 'Creato',
-                'updated' => 'Aggiornato',
-                'deleted' => 'Eliminato',
-            ],
-
-            'deleted' => ':count record della cronologia eliminati.',
-            'cleanup-input-required' => 'Fornire un numero di giorni o una data per la pulizia.',
-        ],
 
         'acl' => [
             'title' => 'Integrazione',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Gettone rigenera',
             'revoke-btn' => 'Revoca token',
             'copy-btn' => 'Copia',
+            'token-copied' => 'Token copiato negli appunti.',
             'token-warning' => 'Salva questo token adesso: non verrà più mostrato.',
             'token-label' => 'Gettone',
             'not-generated' => 'Non ancora generato',
             'masked' => '(Memorizzato: mostrato solo una volta alla generazione)',
             'history-banner' => 'Questo token non è più attivo.',
+            'view-successor' => 'Visualizza successore',
         ],
 
         'fields' => [

@@ -34,6 +34,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -41,8 +42,6 @@ use Negotiation\Negotiator;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Webkul\Attribute\Contracts\Attribute as AttributeContract;
-use Webkul\BagistoApi\Admin\Audit\AdminApiAuditContext;
-use Webkul\BagistoApi\Admin\Audit\AdminApiAuditRecorder;
 use Webkul\BagistoApi\Admin\Auth\AdminApiGuard;
 use Webkul\BagistoApi\Admin\Metadata\NullableToOnePropertyMetadataFactory;
 use Webkul\BagistoApi\Admin\Models\AdminPersonalAccessToken;
@@ -79,7 +78,6 @@ use Webkul\BagistoApi\Console\Commands\ExportSchemaCommand;
 use Webkul\BagistoApi\Console\Commands\GenerateStorefrontKey;
 use Webkul\BagistoApi\Console\Commands\InstallApiPlatformCommand;
 use Webkul\BagistoApi\Console\Commands\OptimizeApiPlatformCommand;
-use Webkul\BagistoApi\Console\Commands\PruneAuditsCommand;
 use Webkul\BagistoApi\Console\Commands\PruneCartUploadsCommand;
 use Webkul\BagistoApi\Console\Commands\WarmApiPlatformCacheCommand;
 use Webkul\BagistoApi\Facades\CartTokenFacade;
@@ -99,7 +97,6 @@ use Webkul\BagistoApi\Http\Middleware\EnsureJsonContentType;
 use Webkul\BagistoApi\Http\Middleware\LogApiRequests;
 use Webkul\BagistoApi\Http\Middleware\RateLimitApi;
 use Webkul\BagistoApi\Http\Middleware\SecurityHeaders;
-use Webkul\BagistoApi\Http\Middleware\SetAdminApiAuditContext;
 use Webkul\BagistoApi\Http\Middleware\SetLocaleChannel;
 use Webkul\BagistoApi\Http\Middleware\ThrottleAdminApi;
 use Webkul\BagistoApi\Http\Middleware\VerifyStorefrontKey;
@@ -189,6 +186,7 @@ use Webkul\RMA\Repositories\RMAStatusRepository;
 use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\RefundRepository;
+use Webkul\Theme\ViewRenderEventManager;
 
 class BagistoApiServiceProvider extends ServiceProvider
 {
@@ -207,12 +205,10 @@ class BagistoApiServiceProvider extends ServiceProvider
 
         $this->registerAdminApiGuardConfig();
 
-        $this->mergeConfigFrom(__DIR__.'/../Admin/Config/audit.php', 'bagistoapi.audit');
-
         $this->mergeConfigFrom(__DIR__.'/../../config/storefront.php', 'storefront');
 
-        $this->app->singleton(AdminApiAuditContext::class);
-        $this->app->singleton(AdminApiAuditRecorder::class);
+        $this->mergeConfigFrom(__DIR__.'/../../config/bagisto-vite.php', 'bagisto-vite.viters');
+
 
         config(['responsecache.cache_profile' => ApiAwareResponseCache::class]);
 
@@ -839,10 +835,6 @@ class BagistoApiServiceProvider extends ServiceProvider
 
         $this->bootAdminIntegration();
 
-        if (config('bagistoapi.audit.enabled', true)) {
-            $this->app->make(AdminApiAuditRecorder::class)->register();
-        }
-
         if ($this->isRunningAsVendorPackage()) {
             $this->publishes([
                 __DIR__.'/../config/api-platform-vendor.php' => config_path('api-platform.php'),
@@ -871,6 +863,10 @@ class BagistoApiServiceProvider extends ServiceProvider
             __DIR__.'/../Resources/assets/js' => public_path('vendor/bagisto-api/js'),
             __DIR__.'/../Resources/assets/images' => public_path('vendor/bagisto-api/images'),
         ], 'bagistoapi-graphiql-assets');
+
+        $this->publishes([
+            __DIR__.'/../../publishable/bagistoapi/build' => public_path('themes/bagistoapi/build'),
+        ], ['public', 'bagistoapi-build']);
 
         $this->runInstallationIfNeeded();
         $this->registerApiResources();
@@ -924,7 +920,6 @@ class BagistoApiServiceProvider extends ServiceProvider
             ->middleware([
                 EnforceAdminApiAuth::class,
                 ThrottleAdminApi::class,
-                SetAdminApiAuditContext::class,
                 SetLocaleChannel::class,
             ])
             ->name('bagistoapi.admin-api-graphql');
@@ -1040,7 +1035,6 @@ class BagistoApiServiceProvider extends ServiceProvider
             GenerateStorefrontKey::class,
             ApiKeyManagementCommand::class,
             ApiKeyMaintenanceCommand::class,
-            PruneAuditsCommand::class,
             PruneCartUploadsCommand::class,
             ExportSchemaCommand::class,
         ]);
@@ -1154,6 +1148,12 @@ class BagistoApiServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Admin/Resources/views', 'bagistoapi');
 
         $this->registerIntegrationMenu();
+
+        Event::listen('bagisto.admin.layout.head.after', static function (ViewRenderEventManager $viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate(
+                themes()->setBagistoVite(['src/Resources/assets/css/admin.css'], 'bagistoapi')->toHtml()
+            );
+        });
 
         Auth::extend('admin-api', function ($app, $name, array $config) {
             $provider = Auth::createUserProvider($config['provider']);

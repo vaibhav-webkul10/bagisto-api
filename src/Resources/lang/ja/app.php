@@ -236,71 +236,6 @@ return [
             'tokens' => 'トークン',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => '歴史',
-            ],
-
-            'acl' => [
-                'title' => 'API変更履歴',
-                'view' => '表示',
-                'delete' => '履歴の削除',
-            ],
-
-            'index' => [
-                'title' => 'API変更履歴',
-                'info' => '管理 API を通じて行われたすべての作成、更新、削除。誰が実行したのか、どのトークンが変更されたのか。',
-                'cleanup-btn' => '古いログを削除する',
-                'cleanup-days' => 'この日数より古いログを削除します',
-                'cleanup-confirm' => '指定された日数より古い履歴をすべて削除しますか?これを元に戻すことはできません。',
-            ],
-
-            'view' => [
-                'title' => '変更',
-                'back-btn' => '戻る',
-                'admin' => '管理者',
-                'token' => 'トークン',
-                'action' => 'アクション',
-                'resource' => 'リソース',
-                'method' => '方法',
-                'ip' => 'IPアドレス',
-                'date' => '日付',
-                'version' => 'バージョン',
-                'url' => 'エンドポイント',
-                'request-details' => 'リクエストの詳細',
-                'changes' => '変更点',
-                'field' => 'フィールド',
-                'old' => '古い値',
-                'new' => '新しい価値',
-                'no-field-changes' => 'このエントリにはフィールドレベルの変更は記録されませんでした。',
-                'same-request' => '同じリクエスト内の他の変更',
-                'version-chain' => 'このレコードのバージョン履歴',
-            ],
-
-            'datagrid' => [
-                'id' => 'ID',
-                'date' => '日付',
-                'admin' => '管理者',
-                'token' => 'トークン',
-                'action' => 'アクション',
-                'operation' => '操作',
-                'resource' => 'リソース',
-                'version' => 'バージョン',
-                'method' => '方法',
-                'ip' => 'IP',
-                'view' => '見る',
-                'delete' => '削除',
-            ],
-
-            'events' => [
-                'created' => '作成されました',
-                'updated' => '更新されました',
-                'deleted' => '削除されました',
-            ],
-
-            'deleted' => ':count 件の履歴レコードが削除されました。',
-            'cleanup-input-required' => 'クリーンアップする日数または日付を指定します。',
-        ],
 
         'acl' => [
             'title' => '統合',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'トークンを再生成する',
             'revoke-btn' => 'トークンの取り消し',
             'copy-btn' => 'コピー',
+            'token-copied' => 'トークンをクリップボードにコピーしました。',
             'token-warning' => 'このトークンを今すぐ保存してください。再度表示されることはありません。',
             'token-label' => 'トークン',
             'not-generated' => 'まだ生成されていません',
-            'masked' => '(保存 — 生成時に 1 回のみ表示されます)',
+            'masked' => '(保存 - 生成時に 1 回のみ表示されます)',
             'history-banner' => 'このトークンはもうアクティブではありません。',
+            'view-successor' => '後継トークンを表示',
         ],
 
         'fields' => [

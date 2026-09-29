@@ -3,26 +3,22 @@
         @lang('bagistoapi::app.integration.edit.title')
     </x-slot>
 
-    @if ($token->isRevoked() || $token->isRegenerated())
-        <div class="mb-4 rounded border border-yellow-300 bg-yellow-50 p-4 text-yellow-800 dark:border-yellow-700 dark:bg-yellow-900 dark:text-yellow-200">
-            @lang('bagistoapi::app.integration.edit.history-banner')
-            <strong>{{ trans('bagistoapi::app.integration.status.'.$token->status) }}</strong>
-            @if ($token->isRegenerated() && $token->regenerated_to_id)
-                — <a href="{{ route('admin.integration.edit', $token->regenerated_to_id) }}" class="underline">View successor</a>
-            @endif
-        </div>
-    @endif
+    {!! view_render_event('bagisto.admin.integration.edit.before', ['token' => $token]) !!}
 
+    <!-- Integration Edit Form -->
     <x-admin::form
         method="PUT"
         :action="route('admin.integration.update', $token->id)"
     >
+        {!! view_render_event('bagisto.admin.integration.edit.edit_form_controls.before', ['token' => $token]) !!}
+
         <div class="flex items-center justify-between">
             <p class="text-xl font-bold text-gray-800 dark:text-white">
                 @lang('bagistoapi::app.integration.edit.title')
             </p>
 
             <div class="flex items-center gap-x-2.5">
+                <!-- Back Button -->
                 <a
                     href="{{ route('admin.integration.token.index') }}"
                     class="transparent-button hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800"
@@ -31,7 +27,11 @@
                 </a>
 
                 @unless ($token->isRevoked() || $token->isRegenerated())
-                    <button type="submit" class="primary-button">
+                    <!-- Save Button -->
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
                         @lang('bagistoapi::app.integration.edit.save-btn')
                     </button>
                 @endunless
@@ -45,5 +45,9 @@
             'plainToken'      => $plainToken,
             'isEdit'          => true,
         ])
+
+        {!! view_render_event('bagisto.admin.integration.edit.edit_form_controls.after', ['token' => $token]) !!}
     </x-admin::form>
+
+    {!! view_render_event('bagisto.admin.integration.edit.after', ['token' => $token]) !!}
 </x-admin::layouts>

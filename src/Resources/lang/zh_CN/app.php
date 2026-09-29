@@ -236,71 +236,6 @@ return [
             'tokens' => '代币',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => '历史',
-            ],
-
-            'acl' => [
-                'title' => 'API变更历史',
-                'view' => '查看',
-                'delete' => '删除历史记录',
-            ],
-
-            'index' => [
-                'title' => 'API变更历史',
-                'info' => '通过管理 API 进行的每次创建、更新和删除，都由谁执行、使用哪个令牌以及更改了什么。',
-                'cleanup-btn' => '删除旧日志',
-                'cleanup-days' => '删除早于此天数的日志',
-                'cleanup-confirm' => '删除所有早于给定天数的历史记录？此操作无法撤消。',
-            ],
-
-            'view' => [
-                'title' => '改变',
-                'back-btn' => '返回',
-                'admin' => '管理员',
-                'token' => '代币',
-                'action' => '行动',
-                'resource' => '资源',
-                'method' => '方法',
-                'ip' => 'IP地址',
-                'date' => '日期',
-                'version' => '版本',
-                'url' => '端点',
-                'request-details' => '请求详情',
-                'changes' => '变化',
-                'field' => '领域',
-                'old' => '旧值',
-                'new' => '新价值',
-                'no-field-changes' => '该条目没有记录任何字段级更改。',
-                'same-request' => '同一请求中的其他更改',
-                'version-chain' => '该记录的版本历史',
-            ],
-
-            'datagrid' => [
-                'id' => '身份证号',
-                'date' => '日期',
-                'admin' => '管理员',
-                'token' => '代币',
-                'action' => '行动',
-                'operation' => '操作',
-                'resource' => '资源',
-                'version' => '版本',
-                'method' => '方法',
-                'ip' => '知识产权',
-                'view' => '查看',
-                'delete' => '删除',
-            ],
-
-            'events' => [
-                'created' => '已创建',
-                'updated' => '已更新',
-                'deleted' => '已删除',
-            ],
-
-            'deleted' => ':count 条历史记录已删除。',
-            'cleanup-input-required' => '提供清理的天数或日期。',
-        ],
 
         'acl' => [
             'title' => '整合',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => '重新生成令牌',
             'revoke-btn' => '撤销令牌',
             'copy-btn' => '复制',
+            'token-copied' => '令牌已复制到剪贴板。',
             'token-warning' => '立即保存此令牌 - 它不会再次显示。',
             'token-label' => '代币',
             'not-generated' => '尚未生成',
             'masked' => '（已存储 - 仅在生成时显示一次）',
             'history-banner' => '该令牌不再有效。',
+            'view-successor' => '查看替代令牌',
         ],
 
         'fields' => [
@@ -451,7 +388,7 @@ return [
             'revoke-hint' => '如果您没有预料到这一点，请立即使用下面的按钮撤销令牌。',
             'revoke-btn' => '撤销此令牌',
             'revoke-expiry' => '该撤销链接的有效期为 7 天。之后，登录管理面板来管理令牌。',
-            'no-action' => '无需采取任何行动——这封电子邮件只是一个确认。',
+            'no-action' => '无需采取任何行动 -  - 这封电子邮件只是一个确认。',
         ],
 
         'revoke-confirmation' => [

@@ -236,71 +236,6 @@ return [
             'tokens' => 'Żetony',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Historia',
-            ],
-
-            'acl' => [
-                'title' => 'Historia zmian API',
-                'view' => 'Zobacz',
-                'delete' => 'Usuń historię',
-            ],
-
-            'index' => [
-                'title' => 'Historia zmian API',
-                'info' => 'Każde utworzenie, aktualizacja i usunięcie dokonane za pośrednictwem interfejsu API administratora, kto to zrobił, jaki token i co się zmieniło.',
-                'cleanup-btn' => 'Usuń starsze logi',
-                'cleanup-days' => 'Usuń logi starsze niż ta liczba dni',
-                'cleanup-confirm' => 'Usunąć całą historię starszą niż podana liczba dni? Tego nie można cofnąć.',
-            ],
-
-            'view' => [
-                'title' => 'Zmień',
-                'back-btn' => 'Powrót',
-                'admin' => 'Administrator',
-                'token' => 'Żeton',
-                'action' => 'Akcja',
-                'resource' => 'Zasób',
-                'method' => 'Metoda',
-                'ip' => 'Adres IP',
-                'date' => 'Data',
-                'version' => 'Wersja',
-                'url' => 'Punkt końcowy',
-                'request-details' => 'Szczegóły żądania',
-                'changes' => 'Zmiany',
-                'field' => 'Pole',
-                'old' => 'Stara wartość',
-                'new' => 'Nowa wartość',
-                'no-field-changes' => 'Dla tego wpisu nie zarejestrowano żadnych zmian na poziomie pola.',
-                'same-request' => 'Inne zmiany w tym samym żądaniu',
-                'version-chain' => 'Historia wersji tego rekordu',
-            ],
-
-            'datagrid' => [
-                'id' => 'Identyfikator',
-                'date' => 'Data',
-                'admin' => 'Administrator',
-                'token' => 'Żeton',
-                'action' => 'Akcja',
-                'operation' => 'Operacja',
-                'resource' => 'Zasób',
-                'version' => 'Wersja',
-                'method' => 'Metoda',
-                'ip' => 'IP',
-                'view' => 'Zobacz',
-                'delete' => 'Usuń',
-            ],
-
-            'events' => [
-                'created' => 'Utworzono',
-                'updated' => 'Zaktualizowano',
-                'deleted' => 'Usunięto',
-            ],
-
-            'deleted' => 'Usunięto :count rekordów historii.',
-            'cleanup-input-required' => 'Podaj liczbę dni lub datę sprzątania.',
-        ],
 
         'acl' => [
             'title' => 'Integracja',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Zregeneruj token',
             'revoke-btn' => 'Unieważnij token',
             'copy-btn' => 'Kopiuj',
-            'token-warning' => 'Zapisz teraz ten token — nie będzie on wyświetlany ponownie.',
+            'token-copied' => 'Token skopiowany do schowka.',
+            'token-warning' => 'Zapisz teraz ten token - nie będzie on wyświetlany ponownie.',
             'token-label' => 'Żeton',
             'not-generated' => 'Jeszcze nie wygenerowany',
-            'masked' => '(Przechowywane — wyświetlane tylko raz podczas generowania)',
+            'masked' => '(Przechowywane - wyświetlane tylko raz podczas generowania)',
             'history-banner' => 'Ten token nie jest już aktywny.',
+            'view-successor' => 'Zobacz następcę',
         ],
 
         'fields' => [
@@ -356,7 +293,7 @@ return [
             'requests-per-minute' => 'żądania / minutę',
             'requests-per-day' => 'żądania / dzień',
             'select-admin' => 'Wybierz administratora',
-            'no-available-admins' => 'Brak dostępnych administratorów — każdy administrator ma już aktywny token.',
+            'no-available-admins' => 'Brak dostępnych administratorów - każdy administrator ma już aktywny token.',
             'same-as-web-hint' => 'Token będzie na żywo odzwierciedlał bieżące uprawnienia roli przypisanego administratora.',
             'ip-allowlist' => 'Lista dozwolonych adresów IP',
             'ip-any' => 'Dowolny adres IP (domyślny)',
@@ -394,8 +331,8 @@ return [
         'messages' => [
             'draft-created' => 'Integracja utworzona. Wygeneruj token, aby zacząć z niego korzystać.',
             'updated' => 'Integracja została pomyślnie zaktualizowana.',
-            'generated' => 'Wygenerowano token. Skopiuj go teraz — nie będzie wyświetlany ponownie.',
-            'regenerated' => 'Token został zregenerowany. Skopiuj teraz nowy token — nie będzie on wyświetlany ponownie.',
+            'generated' => 'Wygenerowano token. Skopiuj go teraz - nie będzie wyświetlany ponownie.',
+            'regenerated' => 'Token został zregenerowany. Skopiuj teraz nowy token - nie będzie on wyświetlany ponownie.',
             'revoked' => 'Token został pomyślnie unieważniony.',
             'generate-only-draft' => 'Tylko wersje robocze integracji mogą mieć wygenerowany token.',
             'regenerate-only-active' => 'Regenerować można tylko aktywne tokeny.',
@@ -435,7 +372,7 @@ return [
             ],
             'regenerated' => [
                 'subject' => 'Twój token API został zregenerowany: :name',
-                'greeting' => 'Token integracji API o nazwie „:name” został właśnie zregenerowany. Poprzedni token przestał działać – ważny jest tylko nowy.',
+                'greeting' => 'Token integracji API o nazwie „:name” został właśnie zregenerowany. Poprzedni token przestał działać - ważny jest tylko nowy.',
             ],
             'revoked' => [
                 'subject' => 'Twój token API został unieważniony: :name',
@@ -451,7 +388,7 @@ return [
             'revoke-hint' => 'Jeśli się tego nie spodziewałeś, natychmiast unieważnij token za pomocą przycisku poniżej.',
             'revoke-btn' => 'Unieważnij ten token',
             'revoke-expiry' => 'Ten link odwoławczy jest ważny przez 7 dni. Następnie zaloguj się do panelu administracyjnego, aby zarządzać tokenem.',
-            'no-action' => 'Nie jest wymagane żadne działanie — ten e-mail stanowi jedynie potwierdzenie.',
+            'no-action' => 'Nie jest wymagane żadne działanie - ten e-mail stanowi jedynie potwierdzenie.',
         ],
 
         'revoke-confirmation' => [
@@ -465,7 +402,7 @@ return [
         'confirm' => [
             'generate' => [
                 'title' => 'Wygeneruj token',
-                'message' => 'Wygenerować token teraz? Tekst jawny zostanie wyświetlony tylko raz — skopiuj go przed opuszczeniem strony.',
+                'message' => 'Wygenerować token teraz? Tekst jawny zostanie wyświetlony tylko raz - skopiuj go przed opuszczeniem strony.',
             ],
             'regenerate' => [
                 'title' => 'Zregeneruj token',

@@ -236,71 +236,6 @@ return [
             'tokens' => 'Tokens',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Geschiedenis',
-            ],
-
-            'acl' => [
-                'title' => 'Geschiedenis van API-wijzigingen',
-                'view' => 'Bekijken',
-                'delete' => 'Geschiedenis verwijderen',
-            ],
-
-            'index' => [
-                'title' => 'Geschiedenis van API-wijzigingen',
-                'info' => 'Elke creatie, update en verwijdering gebeurt via de admin API, met wie het heeft gedaan, welk token en wat er is veranderd.',
-                'cleanup-btn' => 'Verwijder oudere logboeken',
-                'cleanup-days' => 'Verwijder logboeken die ouder zijn dan dit aantal dagen',
-                'cleanup-confirm' => 'Alle geschiedenis verwijderen die ouder is dan het opgegeven aantal dagen? Dit kan niet ongedaan worden gemaakt.',
-            ],
-
-            'view' => [
-                'title' => 'Verandering',
-                'back-btn' => 'Terug',
-                'admin' => 'Beheerder',
-                'token' => 'Token',
-                'action' => 'Actie',
-                'resource' => 'Bron',
-                'method' => 'Methode',
-                'ip' => 'IP-adres',
-                'date' => 'Datum',
-                'version' => 'Versie',
-                'url' => 'Eindpunt',
-                'request-details' => 'Details aanvragen',
-                'changes' => 'Veranderingen',
-                'field' => 'Veld',
-                'old' => 'Oude waarde',
-                'new' => 'Nieuwe waarde',
-                'no-field-changes' => 'Voor deze invoer zijn geen wijzigingen op veldniveau geregistreerd.',
-                'same-request' => 'Andere wijzigingen in hetzelfde verzoek',
-                'version-chain' => 'Versiegeschiedenis van deze plaat',
-            ],
-
-            'datagrid' => [
-                'id' => 'Identiteitskaart',
-                'date' => 'Datum',
-                'admin' => 'Beheerder',
-                'token' => 'Token',
-                'action' => 'Actie',
-                'operation' => 'Operatie',
-                'resource' => 'Bron',
-                'version' => 'Versie',
-                'method' => 'Methode',
-                'ip' => 'IP',
-                'view' => 'Bekijk',
-                'delete' => 'Verwijderen',
-            ],
-
-            'events' => [
-                'created' => 'Gemaakt',
-                'updated' => 'Bijgewerkt',
-                'deleted' => 'Verwijderd',
-            ],
-
-            'deleted' => ':count geschiedenisrecord(s) verwijderd.',
-            'cleanup-input-required' => 'Geef een aantal dagen of een datum op voor de opruiming.',
-        ],
 
         'acl' => [
             'title' => 'Integratie',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Token opnieuw genereren',
             'revoke-btn' => 'Token intrekken',
             'copy-btn' => 'Kopieer',
+            'token-copied' => 'Token gekopieerd naar klembord.',
             'token-warning' => 'Bewaar dit token nu. Het wordt niet meer getoond.',
             'token-label' => 'Token',
             'not-generated' => 'Nog niet gegenereerd',
-            'masked' => '(Opgeslagen — slechts één keer getoond bij generatie)',
+            'masked' => '(Opgeslagen - slechts één keer getoond bij generatie)',
             'history-banner' => 'Dit token is niet langer actief.',
+            'view-successor' => 'Opvolger bekijken',
         ],
 
         'fields' => [

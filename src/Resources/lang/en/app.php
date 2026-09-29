@@ -1443,75 +1443,10 @@ return [
 
     'integration' => [
         'menu' => [
-            'title' => 'Integration',
+            'title' => 'API Integration',
             'tokens' => 'Tokens',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'History',
-            ],
-
-            'acl' => [
-                'title' => 'API Change History',
-                'view' => 'View',
-                'delete' => 'Delete History',
-            ],
-
-            'index' => [
-                'title' => 'API Change History',
-                'info' => 'Every create, update and delete made through the admin API, with who did it, which token, and what changed.',
-                'cleanup-btn' => 'Delete older logs',
-                'cleanup-days' => 'Delete logs older than this many days',
-                'cleanup-confirm' => 'Delete all history older than the given number of days? This cannot be undone.',
-            ],
-
-            'view' => [
-                'title' => 'Change',
-                'back-btn' => 'Back',
-                'admin' => 'Admin',
-                'token' => 'Token',
-                'action' => 'Action',
-                'resource' => 'Resource',
-                'method' => 'Method',
-                'ip' => 'IP Address',
-                'date' => 'Date',
-                'version' => 'Version',
-                'url' => 'Endpoint',
-                'request-details' => 'Request Details',
-                'changes' => 'Changes',
-                'field' => 'Field',
-                'old' => 'Old value',
-                'new' => 'New value',
-                'no-field-changes' => 'No field-level changes were recorded for this entry.',
-                'same-request' => 'Other changes in the same request',
-                'version-chain' => 'Version history of this record',
-            ],
-
-            'datagrid' => [
-                'id' => 'ID',
-                'date' => 'Date',
-                'admin' => 'Admin',
-                'token' => 'Token',
-                'action' => 'Action',
-                'operation' => 'Operation',
-                'resource' => 'Resource',
-                'version' => 'Version',
-                'method' => 'Method',
-                'ip' => 'IP',
-                'view' => 'View',
-                'delete' => 'Delete',
-            ],
-
-            'events' => [
-                'created' => 'Created',
-                'updated' => 'Updated',
-                'deleted' => 'Deleted',
-            ],
-
-            'deleted' => ':count history record(s) deleted.',
-            'cleanup-input-required' => 'Provide a number of days or a date to clean up.',
-        ],
 
         'acl' => [
             'title' => 'Integration',
@@ -1542,11 +1477,13 @@ return [
             'regenerate-btn' => 'Regenerate Token',
             'revoke-btn' => 'Revoke Token',
             'copy-btn' => 'Copy',
-            'token-warning' => 'Save this token now — it will not be shown again.',
+            'token-copied' => 'Token copied to clipboard.',
+            'token-warning' => 'Save this token now - it will not be shown again.',
             'token-label' => 'Token',
             'not-generated' => 'Not generated yet',
-            'masked' => '(Stored — only shown once at generation)',
+            'masked' => '(Stored - only shown once at generation)',
             'history-banner' => 'This token is no longer active.',
+            'view-successor' => 'View successor',
         ],
 
         'fields' => [
@@ -1567,7 +1504,7 @@ return [
             'requests-per-minute' => 'requests / minute',
             'requests-per-day' => 'requests / day',
             'select-admin' => 'Select an admin',
-            'no-available-admins' => 'No admins available — every admin already has an active token.',
+            'no-available-admins' => 'No admins available - every admin already has an active token.',
             'same-as-web-hint' => 'Token will mirror the assigned admin\'s current role permissions live.',
             'ip-allowlist' => 'IP Allowlist',
             'ip-any' => 'Any IP (default)',
@@ -1605,8 +1542,8 @@ return [
         'messages' => [
             'draft-created' => 'Integration created. Generate the token to start using it.',
             'updated' => 'Integration updated successfully.',
-            'generated' => 'Token generated. Copy it now — it will not be shown again.',
-            'regenerated' => 'Token regenerated. Copy the new token now — it will not be shown again.',
+            'generated' => 'Token generated. Copy it now - it will not be shown again.',
+            'regenerated' => 'Token regenerated. Copy the new token now - it will not be shown again.',
             'revoked' => 'Token revoked successfully.',
             'generate-only-draft' => 'Only draft integrations can have their token generated.',
             'regenerate-only-active' => 'Only active tokens can be regenerated.',
@@ -1646,7 +1583,7 @@ return [
             ],
             'regenerated' => [
                 'subject' => 'Your API token was regenerated: :name',
-                'greeting' => 'The API integration token named ":name" was just regenerated. The previous token has stopped working — only the new one is valid.',
+                'greeting' => 'The API integration token named ":name" was just regenerated. The previous token has stopped working - only the new one is valid.',
             ],
             'revoked' => [
                 'subject' => 'Your API token was revoked: :name',
@@ -1662,7 +1599,7 @@ return [
             'revoke-hint' => 'If you did not expect this, revoke the token immediately using the button below.',
             'revoke-btn' => 'Revoke This Token',
             'revoke-expiry' => 'This revoke link is valid for 7 days. After that, sign in to the admin panel to manage the token.',
-            'no-action' => 'No action is needed — this email is only a confirmation.',
+            'no-action' => 'No action is needed - this email is only a confirmation.',
         ],
 
         'revoke-confirmation' => [
@@ -1676,7 +1613,7 @@ return [
         'confirm' => [
             'generate' => [
                 'title' => 'Generate Token',
-                'message' => 'Generate the token now? The plaintext will be shown only once — copy it before leaving the page.',
+                'message' => 'Generate the token now? The plaintext will be shown only once - copy it before leaving the page.',
             ],
             'regenerate' => [
                 'title' => 'Regenerate Token',

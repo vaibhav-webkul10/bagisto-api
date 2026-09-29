@@ -236,71 +236,6 @@ return [
             'tokens' => 'Jetons',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Histoire',
-            ],
-
-            'acl' => [
-                'title' => 'Historique des modifications de l\'API',
-                'view' => 'Voir',
-                'delete' => 'Supprimer l\'historique',
-            ],
-
-            'index' => [
-                'title' => 'Historique des modifications de l\'API',
-                'info' => 'Chaque création, mise à jour et suppression effectuée via l\'API d\'administration, avec qui l\'a fait, quel jeton et ce qui a changé.',
-                'cleanup-btn' => 'Supprimer les anciens journaux',
-                'cleanup-days' => 'Supprimer les journaux datant de plus de ce nombre de jours',
-                'cleanup-confirm' => 'Supprimer tout l\'historique antérieur au nombre de jours indiqué ? Cela ne peut pas être annulé.',
-            ],
-
-            'view' => [
-                'title' => 'Changement',
-                'back-btn' => 'Retour',
-                'admin' => 'Administrateur',
-                'token' => 'Jeton',
-                'action' => 'Action',
-                'resource' => 'Ressource',
-                'method' => 'Méthode',
-                'ip' => 'Adresse IP',
-                'date' => 'Date',
-                'version' => 'Version',
-                'url' => 'Point de terminaison',
-                'request-details' => 'Détails de la demande',
-                'changes' => 'Changements',
-                'field' => 'Champ',
-                'old' => 'Ancienne valeur',
-                'new' => 'Nouvelle valeur',
-                'no-field-changes' => 'Aucune modification au niveau du champ n’a été enregistrée pour cette entrée.',
-                'same-request' => 'Autres changements dans la même demande',
-                'version-chain' => 'Historique des versions de cet enregistrement',
-            ],
-
-            'datagrid' => [
-                'id' => 'pièce d\'identité',
-                'date' => 'Date',
-                'admin' => 'Administrateur',
-                'token' => 'Jeton',
-                'action' => 'Action',
-                'operation' => 'Fonctionnement',
-                'resource' => 'Ressource',
-                'version' => 'Version',
-                'method' => 'Méthode',
-                'ip' => 'PI',
-                'view' => 'Voir',
-                'delete' => 'Supprimer',
-            ],
-
-            'events' => [
-                'created' => 'Créé',
-                'updated' => 'Mis à jour',
-                'deleted' => 'Supprimé',
-            ],
-
-            'deleted' => ':count enregistrement(s) d\'historique supprimé(s).',
-            'cleanup-input-required' => 'Fournissez un certain nombre de jours ou une date pour nettoyer.',
-        ],
 
         'acl' => [
             'title' => 'Intégration',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Régénérer le jeton',
             'revoke-btn' => 'Révoquer le jeton',
             'copy-btn' => 'Copier',
-            'token-warning' => 'Enregistrez ce jeton maintenant – il ne sera plus affiché.',
+            'token-copied' => 'Jeton copié dans le presse-papiers.',
+            'token-warning' => 'Enregistrez ce jeton maintenant - il ne sera plus affiché.',
             'token-label' => 'Jeton',
             'not-generated' => 'Pas encore généré',
             'masked' => '(Stocké - affiché une seule fois à la génération)',
             'history-banner' => 'Ce jeton n\'est plus actif.',
+            'view-successor' => 'Voir le successeur',
         ],
 
         'fields' => [
@@ -394,7 +331,7 @@ return [
         'messages' => [
             'draft-created' => 'Intégration créée. Générez le jeton pour commencer à l\'utiliser.',
             'updated' => 'Intégration mise à jour avec succès.',
-            'generated' => 'Jeton généré. Copiez-le maintenant – il ne sera plus affiché.',
+            'generated' => 'Jeton généré. Copiez-le maintenant - il ne sera plus affiché.',
             'regenerated' => 'Jeton régénéré. Copiez le nouveau jeton maintenant : il ne sera plus affiché.',
             'revoked' => 'Jeton révoqué avec succès.',
             'generate-only-draft' => 'Seuls les brouillons d\'intégrations peuvent voir leur jeton généré.',

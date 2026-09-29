@@ -3,9 +3,9 @@
 namespace Webkul\BagistoApi\Admin\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\BagistoApi\Admin\DataGrids\IntegrationDataGrid;
 use Webkul\BagistoApi\Admin\Http\Requests\IntegrationStoreRequest;
 use Webkul\BagistoApi\Admin\Http\Requests\IntegrationUpdateRequest;
@@ -24,24 +24,6 @@ class IntegrationController extends Controller
 
             return $next($request);
         })->except('revokeViaEmail');
-
-        $this->middleware(function ($request, $next) {
-            abort_unless(bouncer()->hasPermission($this->permissionFor($request->route()?->getActionMethod())), 401);
-
-            return $next($request);
-        })->except('revokeViaEmail');
-    }
-
-    protected function permissionFor(?string $action): string
-    {
-        return match ($action) {
-            'create', 'store' => 'integration.create',
-            'update' => 'integration.edit',
-            'destroy' => 'integration.delete',
-            'generate' => 'integration.generate',
-            'regenerate' => 'integration.regenerate',
-            default => 'integration.view',
-        };
     }
 
     public function redirectToTokens()

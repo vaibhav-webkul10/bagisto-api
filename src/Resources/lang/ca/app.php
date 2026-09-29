@@ -236,71 +236,6 @@ return [
             'tokens' => 'Fitxes',
         ],
 
-        'history' => [
-            'menu' => [
-                'title' => 'Història',
-            ],
-
-            'acl' => [
-                'title' => 'Historial de canvis de l\'API',
-                'view' => 'Veure',
-                'delete' => 'Suprimeix l\'historial',
-            ],
-
-            'index' => [
-                'title' => 'Historial de canvis de l\'API',
-                'info' => 'Cada creació, actualització i supressió feta a través de l\'API d\'administració, amb qui ho va fer, quin testimoni i què ha canviat.',
-                'cleanup-btn' => 'Suprimeix els registres més antics',
-                'cleanup-days' => 'Suprimeix els registres més antics que aquests dies',
-                'cleanup-confirm' => 'Vols suprimir tot l\'historial anterior al nombre de dies indicat? Això no es pot desfer.',
-            ],
-
-            'view' => [
-                'title' => 'Canviar',
-                'back-btn' => 'Enrere',
-                'admin' => 'Admin',
-                'token' => 'Token',
-                'action' => 'Acció',
-                'resource' => 'Recurs',
-                'method' => 'Mètode',
-                'ip' => 'Adreça IP',
-                'date' => 'Data',
-                'version' => 'Versió',
-                'url' => 'Punt final',
-                'request-details' => 'Detalls de la sol·licitud',
-                'changes' => 'Canvis',
-                'field' => 'Camp',
-                'old' => 'Antic valor',
-                'new' => 'Nou valor',
-                'no-field-changes' => 'No s\'han registrat canvis a nivell de camp per a aquesta entrada.',
-                'same-request' => 'Altres canvis en la mateixa sol·licitud',
-                'version-chain' => 'Historial de versions d\'aquest registre',
-            ],
-
-            'datagrid' => [
-                'id' => 'ID',
-                'date' => 'Data',
-                'admin' => 'Admin',
-                'token' => 'Token',
-                'action' => 'Acció',
-                'operation' => 'Funcionament',
-                'resource' => 'Recurs',
-                'version' => 'Versió',
-                'method' => 'Mètode',
-                'ip' => 'IP',
-                'view' => 'Veure',
-                'delete' => 'Suprimeix',
-            ],
-
-            'events' => [
-                'created' => 'Creat',
-                'updated' => 'Actualitzat',
-                'deleted' => 'S\'ha suprimit',
-            ],
-
-            'deleted' => 'S\'han suprimit :count registres d\'historial.',
-            'cleanup-input-required' => 'Proporcioneu un nombre de dies o una data per netejar.',
-        ],
 
         'acl' => [
             'title' => 'Integració',
@@ -331,11 +266,13 @@ return [
             'regenerate-btn' => 'Regenera el testimoni',
             'revoke-btn' => 'Revoca el testimoni',
             'copy-btn' => 'Còpia',
+            'token-copied' => 'Testimoni copiat al porta-retalls.',
             'token-warning' => 'Desa aquest testimoni ara; no es tornarà a mostrar.',
             'token-label' => 'Token',
             'not-generated' => 'Encara no s\'ha generat',
             'masked' => '(Es emmagatzema: només es mostra una vegada a la generació)',
             'history-banner' => 'Aquest testimoni ja no està actiu.',
+            'view-successor' => 'Veure el successor',
         ],
 
         'fields' => [

@@ -29,7 +29,7 @@ class IntegrationDataGrid extends DataGrid
                 'a.email as admin_email'
             )
             ->selectRaw("CASE
-                WHEN {$tablePrefix}t.token_preview IS NULL THEN '—'
+                WHEN {$tablePrefix}t.token_preview IS NULL THEN '-'
                 ELSE CONCAT({$tablePrefix}t.id, '|', {$tablePrefix}t.token_preview, '...xxxx')
             END as masked_token");
     }
