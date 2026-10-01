@@ -39,7 +39,6 @@ return [
             'Webkul\BagistoApi\Http\Middleware\VerifyStorefrontKey',
             'Webkul\BagistoApi\Http\Middleware\EnforceAdminApiAuth',
             'Webkul\BagistoApi\Http\Middleware\ThrottleAdminApi',
-            'Webkul\BagistoApi\Http\Middleware\SetAdminApiAuditContext',
             'Webkul\BagistoApi\Http\Middleware\BagistoApiDocumentationMiddleware',
             'Webkul\BagistoApi\Http\Middleware\ForceApiJson',
             'Webkul\BagistoApi\Http\Middleware\PaginationHeaders',
