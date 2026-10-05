@@ -10,6 +10,7 @@ use Webkul\BagistoApi\Exception\ResourceNotFoundException;
 use Webkul\BagistoApi\Facades\CartTokenFacade;
 use Webkul\BagistoApi\Facades\TokenHeaderFacade;
 use Webkul\Payment\Facades\Payment;
+use Webkul\Checkout\Facades\Cart;
 
 /**
  * Provides available payment methods for a cart.
@@ -37,6 +38,8 @@ class PaymentMethodsProvider implements ProviderInterface
         if (! $cart) {
             throw new ResourceNotFoundException(__('bagistoapi::app.graphql.cart.invalid-token'));
         }
+
+        Cart::setCart($cart); 
 
         $methods = Payment::getSupportedPaymentMethods();
 
