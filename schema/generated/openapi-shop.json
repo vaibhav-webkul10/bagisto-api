@@ -8732,7 +8732,7 @@
                     }
                 },
                 "summary": "List countries",
-                "description": "Returns all countries with their `states` and per-locale `translations`. Public endpoint.",
+                "description": "Returns the countries with their `states` and per-locale `translations`, 10 per page by default; `per_page` takes up to 300, so every country fits in one request. Public endpoint.",
                 "parameters": [
                     {
                         "name": "page",
@@ -8757,7 +8757,7 @@
                             "type": "integer",
                             "default": 10,
                             "minimum": 0,
-                            "maximum": 50
+                            "maximum": 300
                         },
                         "style": "form",
                         "explode": true
@@ -16350,7 +16350,7 @@
                     }
                 },
                 "summary": "List the customer's orders",
-                "description": "Orders placed by the authenticated customer, newest first; `status` filters by exact order status. Needs the X-STOREFRONT-KEY header and a customer Bearer token.",
+                "description": "Orders placed by the authenticated customer, newest first; `status` filters by exact order status. `per_page` (default 10, at most 50) and `page` select the page. Needs the X-STOREFRONT-KEY header and a customer Bearer token.",
                 "parameters": [
                     {
                         "name": "page",

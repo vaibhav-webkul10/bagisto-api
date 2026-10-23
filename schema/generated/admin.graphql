@@ -3978,7 +3978,7 @@ type AdminOrderDetailItem implements Node {
   baseTotal: Float!
   baseTotalInclTax: String!
   baseTotalInvoiced: String!
-  child: String
+  child: Iterable
   children(
     "Returns the first n elements from the list."
     first: Int
@@ -3998,7 +3998,7 @@ type AdminOrderDetailItem implements Node {
   discountInvoiced: String
   discountPercent: Float
   discountRefunded: String
-  downloadableLinks: String
+  downloadableLinks: Iterable
   id: ID!
   name: String
   orderId: Int

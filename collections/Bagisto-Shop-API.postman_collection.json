@@ -2447,7 +2447,7 @@
                                         }
                                     ]
                                 },
-                                "description": "Returns all countries with their `states` and per-locale `translations`. Public endpoint."
+                                "description": "Returns the countries with their `states` and per-locale `translations`, 10 per page by default; `per_page` takes up to 300, so every country fits in one request. Public endpoint."
                             }
                         }
                     ]
@@ -4536,7 +4536,7 @@
                                         }
                                     ]
                                 },
-                                "description": "Orders placed by the authenticated customer, newest first; `status` filters by exact order status. Needs the X-STOREFRONT-KEY header and a customer Bearer token."
+                                "description": "Orders placed by the authenticated customer, newest first; `status` filters by exact order status. `per_page` (default 10, at most 50) and `page` select the page. Needs the X-STOREFRONT-KEY header and a customer Bearer token."
                             }
                         },
                         {
@@ -11860,7 +11860,7 @@
                                                 "variables": "{\n    \"first\": 10\n}"
                                             }
                                         },
-                                        "description": "Every country with its states, ordered by ID. Cursor pagination: `first` takes the first N rows (after `after` when given), `last` without `before` takes the last N, and `before` takes the N rows before that cursor; N defaults to 10 and is capped at 50, and `first: 0` returns an empty page. Needs the X-STOREFRONT-KEY header."
+                                        "description": "Every country with its states, ordered by ID. Cursor pagination: `first` takes the first N rows (after `after` when given), `last` without `before` takes the last N, and `before` takes the N rows before that cursor; N defaults to 10 and is capped at 300, so every country fits in one request, and `first: 0` returns an empty page. Needs the X-STOREFRONT-KEY header."
                                     }
                                 },
                                 {

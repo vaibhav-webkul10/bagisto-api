@@ -265,7 +265,7 @@ class ProductGraphQLProvider implements ProviderInterface
     }
 
     /**
-     * Sort by the minimal price of the customer's group.
+     * Sort by the minimal price of the customer's group on the current channel, one index row per product.
      *
      * @return string[]
      */
@@ -273,9 +273,12 @@ class ProductGraphQLProvider implements ProviderInterface
     {
         $customerGroup = $this->currentCustomerGroup();
 
-        $query->leftJoin('product_price_indices', function ($join) use ($customerGroup) {
+        $channelId = (int) core()->getCurrentChannel()->id;
+
+        $query->leftJoin('product_price_indices', function ($join) use ($customerGroup, $channelId) {
             $join->on('products.id', '=', 'product_price_indices.product_id')
-                ->where('product_price_indices.customer_group_id', $customerGroup->id);
+                ->where('product_price_indices.customer_group_id', $customerGroup->id)
+                ->where('product_price_indices.channel_id', $channelId);
         })
             ->orderBy('sort_price', $direction)
             ->orderBy('products.id', $direction)

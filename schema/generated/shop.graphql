@@ -190,7 +190,7 @@ type Query {
     after: String
   ): CompareItemCursorConnection
 
-  "Every country with its states, ordered by ID. Cursor pagination: `first` takes the first N rows (after `after` when given), `last` without `before` takes the last N, and `before` takes the N rows before that cursor; N defaults to 10 and is capped at 50, and `first: 0` returns an empty page. Needs the X-STOREFRONT-KEY header."
+  "Every country with its states, ordered by ID. Cursor pagination: `first` takes the first N rows (after `after` when given), `last` without `before` takes the last N, and `before` takes the N rows before that cursor; N defaults to 10 and is capped at 300, so every country fits in one request, and `first: 0` returns an empty page. Needs the X-STOREFRONT-KEY header."
   countries(
     "Returns the first n elements from the list."
     first: Int
@@ -2080,7 +2080,7 @@ type BookingProduct implements Node {
   qty: Int
   rentalSlot: BookingProductRentalSlot
   showLocation: Boolean!
-  slots: String
+  slots: Iterable
   startingPrice: String
   startingRegularPrice: String
   tableSlot: BookingProductTableSlot

@@ -284,6 +284,34 @@ class ProductTest extends RestApiTestCase
     }
 
     /**
+     * Test sorting by price lists a product once when it has a price index row on another channel.
+     */
+    public function test_price_sort_lists_a_product_once_across_channels(): void
+    {
+        $product = $this->seedSaleableProduct();
+        $this->seedGuestPriceIndex($product, 50.0);
+
+        DB::table('product_price_indices')->insert([
+            'product_id' => $product->id,
+            'customer_group_id' => core()->getGuestCustomerGroup()->id,
+            'channel_id' => 999,
+            'min_price' => 10.0,
+            'regular_min_price' => 10.0,
+            'max_price' => 10.0,
+            'regular_max_price' => 10.0,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        foreach (['price-asc', 'price-desc'] as $sort) {
+            $ids = $this->productIds($this->publicGet($this->collectionUrl.'?sort='.$sort.'&per_page=50')->assertOk());
+
+            expect(count(array_keys($ids, $product->id)))->toBeLessThanOrEqual(1);
+            expect(count($ids))->toBe(count(array_unique($ids)));
+        }
+    }
+
+    /**
      * Test sort most expensive first.
      */
     public function test_sort_most_expensive_first(): void

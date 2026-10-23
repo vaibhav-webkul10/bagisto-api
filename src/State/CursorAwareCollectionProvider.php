@@ -38,7 +38,7 @@ class CursorAwareCollectionProvider implements ProviderInterface
         $first = isset($args['first']) ? (int) $args['first'] : null;
         $last = isset($args['last']) ? (int) $args['last'] : null;
         $requested = $first ?? $last ?? 10;
-        $limit = $requested > 0 ? $this->clampPageSize($requested) : 0;
+        $limit = $requested > 0 ? $this->clampPageSize($requested, $operation->getPaginationMaximumItemsPerPage()) : 0;
 
         $query = $this->linksHandler->handleLinks(
             $model->newQuery(),
