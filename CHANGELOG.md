@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking:** admin customer impersonation: REST `POST /api/admin/customers/{id}/impersonate` and GraphQL `createAdminCustomerImpersonate`, which issued a Sanctum token for the customer. Customer tokens are now login sessions bound to the customer's own credentials, and an admin acting with them would bypass the session, audit and revocation rules; there is no replacement.
 
 ### Fixed
+- An admin password reset (`POST /api/admin/auth/reset-password`, `createAdminResetPassword`) ends the admin's sessions and API tokens as `password_reset` in the session and the audit trail; the password-change rule ended them first and recorded `password_change`.
 - A customer password reset ends the customer's sessions as `password_reset` in the session and the audit trail; they were ended by the password-change rule first and recorded as `password_change`.
 - Customer login looks the customer up on the current channel, as the storefront does; it matched the email on any channel, although core keeps one account per email and channel. It now also fires core's `customer.after.login`.
 - Admin GDPR data download (REST `POST /api/admin/customers/{id}/gdpr-download-data` and GraphQL) no longer fails with 500 for a customer who bought a downloadable product: core's order item `toArray()` leaves the purchased links as a collection, which is now turned into plain data before it is serialised.

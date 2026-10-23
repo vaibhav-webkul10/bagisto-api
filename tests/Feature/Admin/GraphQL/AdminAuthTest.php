@@ -673,7 +673,8 @@ class AdminAuthTest extends AdminApiTestCase
         Mail::fake();
 
         $admin = $this->createAdmin();
-        $token = $this->adminAccessToken($admin);
+        $pair = $this->adminTokenPair($admin);
+        $token = $pair->accessToken;
 
         $forgot = 'mutation ($input: createAdminForgotPasswordInput!) { createAdminForgotPassword(input: $input) { adminForgotPassword { success message } } }';
 
@@ -695,6 +696,7 @@ class AdminAuthTest extends AdminApiTestCase
         $this->assertTrue($reset->json('data.createAdminResetPassword.adminResetPassword.success'), $reset->getContent());
         $this->adminEndpointGraphQL(self::PROFILE, [], $token)->assertStatus(401);
         $this->assertTrue(Hash::check('reset-secret-1', $admin->fresh()->password));
+        $this->assertSame(AdminApiSession::REVOKED_PASSWORD_RESET, $pair->session->fresh()->revoked_reason);
     }
 
     /**

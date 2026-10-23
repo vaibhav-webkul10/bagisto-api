@@ -108,11 +108,11 @@ class AdminApiPasswordService
      */
     protected function resetPassword(Admin $admin, string $password): Admin
     {
+        $this->revoker->passwordReset($admin);
+
         $admin = $this->credentialRepository->resetPassword($admin->id, Hash::make($password), Str::random(60));
 
         $this->sessionPurger->forget('admin', $admin->id);
-
-        $this->revoker->passwordReset($admin);
 
         Event::dispatch(new PasswordReset($admin));
 
