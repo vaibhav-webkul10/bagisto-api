@@ -2,8 +2,8 @@
 
 namespace Webkul\BagistoApi\Tests\Feature\GraphQL;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Webkul\BagistoApi\Models\CustomerApiSession;
 use Webkul\BagistoApi\Tests\GraphQLTestCase;
 use Webkul\Customer\Models\Customer;
 
@@ -444,7 +444,7 @@ class CustomerProfileTest extends GraphQLTestCase
     }
 
     /**
-     * Test: Delete profile also removes access tokens.
+     * Test: Delete profile also ends the customer's API sessions.
      */
     public function test_delete_profile_removes_tokens(): void
     {
@@ -453,15 +453,12 @@ class CustomerProfileTest extends GraphQLTestCase
             'password' => bcrypt('Password123!'),
         ]);
 
-        $customer->createToken('token-1');
-        $customer->createToken('token-2');
+        $this->customerAccessToken($customer);
+        $this->customerAccessToken($customer);
 
-        $tokenCount = DB::table('personal_access_tokens')
-            ->where('tokenable_id', $customer->id)
-            ->where('tokenable_type', Customer::class)
-            ->count();
+        expect(CustomerApiSession::query()->where('customer_id', $customer->id)->count())->toBe(2);
 
-        expect($tokenCount)->toBeGreaterThanOrEqual(2);
+        $this->setForeignKeyChecks(true);
 
         $mutation = <<<'GQL'
             mutation deleteProfile($input: createCustomerProfileDeleteInput!) {
@@ -475,12 +472,7 @@ class CustomerProfileTest extends GraphQLTestCase
             'input' => ['password' => 'Password123!'],
         ]);
 
-        $remainingTokens = DB::table('personal_access_tokens')
-            ->where('tokenable_id', $customer->id)
-            ->where('tokenable_type', Customer::class)
-            ->count();
-
-        expect($remainingTokens)->toBe(0);
+        expect(CustomerApiSession::query()->where('customer_id', $customer->id)->count())->toBe(0);
     }
 
     /**

@@ -391,7 +391,7 @@ class MergeCartTest extends GraphQLTestCase
             'token' => md5(uniqid(rand(), true)),
         ]);
 
-        $token = $customer->createToken('test-token')->plainTextToken;
+        $token = $this->customerAccessToken($customer);
 
         return compact('customer', 'token');
     }

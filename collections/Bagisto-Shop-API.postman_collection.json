@@ -2815,10 +2815,10 @@
                                         "login"
                                     ]
                                 },
-                                "description": "Authenticate a customer with email and password. Returns a Bearer token for subsequent API calls.",
+                                "description": "Signs a customer in on the current channel with email and password, as the storefront does, and starts a session. Returns a short-lived JWT access token and a refresh token. Optional `device_name` and `client_type` (web, mobile, pos, desktop, other) label the session in the session list. An inactive or unverified customer is refused.",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"Password123!\"\n}",
+                                    "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"Password123!\",\n    \"device_name\": \"iPhone 15\",\n    \"client_type\": \"mobile\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -2955,6 +2955,58 @@
                             }
                         },
                         {
+                            "name": "Exchange a customer refresh token for a new token pair",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "X-STOREFRONT-KEY",
+                                        "value": "{{storefrontKey}}",
+                                        "description": "Storefront API Key for authentication. Required for all shop/storefront API requests."
+                                    },
+                                    {
+                                        "key": "X-Locale",
+                                        "value": "{{locale}}",
+                                        "description": "Locale code for localized data (e.g. \"en\", \"fr\", \"ar\"). Defaults to channel's default locale."
+                                    },
+                                    {
+                                        "key": "X-Channel",
+                                        "value": "{{channel}}",
+                                        "description": "Channel code (e.g. \"default\"). Defaults to the current channel."
+                                    },
+                                    {
+                                        "key": "X-Currency",
+                                        "value": "{{currency}}",
+                                        "description": "Currency code (e.g. \"USD\", \"EUR\", \"INR\"). Defaults to channel's base currency."
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/customer/refresh",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "customer",
+                                        "refresh"
+                                    ]
+                                },
+                                "description": "Returns a new access token and a new refresh token in the same session; the refresh token sent stops working. Presenting a refresh token that was already used revokes the whole session. Once the refresh token expires, or the session reaches its absolute lifetime, log in again. Needs the storefront key only.",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"refresh_token\": \"88|7c1f4e2a9b...\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
                             "name": "Get authenticated customer profile",
                             "request": {
                                 "method": "GET",
@@ -2990,6 +3042,97 @@
                                     ]
                                 },
                                 "description": "Returns the profile of the currently authenticated customer. Requires Bearer token via the Authorize button."
+                            }
+                        },
+                        {
+                            "name": "List the signed-in customer's active sessions",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "X-STOREFRONT-KEY",
+                                        "value": "{{storefrontKey}}",
+                                        "description": "Storefront API Key for authentication. Required for all shop/storefront API requests."
+                                    },
+                                    {
+                                        "key": "X-Locale",
+                                        "value": "{{locale}}",
+                                        "description": "Locale code for localized data (e.g. \"en\", \"fr\", \"ar\"). Defaults to channel's default locale."
+                                    },
+                                    {
+                                        "key": "X-Channel",
+                                        "value": "{{channel}}",
+                                        "description": "Channel code (e.g. \"default\"). Defaults to the current channel."
+                                    },
+                                    {
+                                        "key": "X-Currency",
+                                        "value": "{{currency}}",
+                                        "description": "Currency code (e.g. \"USD\", \"EUR\", \"INR\"). Defaults to channel's base currency."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/customer/sessions",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "customer",
+                                        "sessions"
+                                    ]
+                                },
+                                "description": "Every live session of the signed-in customer, newest first, with where each was last used from. `isCurrent` marks the session of the access token sent. Needs a customer access token."
+                            }
+                        },
+                        {
+                            "name": "Log out of every session",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "X-STOREFRONT-KEY",
+                                        "value": "{{storefrontKey}}",
+                                        "description": "Storefront API Key for authentication. Required for all shop/storefront API requests."
+                                    },
+                                    {
+                                        "key": "X-Locale",
+                                        "value": "{{locale}}",
+                                        "description": "Locale code for localized data (e.g. \"en\", \"fr\", \"ar\"). Defaults to channel's default locale."
+                                    },
+                                    {
+                                        "key": "X-Channel",
+                                        "value": "{{channel}}",
+                                        "description": "Channel code (e.g. \"default\"). Defaults to the current channel."
+                                    },
+                                    {
+                                        "key": "X-Currency",
+                                        "value": "{{currency}}",
+                                        "description": "Currency code (e.g. \"USD\", \"EUR\", \"INR\"). Defaults to channel's base currency."
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/customer/logout-all",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "customer",
+                                        "logout-all"
+                                    ]
+                                },
+                                "description": "Ends every session of the signed-in customer, this one included, on every device; their access and refresh tokens stop working at once. Needs a customer access token.",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "[]",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
                             }
                         },
                         {
@@ -3194,6 +3337,53 @@
                                         }
                                     }
                                 }
+                            }
+                        },
+                        {
+                            "name": "Revoke one of my sessions",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "X-STOREFRONT-KEY",
+                                        "value": "{{storefrontKey}}",
+                                        "description": "Storefront API Key for authentication. Required for all shop/storefront API requests."
+                                    },
+                                    {
+                                        "key": "X-Locale",
+                                        "value": "{{locale}}",
+                                        "description": "Locale code for localized data (e.g. \"en\", \"fr\", \"ar\"). Defaults to channel's default locale."
+                                    },
+                                    {
+                                        "key": "X-Channel",
+                                        "value": "{{channel}}",
+                                        "description": "Channel code (e.g. \"default\"). Defaults to the current channel."
+                                    },
+                                    {
+                                        "key": "X-Currency",
+                                        "value": "{{currency}}",
+                                        "description": "Currency code (e.g. \"USD\", \"EUR\", \"INR\"). Defaults to channel's base currency."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/customer/sessions/:id",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "customer",
+                                        "sessions",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "41",
+                                            "description": "Session ID."
+                                        }
+                                    ]
+                                },
+                                "description": "Ends one live session of the signed-in customer, for example on a lost phone; its access and refresh tokens stop working at once. Revoking the current session logs it out."
                             }
                         },
                         {
@@ -11487,7 +11677,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query CompareItem($id: ID!) {\n  compareItem(id: $id) {\n    _id\n    createdAt\n    customer {\n      _id\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    id\n    product {\n      _id\n      additional\n      baseImageUrl\n      bookingType\n      brand\n      channel\n      color\n      combinations\n      createdAt\n      description\n      descriptionHtml\n      featured\n      formattedMaximumPrice\n      formattedMinimumPrice\n      formattedPrice\n      formattedRegularMaximumPrice\n      formattedRegularMinimumPrice\n      formattedSpecialPrice\n      guestCheckout\n      height\n      id\n      index\n      isInCompare\n      isInWishlist\n      isSaleable\n      length\n      locale\n      manageStock\n      maximumPrice\n      metaDescription\n      metaKeywords\n      metaTitle\n      minimumPrice\n      name\n      new\n      price\n      productNumber\n      regularMaximumPrice\n      regularMinimumPrice\n      shortDescription\n      size\n      sku\n      specialPrice\n      specialPriceFrom\n      specialPriceTo\n      status\n      superAttributeOptions\n      taxCategoryId\n      type\n      updatedAt\n      urlKey\n      visibleIndividually\n      weight\n      width\n    }\n    updatedAt\n  }\n}\n",
+                                                "query": "query CompareItem($id: ID!) {\n  compareItem(id: $id) {\n    _id\n    createdAt\n    customer {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      expiresIn\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      refreshToken\n      refreshTokenExpiresAt\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    id\n    product {\n      _id\n      additional\n      baseImageUrl\n      bookingType\n      brand\n      channel\n      color\n      combinations\n      createdAt\n      description\n      descriptionHtml\n      featured\n      formattedMaximumPrice\n      formattedMinimumPrice\n      formattedPrice\n      formattedRegularMaximumPrice\n      formattedRegularMinimumPrice\n      formattedSpecialPrice\n      guestCheckout\n      height\n      id\n      index\n      isInCompare\n      isInWishlist\n      isSaleable\n      length\n      locale\n      manageStock\n      maximumPrice\n      metaDescription\n      metaKeywords\n      metaTitle\n      minimumPrice\n      name\n      new\n      price\n      productNumber\n      regularMaximumPrice\n      regularMinimumPrice\n      shortDescription\n      size\n      sku\n      specialPrice\n      specialPriceFrom\n      specialPriceTo\n      status\n      superAttributeOptions\n      taxCategoryId\n      type\n      updatedAt\n      urlKey\n      visibleIndividually\n      weight\n      width\n    }\n    updatedAt\n  }\n}\n",
                                                 "variables": "{\n    \"id\": \"1\"\n}"
                                             }
                                         },
@@ -11843,7 +12033,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "mutation CreateCustomer($input: createCustomerInput!) {\n  createCustomer(input: $input) {\n    clientMutationId\n    customer {\n      _id\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n  }\n}\n",
+                                                "query": "mutation CreateCustomer($input: createCustomerInput!) {\n  createCustomer(input: $input) {\n    clientMutationId\n    customer {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      expiresIn\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      refreshToken\n      refreshTokenExpiresAt\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"input\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Doe\",\n        \"email\": \"john@example.com\",\n        \"password\": \"Password123!\",\n        \"confirmPassword\": \"Password123!\"\n    }\n}"
                                             }
                                         },
@@ -11877,11 +12067,11 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "mutation CreateCustomerLogin($input: createCustomerLoginInput!) {\n  createCustomerLogin(input: $input) {\n    clientMutationId\n    customerLogin {\n      _id\n      apiToken\n      id\n      message\n      success\n      token\n    }\n  }\n}\n",
+                                                "query": "mutation CreateCustomerLogin($input: createCustomerLoginInput!) {\n  createCustomerLogin(input: $input) {\n    clientMutationId\n    customerLogin {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      customer\n      expiresIn\n      id\n      message\n      refreshToken\n      refreshTokenExpiresAt\n      session\n      success\n      token\n      tokenType\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"input\": {\n        \"email\": \"{{customerEmail}}\",\n        \"password\": \"{{customerPassword}}\"\n    }\n}"
                                             }
                                         },
-                                        "description": "Creates a CustomerLogin."
+                                        "description": "Sign a customer in on the current channel and return an access and refresh token pair. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
                                     },
                                     "event": [
                                         {
@@ -11898,6 +12088,40 @@
                                             }
                                         }
                                     ]
+                                },
+                                {
+                                    "name": "createCustomerLogoutAll",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "X-STOREFRONT-KEY",
+                                                "value": "{{storefrontKey}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{url}}/api/graphql",
+                                            "host": [
+                                                "{{url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "graphql"
+                                            ]
+                                        },
+                                        "body": {
+                                            "mode": "graphql",
+                                            "graphql": {
+                                                "query": "mutation CreateCustomerLogoutAll($input: createCustomerLogoutAllInput!) {\n  createCustomerLogoutAll(input: $input) {\n    clientMutationId\n    customerLogoutAll {\n      id\n      message\n      revoked\n      success\n    }\n  }\n}\n",
+                                                "variables": "{\n    \"input\": {\n        \"deviceToken\": \"sample\"\n    }\n}"
+                                            }
+                                        },
+                                        "description": "End every session of the signed-in customer. Becomes createCustomerLogoutAll; needs a customer access token."
+                                    }
                                 },
                                 {
                                     "name": "createCustomerProfileDelete",
@@ -11965,6 +12189,40 @@
                                             }
                                         },
                                         "description": "Update authenticated customer profile (requires token and at least one field). Re-query readCustomerProfile for updated data."
+                                    }
+                                },
+                                {
+                                    "name": "createCustomerTokenRefresh",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "X-STOREFRONT-KEY",
+                                                "value": "{{storefrontKey}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{url}}/api/graphql",
+                                            "host": [
+                                                "{{url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "graphql"
+                                            ]
+                                        },
+                                        "body": {
+                                            "mode": "graphql",
+                                            "graphql": {
+                                                "query": "mutation CreateCustomerTokenRefresh($input: createCustomerTokenRefreshInput!) {\n  createCustomerTokenRefresh(input: $input) {\n    clientMutationId\n    customerTokenRefresh {\n      accessToken\n      accessTokenExpiresAt\n      customer\n      expiresIn\n      id\n      refreshToken\n      refreshTokenExpiresAt\n      session\n      tokenType\n    }\n  }\n}\n",
+                                                "variables": "{\n    \"input\": {\n        \"refreshToken\": \"88|7c1f4e2a9b...\"\n    }\n}"
+                                            }
+                                        },
+                                        "description": "Exchange a customer refresh token for a new access and refresh token. Becomes createCustomerTokenRefresh; needs the storefront key only."
                                     }
                                 },
                                 {
@@ -12130,7 +12388,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "mutation CreateSocialLogin($input: createSocialLoginInput!) {\n  createSocialLogin(input: $input) {\n    clientMutationId\n    socialLogin {\n      _id\n      apiToken\n      code\n      email\n      firstName\n      id\n      isNewCustomer\n      lastName\n      message\n      phone\n      success\n      token\n    }\n  }\n}\n",
+                                                "query": "mutation CreateSocialLogin($input: createSocialLoginInput!) {\n  createSocialLogin(input: $input) {\n    clientMutationId\n    socialLogin {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      code\n      customer\n      email\n      expiresIn\n      firstName\n      id\n      isNewCustomer\n      lastName\n      message\n      phone\n      refreshToken\n      refreshTokenExpiresAt\n      session\n      success\n      token\n      tokenType\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"input\": {\n        \"provider\": \"google\",\n        \"idToken\": \"eyJhbGciOi\\u2026\"\n    }\n}"
                                             }
                                         },
@@ -12198,11 +12456,45 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "mutation CreateVerifyToken($input: createVerifyTokenInput!) {\n  createVerifyToken(input: $input) {\n    clientMutationId\n    verifyToken {\n      _id\n      email\n      firstName\n      id\n      isValid\n      lastName\n      message\n    }\n  }\n}\n",
+                                                "query": "mutation CreateVerifyToken($input: createVerifyTokenInput!) {\n  createVerifyToken(input: $input) {\n    clientMutationId\n    verifyToken {\n      _id\n      email\n      firstName\n      id\n      isValid\n      lastName\n      message\n      sessionExpiresAt\n      sessionId\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"input\": {}\n}"
                                             }
                                         },
                                         "description": "Creates a VerifyToken."
+                                    }
+                                },
+                                {
+                                    "name": "deleteCustomerSession",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "X-STOREFRONT-KEY",
+                                                "value": "{{storefrontKey}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{url}}/api/graphql",
+                                            "host": [
+                                                "{{url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "graphql"
+                                            ]
+                                        },
+                                        "body": {
+                                            "mode": "graphql",
+                                            "graphql": {
+                                                "query": "mutation DeleteCustomerSession($input: deleteCustomerSessionInput!) {\n  deleteCustomerSession(input: $input) {\n    clientMutationId\n    customerSession {\n      _id\n      clientType\n      createdAt\n      expiresAt\n      id\n      ipAddress\n      isCurrent\n      lastChannel\n      lastIpAddress\n      lastUsedAt\n      lastUserAgent\n      message\n      name\n      refreshExpiresAt\n      userAgent\n    }\n  }\n}\n",
+                                                "variables": "{\n    \"input\": {\n        \"id\": \"1\"\n    }\n}"
+                                            }
+                                        },
+                                        "description": "End one of the signed-in customer's sessions. Becomes deleteCustomerSession."
                                     }
                                 }
                             ]
@@ -12237,11 +12529,45 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query Customer($id: ID!) {\n  customer(id: $id) {\n    _id\n    apiToken\n    channelId\n    customerGroupId\n    dateOfBirth\n    email\n    firstName\n    gender\n    id\n    isSuspended\n    isVerified\n    lastName\n    message\n    name\n    phone\n    rememberToken\n    status\n    subscribedToNewsLetter\n    token\n  }\n}\n",
+                                                "query": "query Customer($id: ID!) {\n  customer(id: $id) {\n    _id\n    accessToken\n    accessTokenExpiresAt\n    apiToken\n    channelId\n    customerGroupId\n    dateOfBirth\n    email\n    expiresIn\n    firstName\n    gender\n    id\n    isSuspended\n    isVerified\n    lastName\n    message\n    name\n    phone\n    refreshToken\n    refreshTokenExpiresAt\n    rememberToken\n    status\n    subscribedToNewsLetter\n    token\n  }\n}\n",
                                                 "variables": "{\n    \"id\": \"1\"\n}"
                                             }
                                         },
                                         "description": "The authenticated customer's profile. The schema requires `id`, but it is ignored: the customer is always the owner of the Bearer token. Needs the X-STOREFRONT-KEY header and a customer Bearer token."
+                                    }
+                                },
+                                {
+                                    "name": "customerSessions",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "X-STOREFRONT-KEY",
+                                                "value": "{{storefrontKey}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{url}}/api/graphql",
+                                            "host": [
+                                                "{{url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "graphql"
+                                            ]
+                                        },
+                                        "body": {
+                                            "mode": "graphql",
+                                            "graphql": {
+                                                "query": "query CustomerSessions {\n  customerSessions {\n    _id\n    clientType\n    createdAt\n    expiresAt\n    id\n    ipAddress\n    isCurrent\n    lastChannel\n    lastIpAddress\n    lastUsedAt\n    lastUserAgent\n    message\n    name\n    refreshExpiresAt\n    userAgent\n  }\n}\n",
+                                                "variables": "{}"
+                                            }
+                                        },
+                                        "description": "The signed-in customer's active sessions, newest first."
                                     }
                                 },
                                 {
@@ -12709,7 +13035,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query CustomerDownloadableProduct($id: ID!) {\n  customerDownloadableProduct(id: $id) {\n    _id\n    createdAt\n    customer {\n      _id\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    downloadBought\n    downloadCanceled\n    downloadUrl\n    downloadUsed\n    file\n    fileName\n    id\n    name\n    order {\n      _id\n      appliedCartRuleIds\n      baseCurrencyCode\n      baseDiscountAmount\n      baseDiscountInvoiced\n      baseDiscountRefunded\n      baseGrandTotal\n      baseGrandTotalInvoiced\n      baseGrandTotalRefunded\n      baseShippingAmount\n      baseShippingAmountInclTax\n      baseShippingDiscountAmount\n      baseShippingInvoiced\n      baseShippingRefunded\n      baseShippingTaxAmount\n      baseShippingTaxRefunded\n      baseSubTotal\n      baseSubTotalInclTax\n      baseSubTotalInvoiced\n      baseSubTotalRefunded\n      baseTaxAmount\n      baseTaxAmountInvoiced\n      baseTaxAmountRefunded\n      cartId\n      channelCurrencyCode\n      channelId\n      channelName\n      channelType\n      couponCode\n      createdAt\n      customerEmail\n      customerFirstName\n      customerFullName\n      customerId\n      customerLastName\n      customerType\n      discountAmount\n      discountInvoiced\n      discountPercent\n      discountRefunded\n      grandTotal\n      grandTotalInvoiced\n      grandTotalRefunded\n      id\n      incrementId\n      isGift\n      isGuest\n      orderCurrencyCode\n      shippingAmount\n      shippingAmountInclTax\n      shippingDescription\n      shippingDiscountAmount\n      shippingInvoiced\n      shippingMethod\n      shippingRefunded\n      shippingTaxAmount\n      shippingTaxRefunded\n      shippingTitle\n      status\n      subTotal\n      subTotalInclTax\n      subTotalInvoiced\n      subTotalRefunded\n      taxAmount\n      taxAmountInvoiced\n      taxAmountRefunded\n      totalItemCount\n      totalQtyOrdered\n      updatedAt\n    }\n    productName\n    remainingDownloads\n    status\n    type\n    updatedAt\n    url\n  }\n}\n",
+                                                "query": "query CustomerDownloadableProduct($id: ID!) {\n  customerDownloadableProduct(id: $id) {\n    _id\n    createdAt\n    customer {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      expiresIn\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      refreshToken\n      refreshTokenExpiresAt\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    downloadBought\n    downloadCanceled\n    downloadUrl\n    downloadUsed\n    file\n    fileName\n    id\n    name\n    order {\n      _id\n      appliedCartRuleIds\n      baseCurrencyCode\n      baseDiscountAmount\n      baseDiscountInvoiced\n      baseDiscountRefunded\n      baseGrandTotal\n      baseGrandTotalInvoiced\n      baseGrandTotalRefunded\n      baseShippingAmount\n      baseShippingAmountInclTax\n      baseShippingDiscountAmount\n      baseShippingInvoiced\n      baseShippingRefunded\n      baseShippingTaxAmount\n      baseShippingTaxRefunded\n      baseSubTotal\n      baseSubTotalInclTax\n      baseSubTotalInvoiced\n      baseSubTotalRefunded\n      baseTaxAmount\n      baseTaxAmountInvoiced\n      baseTaxAmountRefunded\n      cartId\n      channelCurrencyCode\n      channelId\n      channelName\n      channelType\n      couponCode\n      createdAt\n      customerEmail\n      customerFirstName\n      customerFullName\n      customerId\n      customerLastName\n      customerType\n      discountAmount\n      discountInvoiced\n      discountPercent\n      discountRefunded\n      grandTotal\n      grandTotalInvoiced\n      grandTotalRefunded\n      id\n      incrementId\n      isGift\n      isGuest\n      orderCurrencyCode\n      shippingAmount\n      shippingAmountInclTax\n      shippingDescription\n      shippingDiscountAmount\n      shippingInvoiced\n      shippingMethod\n      shippingRefunded\n      shippingTaxAmount\n      shippingTaxRefunded\n      shippingTitle\n      status\n      subTotal\n      subTotalInclTax\n      subTotalInvoiced\n      subTotalRefunded\n      taxAmount\n      taxAmountInvoiced\n      taxAmountRefunded\n      totalItemCount\n      totalQtyOrdered\n      updatedAt\n    }\n    productName\n    remainingDownloads\n    status\n    type\n    updatedAt\n    url\n  }\n}\n",
                                                 "variables": "{\n    \"id\": \"1\"\n}"
                                             }
                                         },
@@ -13482,7 +13808,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query CustomerReview($id: ID!) {\n  customerReview(id: $id) {\n    _id\n    comment\n    createdAt\n    customer {\n      _id\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    id\n    name\n    product {\n      _id\n      additional\n      baseImageUrl\n      bookingType\n      brand\n      channel\n      color\n      combinations\n      createdAt\n      description\n      descriptionHtml\n      featured\n      formattedMaximumPrice\n      formattedMinimumPrice\n      formattedPrice\n      formattedRegularMaximumPrice\n      formattedRegularMinimumPrice\n      formattedSpecialPrice\n      guestCheckout\n      height\n      id\n      index\n      isInCompare\n      isInWishlist\n      isSaleable\n      length\n      locale\n      manageStock\n      maximumPrice\n      metaDescription\n      metaKeywords\n      metaTitle\n      minimumPrice\n      name\n      new\n      price\n      productNumber\n      regularMaximumPrice\n      regularMinimumPrice\n      shortDescription\n      size\n      sku\n      specialPrice\n      specialPriceFrom\n      specialPriceTo\n      status\n      superAttributeOptions\n      taxCategoryId\n      type\n      updatedAt\n      urlKey\n      visibleIndividually\n      weight\n      width\n    }\n    rating\n    status\n    title\n    updatedAt\n  }\n}\n",
+                                                "query": "query CustomerReview($id: ID!) {\n  customerReview(id: $id) {\n    _id\n    comment\n    createdAt\n    customer {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      expiresIn\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      refreshToken\n      refreshTokenExpiresAt\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    id\n    name\n    product {\n      _id\n      additional\n      baseImageUrl\n      bookingType\n      brand\n      channel\n      color\n      combinations\n      createdAt\n      description\n      descriptionHtml\n      featured\n      formattedMaximumPrice\n      formattedMinimumPrice\n      formattedPrice\n      formattedRegularMaximumPrice\n      formattedRegularMinimumPrice\n      formattedSpecialPrice\n      guestCheckout\n      height\n      id\n      index\n      isInCompare\n      isInWishlist\n      isSaleable\n      length\n      locale\n      manageStock\n      maximumPrice\n      metaDescription\n      metaKeywords\n      metaTitle\n      minimumPrice\n      name\n      new\n      price\n      productNumber\n      regularMaximumPrice\n      regularMinimumPrice\n      shortDescription\n      size\n      sku\n      specialPrice\n      specialPriceFrom\n      specialPriceTo\n      status\n      superAttributeOptions\n      taxCategoryId\n      type\n      updatedAt\n      urlKey\n      visibleIndividually\n      weight\n      width\n    }\n    rating\n    status\n    title\n    updatedAt\n  }\n}\n",
                                                 "variables": "{\n    \"id\": \"1\"\n}"
                                             }
                                         },
@@ -13964,7 +14290,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query GdprRequest($id: ID!) {\n  gdprRequest(id: $id) {\n    _id\n    createdAt\n    customer {\n      _id\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    email\n    id\n    message\n    revokedAt\n    status\n    successMessage\n    type\n    updatedAt\n  }\n}\n",
+                                                "query": "query GdprRequest($id: ID!) {\n  gdprRequest(id: $id) {\n    _id\n    createdAt\n    customer {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      expiresIn\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      refreshToken\n      refreshTokenExpiresAt\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    email\n    id\n    message\n    revokedAt\n    status\n    successMessage\n    type\n    updatedAt\n  }\n}\n",
                                                 "variables": "{\n    \"id\": \"1\"\n}"
                                             }
                                         },
@@ -15424,7 +15750,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query Wishlist($id: ID!) {\n  wishlist(id: $id) {\n    _id\n    additional\n    channel {\n      _id\n      code\n      createdAt\n      favicon\n      faviconFileName\n      faviconUrl\n      homeSeo\n      hostname\n      id\n      isMaintenanceOn\n      logo\n      logoFileName\n      logoUrl\n      theme\n      timezone\n      updatedAt\n    }\n    createdAt\n    customer {\n      _id\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    id\n    message\n    movedToCart\n    product {\n      _id\n      additional\n      baseImageUrl\n      bookingType\n      brand\n      channel\n      color\n      combinations\n      createdAt\n      description\n      descriptionHtml\n      featured\n      formattedMaximumPrice\n      formattedMinimumPrice\n      formattedPrice\n      formattedRegularMaximumPrice\n      formattedRegularMinimumPrice\n      formattedSpecialPrice\n      guestCheckout\n      height\n      id\n      index\n      isInCompare\n      isInWishlist\n      isSaleable\n      length\n      locale\n      manageStock\n      maximumPrice\n      metaDescription\n      metaKeywords\n      metaTitle\n      minimumPrice\n      name\n      new\n      price\n      productNumber\n      regularMaximumPrice\n      regularMinimumPrice\n      shortDescription\n      size\n      sku\n      specialPrice\n      specialPriceFrom\n      specialPriceTo\n      status\n      superAttributeOptions\n      taxCategoryId\n      type\n      updatedAt\n      urlKey\n      visibleIndividually\n      weight\n      width\n    }\n    shared\n    updatedAt\n  }\n}\n",
+                                                "query": "query Wishlist($id: ID!) {\n  wishlist(id: $id) {\n    _id\n    additional\n    channel {\n      _id\n      code\n      createdAt\n      favicon\n      faviconFileName\n      faviconUrl\n      homeSeo\n      hostname\n      id\n      isMaintenanceOn\n      logo\n      logoFileName\n      logoUrl\n      theme\n      timezone\n      updatedAt\n    }\n    createdAt\n    customer {\n      _id\n      accessToken\n      accessTokenExpiresAt\n      apiToken\n      channelId\n      customerGroupId\n      dateOfBirth\n      email\n      expiresIn\n      firstName\n      gender\n      id\n      isSuspended\n      isVerified\n      lastName\n      message\n      name\n      phone\n      refreshToken\n      refreshTokenExpiresAt\n      rememberToken\n      status\n      subscribedToNewsLetter\n      token\n    }\n    id\n    message\n    movedToCart\n    product {\n      _id\n      additional\n      baseImageUrl\n      bookingType\n      brand\n      channel\n      color\n      combinations\n      createdAt\n      description\n      descriptionHtml\n      featured\n      formattedMaximumPrice\n      formattedMinimumPrice\n      formattedPrice\n      formattedRegularMaximumPrice\n      formattedRegularMinimumPrice\n      formattedSpecialPrice\n      guestCheckout\n      height\n      id\n      index\n      isInCompare\n      isInWishlist\n      isSaleable\n      length\n      locale\n      manageStock\n      maximumPrice\n      metaDescription\n      metaKeywords\n      metaTitle\n      minimumPrice\n      name\n      new\n      price\n      productNumber\n      regularMaximumPrice\n      regularMinimumPrice\n      shortDescription\n      size\n      sku\n      specialPrice\n      specialPriceFrom\n      specialPriceTo\n      status\n      superAttributeOptions\n      taxCategoryId\n      type\n      updatedAt\n      urlKey\n      visibleIndividually\n      weight\n      width\n    }\n    shared\n    updatedAt\n  }\n}\n",
                                                 "variables": "{\n    \"id\": \"1\"\n}"
                                             }
                                         },

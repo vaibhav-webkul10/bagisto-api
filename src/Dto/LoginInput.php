@@ -25,6 +25,18 @@ class LoginInput
     public ?string $deviceToken = null;
 
     /**
+     * A name for the device, shown in the customer's session list.
+     */
+    #[Groups(['mutation'])]
+    public ?string $deviceName = null;
+
+    /**
+     * The kind of client: web, mobile, pos, desktop or other.
+     */
+    #[Groups(['mutation'])]
+    public ?string $clientType = null;
+
+    /**
      * Create a new instance.
      */
     public function __construct(

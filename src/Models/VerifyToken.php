@@ -107,6 +107,18 @@ class VerifyToken
     public ?bool $isValid = null;
 
     /**
+     * The id of the session the access token belongs to.
+     */
+    #[ApiProperty(writable: false, readable: true)]
+    public ?int $sessionId = null;
+
+    /**
+     * When the session reaches its absolute lifetime.
+     */
+    #[ApiProperty(writable: false, readable: true)]
+    public ?string $sessionExpiresAt = null;
+
+    /**
      * The message.
      */
     #[ApiProperty(writable: false, readable: true)]

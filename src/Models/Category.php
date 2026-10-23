@@ -13,12 +13,12 @@ use ApiPlatform\OpenApi\Model\Parameter;
 use ApiPlatform\OpenApi\Model\Response;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Webkul\BagistoApi\Resolver\BaseQueryItemResolver;
 use Webkul\BagistoApi\Resolver\CategoryCollectionResolver;
 use Webkul\BagistoApi\State\CategoryRestProvider;
 use Webkul\BagistoApi\State\CursorAwareCollectionProvider;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 use Webkul\Category\Models\Category as BaseCategory;
 
 #[ApiResource(
@@ -266,7 +266,7 @@ class Category extends BaseCategory
             return $this->categoryPriceRange;
         }
 
-        $customer = Auth::guard('sanctum')->user();
+        $customer = CurrentCustomer::user();
 
         $customerGroup = ($customer && $customer->group)
             ? $customer->group

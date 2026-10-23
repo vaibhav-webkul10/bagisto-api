@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\RequestBody;
 use ApiPlatform\OpenApi\Model\Response;
-use Webkul\BagistoApi\Contracts\SnakeCaseFieldsResource;
 use Webkul\BagistoApi\Dto\SocialLoginInput;
 use Webkul\BagistoApi\State\SocialLoginProcessor;
 
@@ -110,7 +109,7 @@ use Webkul\BagistoApi\State\SocialLoginProcessor;
         ),
     ],
 )]
-class SocialLogin implements SnakeCaseFieldsResource
+class SocialLogin extends CustomerAuthTokenResponse
 {
     /**
      * The id.

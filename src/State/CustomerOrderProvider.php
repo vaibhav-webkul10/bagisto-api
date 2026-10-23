@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\ProviderInterface;
-use Illuminate\Support\Facades\Auth;
 use Webkul\BagistoApi\Dto\CustomerOrder\CustomerOrderDetailDto;
 use Webkul\BagistoApi\Dto\CustomerOrder\CustomerOrderListDto;
 use Webkul\BagistoApi\Dto\CustomerOrder\OrderAddressDto;
@@ -24,6 +23,7 @@ use Webkul\BagistoApi\Exception\ResourceNotFoundException;
 use Webkul\BagistoApi\Models\CustomerOrder;
 use Webkul\BagistoApi\State\Concerns\ClampsPageSize;
 use Webkul\BagistoApi\State\Concerns\ResolvesCursorWindow;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 use Webkul\Customer\Models\Customer;
 use Webkul\Sales\Repositories\OrderRepository;
 
@@ -45,7 +45,7 @@ class CustomerOrderProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        $customer = Auth::guard('sanctum')->user();
+        $customer = CurrentCustomer::user();
 
         if (! $customer) {
             throw new AuthorizationException(__('bagistoapi::app.graphql.logout.unauthenticated'));

@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Bilinmeyen kaynak',
             'cannot-update-other-profile' => 'Yetkisiz: Başka bir müşteri profili güncellenemez',
             'refresh-token-invalid' => 'Yenileme belirteci geçersiz veya süresi dolmuş. Lütfen yeniden giriş yapın.',
+            'too-many-login-attempts' => 'Çok fazla giriş denemesi. Lütfen :seconds saniye sonra tekrar deneyin.',
+            'too-many-refresh-requests' => 'Çok fazla belirteç yenilemesi. Lütfen :seconds saniye sonra tekrar deneyin.',
+            'rate-limit-exceeded' => 'Çok fazla deneme.',
+            'access-token-expired' => 'Erişim belirtecinin süresi doldu. Devam etmek için yenileyin.',
+            'logged-out-all' => 'Tüm oturumlarınız kapatıldı.',
+            'session-not-found' => 'Oturum bulunamadı.',
+            'session-revoked' => 'Oturum iptal edildi.',
         ],
 
         'upload' => [

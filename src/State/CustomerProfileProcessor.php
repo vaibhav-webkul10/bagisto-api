@@ -4,17 +4,16 @@ namespace Webkul\BagistoApi\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Sanctum\PersonalAccessToken;
 use Webkul\BagistoApi\Dto\CustomerProfileOutput;
 use Webkul\BagistoApi\Exception\AuthenticationException;
 use Webkul\BagistoApi\Exception\InvalidInputException;
 use Webkul\BagistoApi\Helper\CustomerProfileHelper;
 use Webkul\BagistoApi\Models\CustomerProfile as CustomerProfileModel;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 use Webkul\BagistoApi\Validators\CustomerValidator;
 use Webkul\Customer\Models\Customer;
 use Webkul\Sales\Models\Order;
@@ -309,11 +308,6 @@ class CustomerProfileProcessor implements ProcessorInterface
 
         Event::dispatch('customer.delete.before', $authenticatedCustomer);
 
-        DB::table('personal_access_tokens')
-            ->where('tokenable_id', $authenticatedCustomer->id)
-            ->where('tokenable_type', Customer::class)
-            ->delete();
-
         $authenticatedCustomer->delete();
 
         Event::dispatch('customer.delete.after', $authenticatedCustomer);
@@ -339,29 +333,11 @@ class CustomerProfileProcessor implements ProcessorInterface
     }
 
     /**
-     * Get customer from Sanctum token.
+     * Resolve the customer behind a customer access token.
      */
     private function getCustomerFromToken(string $token): ?Customer
     {
-        try {
-            if (strpos($token, '|') === false) {
-                return null;
-            }
-
-            $personalAccessToken = PersonalAccessToken::findToken($token);
-
-            if (! $personalAccessToken) {
-                return null;
-            }
-
-            if (! $personalAccessToken->tokenable instanceof Customer) {
-                return null;
-            }
-
-            return $personalAccessToken->tokenable;
-        } catch (\Exception $exception) {
-            return null;
-        }
+        return CurrentCustomer::fromToken($token);
     }
 
     /**

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Webkul\BagistoApi\Dto\ResetPasswordInput;
 use Webkul\BagistoApi\Models\ResetPassword;
+use Webkul\BagistoApi\Services\CustomerAuth\CustomerApiAuthService;
 use Webkul\Core\Helpers\SessionPurger;
 use Webkul\Customer\Repositories\CustomerRepository;
 
@@ -103,7 +104,7 @@ class ResetPasswordProcessor implements ProcessorInterface
                 $customer->setRememberToken(Str::random(60));
                 $customer->save();
 
-                $customer->tokens()->delete();
+                app(CustomerApiAuthService::class)->passwordReset($customer);
 
                 app(SessionPurger::class)->forget('customer', $customer->id);
 

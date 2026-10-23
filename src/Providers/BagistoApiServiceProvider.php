@@ -45,6 +45,8 @@ use Webkul\BagistoApi\Admin\Models\AdminApiTwoFactorChallenge;
 use Webkul\BagistoApi\Admin\Observers\AdminCredentialObserver;
 use Webkul\BagistoApi\Admin\Services\AdminApiAuthSettings;
 use Webkul\BagistoApi\Admin\Services\AdminApiCredentialRevoker;
+use Webkul\BagistoApi\Auth\CustomerApiAuthenticator;
+use Webkul\BagistoApi\Auth\CustomerApiGuard;
 use Webkul\BagistoApi\CacheProfiles\ApiAwareResponseCache;
 use Webkul\BagistoApi\Console\Commands\ApiKeyMaintenanceCommand;
 use Webkul\BagistoApi\Console\Commands\ApiKeyManagementCommand;
@@ -81,15 +83,19 @@ use Webkul\BagistoApi\Http\Middleware\SecurityHeaders;
 use Webkul\BagistoApi\Http\Middleware\SetAdminApiAuditContext;
 use Webkul\BagistoApi\Http\Middleware\SetLocaleChannel;
 use Webkul\BagistoApi\Http\Middleware\ThrottleAdminApi;
+use Webkul\BagistoApi\Http\Middleware\ThrottleCustomerApi;
 use Webkul\BagistoApi\Http\Middleware\VerifyStorefrontKey;
 use Webkul\BagistoApi\Models\CoreAttribute;
 use Webkul\BagistoApi\Models\CustomerApiRefreshToken;
 use Webkul\BagistoApi\Models\CustomerApiSession;
+use Webkul\BagistoApi\Observers\CustomerCredentialObserver;
 use Webkul\BagistoApi\Providers\Concerns\RegistersAdminProcessors;
 use Webkul\BagistoApi\Providers\Concerns\RegistersCoreServices;
 use Webkul\BagistoApi\Providers\Concerns\RegistersGraphQlServices;
 use Webkul\BagistoApi\Providers\Concerns\RegistersStorefrontState;
 use Webkul\BagistoApi\State\SnakeCaseLinksHandler;
+use Webkul\BagistoApi\Support\CurrentCustomer;
+use Webkul\Customer\Models\CustomerProxy;
 use Webkul\EUWithdrawal\Services\WithdrawalService;
 use Webkul\FPC\CacheProfiles\FullPageCacheProfile;
 use Webkul\User\Models\AdminProxy;
@@ -149,6 +155,8 @@ class BagistoApiServiceProvider extends ServiceProvider
             $this->registerModelSubstitutions();
 
             AdminProxy::modelClass()::observe(AdminCredentialObserver::class);
+
+            CustomerProxy::modelClass()::observe(CustomerCredentialObserver::class);
         });
 
         $this->bootAdminPanel();
@@ -384,6 +392,8 @@ class BagistoApiServiceProvider extends ServiceProvider
     {
         $kernel = $this->app->make(Kernel::class);
         $kernel->prependMiddleware(EnsureJsonContentType::class);
+
+        $kernel->pushMiddleware(ThrottleCustomerApi::class);
     }
 
     /**
@@ -553,6 +563,14 @@ class BagistoApiServiceProvider extends ServiceProvider
                 Auth::createUserProvider($config['provider']),
                 $app['request'],
                 $app->make(AdminApiAuthenticator::class),
+            );
+        });
+
+        Auth::extend(CurrentCustomer::GUARD, function ($app, $name, array $config) {
+            return new CustomerApiGuard(
+                Auth::createUserProvider($config['provider']),
+                $app['request'],
+                $app->make(CustomerApiAuthenticator::class),
             );
         });
 

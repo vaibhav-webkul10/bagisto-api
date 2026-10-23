@@ -62,19 +62,9 @@ trait RegistersStorefrontState
      */
     protected function registerStorefrontProcessors(): void
     {
-        $this->app->singleton(CustomerProcessor::class, function ($app) {
-            return new CustomerProcessor(
-                $app->make('Webkul\Customer\Repositories\CustomerRepository'),
-                $app->make('Webkul\BagistoApi\Validators\CustomerValidator'),
-                $app->make('Webkul\Customer\Repositories\CustomerGroupRepository')
-            );
-        });
+        $this->app->singleton(CustomerProcessor::class);
 
-        $this->app->singleton(LoginProcessor::class, function ($app) {
-            return new LoginProcessor(
-                $app->make('Webkul\BagistoApi\Validators\LoginValidator')
-            );
-        });
+        $this->app->singleton(LoginProcessor::class);
 
         $this->app->singleton(CustomerProfileProcessor::class, function ($app) {
             return new CustomerProfileProcessor(
@@ -179,9 +169,7 @@ trait RegistersStorefrontState
             );
         });
 
-        $this->app->singleton(LogoutProcessor::class, function ($app) {
-            return new LogoutProcessor;
-        });
+        $this->app->singleton(LogoutProcessor::class);
     }
 
     /**

@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Nieznany zasób',
             'cannot-update-other-profile' => 'Brak autoryzacji: Nie można zaktualizować profilu innego klienta',
             'refresh-token-invalid' => 'Token odświeżania jest nieprawidłowy lub wygasł. Zaloguj się ponownie.',
+            'too-many-login-attempts' => 'Zbyt wiele prób logowania. Spróbuj ponownie za :seconds s.',
+            'too-many-refresh-requests' => 'Zbyt wiele odświeżeń tokenu. Spróbuj ponownie za :seconds sekund.',
+            'rate-limit-exceeded' => 'Zbyt wiele prób.',
+            'access-token-expired' => 'Token dostępu wygasł. Odśwież go, aby kontynuować.',
+            'logged-out-all' => 'Wylogowano ze wszystkich sesji.',
+            'session-not-found' => 'Nie znaleziono sesji.',
+            'session-revoked' => 'Sesja została unieważniona.',
         ],
 
         'upload' => [

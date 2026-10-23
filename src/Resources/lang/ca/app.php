@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Recurs desconegut',
             'cannot-update-other-profile' => 'No autoritzat: No es pot actualitzar el perfil d\'un altre client',
             'refresh-token-invalid' => 'El token de refresc no és vàlid o ha caducat. Torna a iniciar sessió.',
+            'too-many-login-attempts' => 'Massa intents d\'inici de sessió. Torneu-ho a provar d\'aquí a :seconds segons.',
+            'too-many-refresh-requests' => 'Massa renovacions de token. Torneu-ho a provar d\'aquí a :seconds segons.',
+            'rate-limit-exceeded' => 'Massa intents.',
+            'access-token-expired' => 'El token d\'accés ha caducat. Refresca\'l per continuar.',
+            'logged-out-all' => 'Heu tancat totes les sessions.',
+            'session-not-found' => 'No s\'ha trobat la sessió.',
+            'session-revoked' => 'S\'ha revocat la sessió.',
         ],
 
         'upload' => [

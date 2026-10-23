@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Sumber daya tidak dikenal',
             'cannot-update-other-profile' => 'Tidak sah: Tidak dapat memperbarui profil pelanggan lain',
             'refresh-token-invalid' => 'Token penyegaran tidak valid atau telah kedaluwarsa. Silakan login kembali.',
+            'too-many-login-attempts' => 'Terlalu banyak percobaan login. Silakan coba lagi dalam :seconds detik.',
+            'too-many-refresh-requests' => 'Terlalu banyak penyegaran token. Silakan coba lagi dalam :seconds detik.',
+            'rate-limit-exceeded' => 'Terlalu banyak percobaan.',
+            'access-token-expired' => 'Token akses telah kedaluwarsa. Segarkan untuk melanjutkan.',
+            'logged-out-all' => 'Anda telah keluar dari semua sesi.',
+            'session-not-found' => 'Sesi tidak ditemukan.',
+            'session-revoked' => 'Sesi telah dicabut.',
         ],
 
         'upload' => [

@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Unbekannte Ressource',
             'cannot-update-other-profile' => 'Nicht autorisiert: Das Profil eines anderen Kunden kann nicht aktualisiert werden',
             'refresh-token-invalid' => 'Das Aktualisierungstoken ist ungültig oder abgelaufen. Bitte melden Sie sich erneut an.',
+            'too-many-login-attempts' => 'Zu viele Anmeldeversuche. Bitte versuchen Sie es in :seconds Sekunden erneut.',
+            'too-many-refresh-requests' => 'Zu viele Token-Aktualisierungen. Bitte versuchen Sie es in :seconds Sekunden erneut.',
+            'rate-limit-exceeded' => 'Zu viele Versuche.',
+            'access-token-expired' => 'Das Zugriffstoken ist abgelaufen. Aktualisieren Sie es, um fortzufahren.',
+            'logged-out-all' => 'Sie wurden von allen Sitzungen abgemeldet.',
+            'session-not-found' => 'Sitzung nicht gefunden.',
+            'session-revoked' => 'Die Sitzung wurde widerrufen.',
         ],
 
         'upload' => [

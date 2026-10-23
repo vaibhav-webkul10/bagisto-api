@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Ressource inconnue',
             'cannot-update-other-profile' => 'Non autorisé : impossible de mettre à jour le profil d\'un autre client',
             'refresh-token-invalid' => 'Le jeton de rafraîchissement est invalide ou a expiré. Veuillez vous reconnecter.',
+            'too-many-login-attempts' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
+            'too-many-refresh-requests' => 'Trop de renouvellements de jeton. Veuillez réessayer dans :seconds secondes.',
+            'rate-limit-exceeded' => 'Trop de tentatives.',
+            'access-token-expired' => 'Le jeton d\'accès a expiré. Rafraîchissez-le pour continuer.',
+            'logged-out-all' => 'Vous avez été déconnecté de toutes les sessions.',
+            'session-not-found' => 'Session introuvable.',
+            'session-revoked' => 'La session a été révoquée.',
         ],
 
         'upload' => [

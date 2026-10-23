@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'משאב לא ידוע',
             'cannot-update-other-profile' => 'לא מורשה: לא ניתן לעדכן פרופיל לקוח אחר',
             'refresh-token-invalid' => 'אסימון הרענון אינו תקף או שפג תוקפו. נא להתחבר מחדש.',
+            'too-many-login-attempts' => 'יותר מדי ניסיונות התחברות. נסה שוב בעוד :seconds שניות.',
+            'too-many-refresh-requests' => 'יותר מדי רענוני אסימון. נסו שוב בעוד :seconds שניות.',
+            'rate-limit-exceeded' => 'יותר מדי ניסיונות.',
+            'access-token-expired' => 'תוקף אסימון הגישה פג. רענן אותו כדי להמשיך.',
+            'logged-out-all' => 'התנתקת מכל הסשנים.',
+            'session-not-found' => 'הסשן לא נמצא.',
+            'session-revoked' => 'הסשן בוטל.',
         ],
 
         'upload' => [

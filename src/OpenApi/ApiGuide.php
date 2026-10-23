@@ -86,7 +86,7 @@ Every request carries the storefront key in `X-STOREFRONT-KEY`. Create a key wit
 
 ### Customers
 
-`POST /customer/login` with `email` and `password` returns `token`, a Laravel Sanctum personal access token (registration through `POST /customers` and `POST /customers/social-login` return one too). Send it as `Authorization: Bearer <token>`. It has no refresh token and does not expire by default (Sanctum's `expiration` setting); `POST /customer/logout` revokes it. A failed login is not an HTTP error: the answer carries `success: false` and a `message`, with an empty `token`.
+`POST /customer/login` with `email` and `password` (and optionally `device_name` and `client_type`) starts a session on the current channel and returns `accessToken`, a JWT that lasts 15 minutes by default, and `refreshToken`. Registration through `POST /customers` and `POST /customers/social-login` return a pair too. Send the access token as `Authorization: Bearer <accessToken>`. Before it expires, or when a request answers `401` with `access_token_expired`, exchange the refresh token at `POST /customer/refresh` for a new pair: each refresh token works once, and presenting a used one ends the whole session. `POST /customer/logout` ends this session, `POST /customer/logout-all` every session, `GET /customer/sessions` lists them and `DELETE /customer/sessions/{id}` ends one. A failed login answers `401 invalid_credentials`, an inactive or unverified account `403 account_inactive` or `account_unverified`, and too many failed logins `429 too_many_login_attempts` with `Retry-After`. `token` in the login answer repeats the access token for clients of the old flow and will be removed.
 
 ### Guests: the cart token
 

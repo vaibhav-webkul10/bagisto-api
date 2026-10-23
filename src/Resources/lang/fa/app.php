@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'منبع ناشناخته',
             'cannot-update-other-profile' => 'غیرمجاز: نمی‌توان پروفایل مشتری دیگری را به‌روزرسانی کرد',
             'refresh-token-invalid' => 'توکن تازه‌سازی نامعتبر یا منقضی است. لطفاً دوباره وارد شوید.',
+            'too-many-login-attempts' => 'تلاش‌های ورود بیش از حد. لطفاً پس از :seconds ثانیه دوباره تلاش کنید.',
+            'too-many-refresh-requests' => 'تمدید توکن بیش از حد. لطفاً پس از :seconds ثانیه دوباره تلاش کنید.',
+            'rate-limit-exceeded' => 'تلاش‌های بیش از حد.',
+            'access-token-expired' => 'توکن دسترسی منقضی شده است. برای ادامه آن را تازه‌سازی کنید.',
+            'logged-out-all' => 'از همه نشست‌ها خارج شدید.',
+            'session-not-found' => 'نشست یافت نشد.',
+            'session-revoked' => 'نشست باطل شد.',
         ],
 
         'upload' => [

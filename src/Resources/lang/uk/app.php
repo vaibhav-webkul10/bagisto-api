@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Невідомий ресурс',
             'cannot-update-other-profile' => 'Несанкціоновано: Неможливо оновити профіль іншого клієнта',
             'refresh-token-invalid' => 'Токен оновлення недійсний або прострочений. Увійдіть знову.',
+            'too-many-login-attempts' => 'Забагато спроб входу. Спробуйте ще раз через :seconds с.',
+            'too-many-refresh-requests' => 'Забагато оновлень токена. Спробуйте ще раз через :seconds секунд.',
+            'rate-limit-exceeded' => 'Забагато спроб.',
+            'access-token-expired' => 'Термін дії токена доступу закінчився. Оновіть його, щоб продовжити.',
+            'logged-out-all' => 'Ви вийшли з усіх сеансів.',
+            'session-not-found' => 'Сеанс не знайдено.',
+            'session-revoked' => 'Сеанс відкликано.',
         ],
 
         'upload' => [

@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Resursă necunoscută',
             'cannot-update-other-profile' => 'Neautorizat: nu puteți actualiza profilul altui client',
             'refresh-token-invalid' => 'Tokenul de reîmprospătare este invalid sau a expirat. Autentifică-te din nou.',
+            'too-many-login-attempts' => 'Prea multe încercări de autentificare. Încercați din nou peste :seconds secunde.',
+            'too-many-refresh-requests' => 'Prea multe reîmprospătări de token. Încercați din nou peste :seconds secunde.',
+            'rate-limit-exceeded' => 'Prea multe încercări.',
+            'access-token-expired' => 'Tokenul de acces a expirat. Reîmprospătează-l pentru a continua.',
+            'logged-out-all' => 'Ați fost deconectat din toate sesiunile.',
+            'session-not-found' => 'Sesiunea nu a fost găsită.',
+            'session-revoked' => 'Sesiunea a fost revocată.',
         ],
 
         'upload' => [

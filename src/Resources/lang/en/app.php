@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Unknown resource',
             'cannot-update-other-profile' => 'Unauthorized: Cannot update another customer profile',
             'refresh-token-invalid' => 'The refresh token is invalid or has expired. Please log in again.',
+            'too-many-login-attempts' => 'Too many login attempts. Please try again in :seconds seconds.',
+            'too-many-refresh-requests' => 'Too many token refreshes. Please try again in :seconds seconds.',
+            'rate-limit-exceeded' => 'Too Many Attempts.',
+            'access-token-expired' => 'The access token has expired. Refresh it to continue.',
+            'logged-out-all' => 'You have been logged out of every session.',
+            'session-not-found' => 'Session not found.',
+            'session-revoked' => 'The session has been revoked.',
         ],
 
         'upload' => [

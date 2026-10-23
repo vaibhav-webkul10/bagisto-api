@@ -276,6 +276,13 @@ return [
             'unknown-resource' => '不明なリソースです',
             'cannot-update-other-profile' => '権限がありません: 他の顧客のプロフィールは更新できません',
             'refresh-token-invalid' => 'リフレッシュトークンが無効か期限切れです。再度ログインしてください。',
+            'too-many-login-attempts' => 'ログイン試行回数が多すぎます。:seconds 秒後にもう一度お試しください。',
+            'too-many-refresh-requests' => 'トークンの更新が多すぎます。:seconds 秒後にもう一度お試しください。',
+            'rate-limit-exceeded' => '試行回数が多すぎます。',
+            'access-token-expired' => 'アクセストークンの有効期限が切れました。続行するにはリフレッシュしてください。',
+            'logged-out-all' => 'すべてのセッションからログアウトしました。',
+            'session-not-found' => 'セッションが見つかりません。',
+            'session-revoked' => 'セッションは取り消されました。',
         ],
 
         'upload' => [

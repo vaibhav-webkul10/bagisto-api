@@ -276,6 +276,13 @@ return [
             'unknown-resource' => '未知资源',
             'cannot-update-other-profile' => '未授权：无法更新其他客户的个人资料',
             'refresh-token-invalid' => '刷新令牌无效或已过期。请重新登录。',
+            'too-many-login-attempts' => '登录尝试次数过多。请在 :seconds 秒后重试。',
+            'too-many-refresh-requests' => '令牌刷新过于频繁。请在 :seconds 秒后重试。',
+            'rate-limit-exceeded' => '尝试次数过多。',
+            'access-token-expired' => '访问令牌已过期。请刷新后继续。',
+            'logged-out-all' => '您已退出所有会话。',
+            'session-not-found' => '未找到会话。',
+            'session-revoked' => '会话已被撤销。',
         ],
 
         'upload' => [

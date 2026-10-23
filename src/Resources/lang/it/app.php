@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Risorsa sconosciuta',
             'cannot-update-other-profile' => 'Non autorizzato: impossibile aggiornare il profilo di un altro cliente',
             'refresh-token-invalid' => 'Il token di aggiornamento non è valido o è scaduto. Accedi di nuovo.',
+            'too-many-login-attempts' => 'Troppi tentativi di accesso. Riprova tra :seconds secondi.',
+            'too-many-refresh-requests' => 'Troppi rinnovi del token. Riprova tra :seconds secondi.',
+            'rate-limit-exceeded' => 'Troppi tentativi.',
+            'access-token-expired' => 'Il token di accesso è scaduto. Aggiornalo per continuare.',
+            'logged-out-all' => 'Sei stato disconnesso da tutte le sessioni.',
+            'session-not-found' => 'Sessione non trovata.',
+            'session-revoked' => 'La sessione è stata revocata.',
         ],
 
         'upload' => [

@@ -7,11 +7,11 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\ProviderInterface;
 use Illuminate\Pagination\LengthAwarePaginator as LaravelPaginator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Webkul\BagistoApi\Models\Product;
 use Webkul\BagistoApi\State\Concerns\ClampsPageSize;
 use Webkul\BagistoApi\State\Concerns\ResolvesCursorWindow;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 use Webkul\Marketing\Jobs\UpdateCreateSearchTerm;
 
 class ProductGraphQLProvider implements ProviderInterface
@@ -547,7 +547,7 @@ class ProductGraphQLProvider implements ProviderInterface
      */
     private function currentCustomerGroup(): object
     {
-        return Auth::guard('sanctum')->user()?->group ?? core()->getGuestCustomerGroup();
+        return CurrentCustomer::user()?->group ?? core()->getGuestCustomerGroup();
     }
 
     /**

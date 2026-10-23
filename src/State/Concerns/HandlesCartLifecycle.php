@@ -3,14 +3,13 @@
 namespace Webkul\BagistoApi\State\Concerns;
 
 use Illuminate\Support\Str;
-use Laravel\Sanctum\PersonalAccessToken;
 use Webkul\BagistoApi\Dto\CartData;
 use Webkul\BagistoApi\Dto\CartInput;
 use Webkul\BagistoApi\Exception\AuthenticationException;
 use Webkul\BagistoApi\Exception\AuthorizationException;
-use Webkul\BagistoApi\Exception\OperationFailedException;
 use Webkul\BagistoApi\Exception\ResourceNotFoundException;
 use Webkul\BagistoApi\Facades\CartTokenFacade;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 use Webkul\Checkout\Facades\Cart as CartFacade;
 use Webkul\Checkout\Models\Cart as CartModel;
 use Webkul\Customer\Models\Customer;
@@ -158,26 +157,17 @@ trait HandlesCartLifecycle
     }
 
     /**
-     * Resolve the customer from a bearer token and act as them for the cart.
+     * Resolve the customer from a bearer access token and act as them for the cart.
      */
     private function getCustomerFromToken(string $token): ?Customer
     {
-        try {
-            $personalAccessToken = PersonalAccessToken::findToken($token);
+        $customer = CurrentCustomer::fromToken($token);
 
-            if (
-                $personalAccessToken
-                && $personalAccessToken->tokenable instanceof Customer
-            ) {
-                CartTokenFacade::actAsCustomer($personalAccessToken->tokenable);
-
-                return $personalAccessToken->tokenable;
-            }
-        } catch (\Exception $exception) {
-            throw new OperationFailedException($exception->getMessage(), 0, $exception);
+        if ($customer) {
+            CartTokenFacade::actAsCustomer($customer);
         }
 
-        return null;
+        return $customer;
     }
 
     /**

@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'Onbekende bron',
             'cannot-update-other-profile' => 'Niet geautoriseerd: kan het profiel van een andere klant niet bijwerken',
             'refresh-token-invalid' => 'Het vernieuwingstoken is ongeldig of verlopen. Log opnieuw in.',
+            'too-many-login-attempts' => 'Te veel inlogpogingen. Probeer het over :seconds seconden opnieuw.',
+            'too-many-refresh-requests' => 'Te veel tokenvernieuwingen. Probeer het over :seconds seconden opnieuw.',
+            'rate-limit-exceeded' => 'Te veel pogingen.',
+            'access-token-expired' => 'Het toegangstoken is verlopen. Vernieuw het om door te gaan.',
+            'logged-out-all' => 'U bent uitgelogd van alle sessies.',
+            'session-not-found' => 'Sessie niet gevonden.',
+            'session-revoked' => 'De sessie is ingetrokken.',
         ],
 
         'upload' => [

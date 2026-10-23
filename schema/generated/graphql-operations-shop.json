@@ -247,8 +247,15 @@
         "resource": "Webkul\\BagistoApi\\Models\\CustomerLogin",
         "example": {
             "email": "john@example.com",
-            "password": "Password123!"
+            "password": "Password123!",
+            "device_name": "iPhone 15",
+            "client_type": "mobile"
         }
+    },
+    "createCustomerLogoutAll": {
+        "kind": "mutation",
+        "tag": "Customer",
+        "resource": "Webkul\\BagistoApi\\Models\\CustomerLogoutAll"
     },
     "createCustomerProfileDelete": {
         "kind": "mutation",
@@ -277,6 +284,14 @@
         "kind": "mutation",
         "tag": "Customer Return",
         "resource": "Webkul\\BagistoApi\\Models\\CustomerReturnMessage"
+    },
+    "createCustomerTokenRefresh": {
+        "kind": "mutation",
+        "tag": "Customer",
+        "resource": "Webkul\\BagistoApi\\Models\\CustomerTokenRefresh",
+        "example": {
+            "refresh_token": "88|7c1f4e2a9b..."
+        }
     },
     "createCustomizableOptionFile": {
         "kind": "mutation",
@@ -570,6 +585,11 @@
         "tag": "Customer Review",
         "resource": "Webkul\\BagistoApi\\Models\\CustomerReview"
     },
+    "customerSessions": {
+        "kind": "query",
+        "tag": "Customer",
+        "resource": "Webkul\\BagistoApi\\Models\\CustomerSession"
+    },
     "deleteCompareItem": {
         "kind": "mutation",
         "tag": "CompareItem",
@@ -577,6 +597,11 @@
         "example": {
             "product_id": 1
         }
+    },
+    "deleteCustomerSession": {
+        "kind": "mutation",
+        "tag": "Customer",
+        "resource": "Webkul\\BagistoApi\\Models\\CustomerSession"
     },
     "deleteGdprRequest": {
         "kind": "mutation",

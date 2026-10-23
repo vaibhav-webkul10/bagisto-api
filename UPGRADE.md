@@ -150,6 +150,16 @@ On Bagisto v2.5.0 the theme endpoints are `/api/admin/appearance/themes`, `/api/
 - The `security_headers` values of `config/api-platform.php` now apply. Check `csp_header` in your published copy: a custom value replaces the default Content-Security-Policy, and `enabled => false` stops the API's own headers (Bagisto core still sends its `X-Frame-Options`, `Referrer-Policy` and `Strict-Transport-Security`).
 - The audit retention moved to *Configuration → API → Admin Authentication → Data Retention*. `BAGISTO_API_AUDIT_RETENTION_DAYS` is still used while that field is empty, and `bagisto-api:prune-audits` now runs daily through the scheduler.
 
+## 7b. Storefront customer tokens (unreleased)
+
+Customers no longer authenticate with Laravel Sanctum tokens. The installer's `migrate` deletes the customers' rows from `personal_access_tokens`, so every signed-in customer has to log in again.
+
+- Login, registration and social login return `accessToken` (a JWT, 15 minutes by default) and `refreshToken` (30 days by default). Send the access token as `Authorization: Bearer <accessToken>`; before it expires, or when a request answers `401 access_token_expired`, call `POST /api/shop/customer/refresh` with the refresh token and store both new tokens. A refresh token works once: sending a used one ends the session.
+- `token` in the login answer is the access token, kept for one release so old clients keep working until they refresh; switch to `accessToken`.
+- A refused login is now an HTTP error (`401 invalid_credentials`, `403 account_inactive` or `account_unverified`, `429 too_many_login_attempts`) instead of `201` with `success: false`.
+- An access token is tied to the channel it was issued on.
+- The lifetimes and limits are set under *Configuration → API → Customer Authentication*.
+
 ## 8. Admin RMA message attachments
 
 Earlier versions saved the files an admin attached to an RMA message through `POST /api/admin/rma/messages` on the default disk, which is `public` on a standard store, under `rma-conversation/{message id}/`. Anyone with the link can download those files from `/storage/rma-conversation/...`. New uploads go to the `private` disk under `rmas/{rma id}/conversations/{message id}/`, as the admin panel stores them.

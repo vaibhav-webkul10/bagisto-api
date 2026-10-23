@@ -276,6 +276,13 @@ return [
             'unknown-resource' => 'مورد غير معروف',
             'cannot-update-other-profile' => 'غير مصرح: لا يمكن تحديث ملف شخصي آخر',
             'refresh-token-invalid' => 'رمز التحديث غير صالح أو منتهي الصلاحية. يرجى تسجيل الدخول مجددًا.',
+            'too-many-login-attempts' => 'محاولات تسجيل دخول كثيرة جدًا. يرجى المحاولة مرة أخرى بعد :seconds ثانية.',
+            'too-many-refresh-requests' => 'عدد كبير جدًا من تحديثات الرمز. يرجى المحاولة مرة أخرى بعد :seconds ثانية.',
+            'rate-limit-exceeded' => 'محاولات كثيرة جدًا.',
+            'access-token-expired' => 'انتهت صلاحية رمز الوصول. قم بتحديثه للمتابعة.',
+            'logged-out-all' => 'تم تسجيل خروجك من جميع الجلسات.',
+            'session-not-found' => 'الجلسة غير موجودة.',
+            'session-revoked' => 'تم إلغاء الجلسة.',
         ],
 
         'upload' => [
