@@ -23,7 +23,7 @@ use Webkul\BagistoApi\State\CustomerLogoutAllProcessor;
             processor: CustomerLogoutAllProcessor::class,
             status: 200,
             openapi: new Model\Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: 'Log out of every session',
                 description: 'Ends every session of the signed-in customer, this one included, on every device; their access and refresh tokens stop working at once. Needs a customer access token.',
                 requestBody: new Model\RequestBody(

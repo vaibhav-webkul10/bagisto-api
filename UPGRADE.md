@@ -158,6 +158,9 @@ Customers no longer authenticate with Laravel Sanctum tokens. The installer's `m
 - `token` in the login answer is the access token, kept for one release so old clients keep working until they refresh; switch to `accessToken`.
 - A refused login is now an HTTP error (`401 invalid_credentials`, `403 account_inactive` or `account_unverified`, `429 too_many_login_attempts`) instead of `201` with `success: false`.
 - An access token is tied to the channel it was issued on.
+- A request with an expired access token answers `401 access_token_expired` on every storefront operation, and one with a revoked session or another channel's token `401 unauthenticated`, before the operation runs. Refresh on the first, log in again on the second.
+- To keep a guest's cart, send its cart token as `guest_cart_token` on the login; the answer's `cartId` is the customer's cart. `POST /api/shop/merge-carts` still works.
+- Re-import the Postman environment: `customerToken` is now `customerAccessToken`, with `customerRefreshToken` and `customerAccessTokenExpiresAt`.
 - The lifetimes and limits are set under *Configuration → API → Customer Authentication*.
 - `POST /api/admin/customers/{id}/impersonate` and `createAdminCustomerImpersonate` are removed. An admin views and ends a customer's sessions under *Customers → API Sessions*, or through `/api/admin/customers/api-sessions`; grant roles `customers.api_sessions` and `customers.api_sessions.delete` for it.
 

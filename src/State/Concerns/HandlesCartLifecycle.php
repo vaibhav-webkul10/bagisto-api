@@ -92,68 +92,11 @@ trait HandlesCartLifecycle
             throw new ResourceNotFoundException(__('bagistoapi::app.graphql.cart.guest-cart-not-found'));
         }
 
-        $customerCart = $this->cartRepository->findOneWhere([
-            'customer_id' => $customer->id,
-            'is_active' => 1,
-        ]);
-
-        if ($customerCart) {
-            $this->mergeIntoCustomerCart($customerCart, $guestCart);
-        } else {
-            $customerCart = $this->adoptGuestCart($guestCart, $customer);
-        }
-
-        $customerCart = CartModel::find($customerCart->id);
-
-        $cartData = CartData::fromModel($customerCart);
+        $cartData = CartData::fromModel($this->guestCartMerger->merge($guestCart, $customer));
         $cartData->success = true;
         $cartData->message = __('bagistoapi::app.graphql.cart.guest-cart-merged');
 
         return (array) $cartData;
-    }
-
-    /**
-     * Turn a guest cart into the customer's cart when the customer has none.
-     */
-    private function adoptGuestCart(CartModel $guestCart, Customer $customer): CartModel
-    {
-        $this->cartRepository->update([
-            'customer_id' => $customer->id,
-            'is_guest' => 0,
-            'customer_first_name' => $customer->first_name,
-            'customer_last_name' => $customer->last_name,
-            'customer_email' => $customer->email,
-        ], $guestCart->id);
-
-        $this->guestCartTokensRepository->deleteWhere(['cart_id' => $guestCart->id]);
-
-        $customerCart = CartModel::find($guestCart->id);
-
-        CartFacade::setCart($customerCart);
-
-        CartFacade::collectTotals();
-
-        return $customerCart;
-    }
-
-    /**
-     * Add the guest cart's items to the customer's existing cart and drop the guest cart.
-     */
-    private function mergeIntoCustomerCart(CartModel $customerCart, CartModel $guestCart): void
-    {
-        CartFacade::setCart($customerCart);
-
-        foreach ($guestCart->items as $guestCartItem) {
-            try {
-                CartFacade::addProduct($guestCartItem->product, $guestCartItem->additional ?? []);
-            } catch (\Exception) {
-                continue;
-            }
-        }
-
-        CartFacade::collectTotals();
-
-        CartFacade::removeCart($guestCart);
     }
 
     /**

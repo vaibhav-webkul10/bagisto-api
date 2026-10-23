@@ -27,7 +27,7 @@ use Webkul\BagistoApi\State\SocialLoginProcessor;
                 'groups' => ['mutation'],
             ],
             openapi: new Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: 'Social login',
                 description: 'Verify a provider token the app/web already obtained (Google Identity Services or a native SDK — no redirect), then sign the customer in, creating and linking the account on first sight. Returns a Bearer `token` for subsequent calls. Providers: `google`, `facebook`, `linkedin`.',
                 requestBody: new RequestBody(

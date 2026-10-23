@@ -125,10 +125,44 @@ class CustomerSessionAuthTest extends RestApiTestCase
 
         $this->travel(16)->minutes();
 
-        $response = $this->profileWith($token);
+        $this->profileWith($token)
+            ->assertStatus(401)
+            ->assertJsonPath('error', 'access_token_expired');
 
-        $this->assertContains($response->getStatusCode(), [401, 403]);
-        $this->assertStringNotContainsString('"email"', (string) $response->getContent());
+        $this->getJson('/api/shop/products', $this->bearer($token))
+            ->assertStatus(401)
+            ->assertJsonPath('error', 'access_token_expired');
+    }
+
+    /**
+     * Test a revoked session's access token is answered with unauthenticated.
+     */
+    public function test_a_revoked_sessions_access_token_is_refused_with_its_code(): void
+    {
+        $pair = $this->customerTokenPair($this->createCustomer());
+
+        $pair->session->forceFill(['revoked_at' => now(), 'revoked_reason' => CustomerApiSession::REVOKED_LOGOUT])->save();
+
+        $this->profileWith($pair->accessToken)
+            ->assertStatus(401)
+            ->assertJsonPath('error', 'unauthenticated');
+    }
+
+    /**
+     * Test an expired access token left on the client never blocks logging in again.
+     */
+    public function test_a_stale_bearer_does_not_block_login(): void
+    {
+        $customer = $this->customerWithPassword();
+
+        $stale = $this->customerAccessToken($customer);
+
+        $this->travel(16)->minutes();
+
+        $this->postJson('/api/shop/customer/login', [
+            'email' => $customer->email,
+            'password' => self::PASSWORD,
+        ], $this->bearer($stale))->assertSuccessful();
     }
 
     /**

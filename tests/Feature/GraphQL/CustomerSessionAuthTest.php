@@ -141,6 +141,32 @@ class CustomerSessionAuthTest extends GraphQLTestCase
     }
 
     /**
+     * Test an expired access token is answered with access_token_expired, while login still works with it attached.
+     */
+    public function test_an_expired_access_token_carries_its_code(): void
+    {
+        $customer = $this->customerWithPassword();
+
+        $token = $this->customerAccessToken($customer);
+
+        $this->travel(16)->minutes();
+
+        $response = $this->graphQL('{ readCustomerProfile { email } }', [], $this->bearer($token));
+
+        $response->assertStatus(401);
+        $this->assertSame('access_token_expired', $response->json('errors.0.extensions.code'));
+
+        $login = $this->graphQL(
+            'mutation ($input: createCustomerLoginInput!) { createCustomerLogin(input: $input) { customerLogin { accessToken } } }',
+            ['input' => ['email' => $customer->email, 'password' => self::PASSWORD]],
+            $this->bearer($token),
+        );
+
+        $this->assertNull($login->json('errors'));
+        $this->assertNotEmpty($login->json('data.createCustomerLogin.customerLogin.accessToken'));
+    }
+
+    /**
      * Test an admin access token does not authenticate on the storefront GraphQL endpoint.
      */
     public function test_an_admin_token_is_refused(): void

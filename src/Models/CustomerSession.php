@@ -26,7 +26,7 @@ use Webkul\BagistoApi\State\CustomerSessionProcessor;
             provider: CustomerSessionCollectionProvider::class,
             paginationEnabled: false,
             openapi: new Model\Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: "List the signed-in customer's active sessions",
                 description: 'Every live session of the signed-in customer, newest first, with where each was last used from. `isCurrent` marks the session of the access token sent. Needs a customer access token.',
                 responses: [
@@ -70,7 +70,7 @@ use Webkul\BagistoApi\State\CustomerSessionProcessor;
             requirements: ['id' => '\d+'],
             read: false,
             openapi: new Model\Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: 'Revoke one of my sessions',
                 description: 'Ends one live session of the signed-in customer, for example on a lost phone; its access and refresh tokens stop working at once. Revoking the current session logs it out.',
                 parameters: [

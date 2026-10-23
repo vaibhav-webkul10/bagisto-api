@@ -28,9 +28,9 @@ use Webkul\BagistoApi\State\LoginProcessor;
                 'groups' => ['mutation'],
             ],
             openapi: new Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: 'Customer login',
-                description: 'Signs a customer in on the current channel with email and password, as the storefront does, and starts a session. Returns a short-lived JWT access token and a refresh token. Optional `device_name` and `client_type` (web, mobile, pos, desktop, other) label the session in the session list. An inactive or unverified customer is refused.',
+                description: 'Signs a customer in on the current channel with email and password, as the storefront does, and starts a session. Returns a short-lived JWT access token and a refresh token. Optional `device_name` and `client_type` (web, mobile, pos, desktop, other) label the session in the session list. An optional `guest_cart_token` merges that guest cart into the customer\'s cart in the same step and returns the cart in `cartId`; a token that no longer names a guest cart is ignored. An inactive or unverified customer is refused.',
                 requestBody: new RequestBody(
                     description: 'Customer login credentials',
                     required: true,
@@ -62,6 +62,12 @@ use Webkul\BagistoApi\State\LoginProcessor;
                                         'type' => 'string',
                                         'enum' => CustomerApiSession::CLIENT_TYPES,
                                         'example' => 'mobile',
+                                    ],
+
+                                    'guest_cart_token' => [
+                                        'type' => 'string',
+                                        'description' => 'The token of a guest cart to merge into the customer\'s cart.',
+                                        'example' => '2f1c6f7e-5a0b-4c1e-9d0a-1b2c3d4e5f60',
                                     ],
                                 ],
                             ],
@@ -126,7 +132,7 @@ use Webkul\BagistoApi\State\LoginProcessor;
                 'allow_extra_attributes' => true,
                 'groups' => ['mutation'],
             ],
-            description: 'Sign a customer in on the current channel and return an access and refresh token pair. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts.',
+            description: 'Sign a customer in on the current channel and return an access and refresh token pair. An optional guestCartToken merges that guest cart into the customer cart and returns its id in cartId. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts.',
         ),
     ]
 )]
@@ -140,6 +146,7 @@ class CustomerLogin extends CustomerAuthTokenResponse
         '_id' => 1529,
         'apiToken' => 'PPKI0VNiX5qehio2q1cMeMd6TCaIKofwQ4mb7y2zcy0japYwsyc',
         'token' => 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ii4uLiJ9.eyJ0eXAiOiJjdXN0b21lcl9hY2Nlc3MiLCJzdWIiOjE1Mjl9.c2lnbmF0dXJl',
+        'cartId' => null,
         'success' => true,
         'message' => 'You have logged in successfully',
     ];
@@ -167,6 +174,12 @@ class CustomerLogin extends CustomerAuthTokenResponse
      */
     #[ApiProperty(writable: false, readable: true, description: 'Deprecated: the same value as `accessToken`.')]
     public ?string $token = null;
+
+    /**
+     * The customer's cart the guest cart was merged into, or null when no guest cart was merged.
+     */
+    #[ApiProperty(writable: false, readable: true, description: 'The id of the customer cart a `guestCartToken` was merged into; null when no guest cart was merged.')]
+    public ?int $cart_id = null;
 
     /**
      * The message.

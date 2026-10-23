@@ -41,7 +41,7 @@ class LoginProcessor implements ProcessorInterface
         $pair = $this->authService->login($data->email, $data->password, request(), [
             'name' => $this->pick([$data->deviceName, $input['deviceName'] ?? null, request()->input('device_name'), request()->input('deviceName')]),
             'client_type' => $this->pick([$data->clientType, $input['clientType'] ?? null, request()->input('client_type'), request()->input('clientType')]),
-        ]);
+        ], $this->pick([$data->guestCartToken, $input['guestCartToken'] ?? null, request()->input('guest_cart_token'), request()->input('guestCartToken')]));
 
         $customer = $pair->session->customer;
 
@@ -65,6 +65,7 @@ class LoginProcessor implements ProcessorInterface
         $output->_id = (int) $customer->id;
         $output->api_token = $customer->api_token;
         $output->token = $pair->accessToken;
+        $output->cart_id = $pair->mergedCartId;
         $output->success = true;
         $output->message = __('bagistoapi::app.graphql.login.successful');
 

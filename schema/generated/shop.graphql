@@ -4322,7 +4322,7 @@ type Mutation {
   "Add new or update existing customer address using token"
   createCustomerAddressToken(input: createCustomerAddressTokenInput!): createCustomerAddressTokenPayload
 
-  "Sign a customer in on the current channel and return an access and refresh token pair. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
+  "Sign a customer in on the current channel and return an access and refresh token pair. An optional guestCartToken merges that guest cart into the customer cart and returns its id in cartId. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
   createCustomerLogin(input: createCustomerLoginInput!): createCustomerLoginPayload
 
   "End every session of the signed-in customer. Becomes createCustomerLogoutAll; needs a customer access token."
@@ -5895,23 +5895,24 @@ type createDeleteCustomerAddressTokenPayloadData implements Node {
   vatId: String
 }
 
-"Sign a customer in on the current channel and return an access and refresh token pair. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
+"Sign a customer in on the current channel and return an access and refresh token pair. An optional guestCartToken merges that guest cart into the customer cart and returns its id in cartId. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
 input createCustomerLoginInput {
   clientMutationId: String
   clientType: String
   deviceName: String
   deviceToken: String
   email: String!
+  guestCartToken: String
   password: String!
 }
 
-"Sign a customer in on the current channel and return an access and refresh token pair. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
+"Sign a customer in on the current channel and return an access and refresh token pair. An optional guestCartToken merges that guest cart into the customer cart and returns its id in cartId. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
 type createCustomerLoginPayload {
   clientMutationId: String
   customerLogin: createCustomerLoginPayloadData
 }
 
-"Sign a customer in on the current channel and return an access and refresh token pair. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
+"Sign a customer in on the current channel and return an access and refresh token pair. An optional guestCartToken merges that guest cart into the customer cart and returns its id in cartId. Errors carry extensions.code: invalid_credentials, account_inactive, account_unverified or too_many_login_attempts."
 type createCustomerLoginPayloadData implements Node {
   _id: Int
 
@@ -5920,6 +5921,9 @@ type createCustomerLoginPayloadData implements Node {
 
   accessTokenExpiresAt: String
   apiToken: String
+
+  "The id of the customer cart a `guestCartToken` was merged into; null when no guest cart was merged."
+  cartId: Int
 
   "The customer: id, firstName, lastName, email."
   customer: Iterable

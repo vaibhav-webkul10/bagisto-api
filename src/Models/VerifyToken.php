@@ -25,7 +25,7 @@ use Webkul\BagistoApi\State\VerifyTokenProcessor;
                 'groups' => ['mutation'],
             ],
             openapi: new Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: 'Verify customer bearer token',
                 description: 'Validates the customer bearer token from the Authorization header and returns the customer details if valid.',
                 requestBody: new RequestBody(

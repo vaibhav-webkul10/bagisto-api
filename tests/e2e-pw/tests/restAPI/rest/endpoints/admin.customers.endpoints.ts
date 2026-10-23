@@ -21,6 +21,14 @@ export const ADMIN_CUSTOMERS = {
   CUSTOMER_NOTES: (customerId: number | string) =>
     `/api/admin/customers/${customerId}/notes`,
 
+  // ── Customer API sessions (view and revoke) ────────────────────
+  API_SESSIONS: '/api/admin/customers/api-sessions',
+  API_SESSION: (id: number | string) => `/api/admin/customers/api-sessions/${id}`,
+  CUSTOMER_API_SESSIONS: (customerId: number | string) =>
+    `/api/admin/customers/${customerId}/api-sessions`,
+  CUSTOMER_REVOKE_API_SESSIONS: (customerId: number | string) =>
+    `/api/admin/customers/${customerId}/revoke-api-sessions`,
+
   // ── Customer groups ────────────────────────────────────────────
   GROUPS: '/api/admin/customers/groups',
   GROUP: (id: number | string) => `/api/admin/customers/groups/${id}`,

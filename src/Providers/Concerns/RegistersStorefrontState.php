@@ -4,6 +4,7 @@ namespace Webkul\BagistoApi\Providers\Concerns;
 
 use ApiPlatform\Laravel\Eloquent\State\PersistProcessor;
 use ApiPlatform\State\Pagination\Pagination;
+use Webkul\BagistoApi\Services\Cart\GuestCartMerger;
 use Webkul\BagistoApi\State\AttributeCollectionProvider;
 use Webkul\BagistoApi\State\AttributeOptionCollectionProvider;
 use Webkul\BagistoApi\State\CancelOrderProcessor;
@@ -76,6 +77,7 @@ trait RegistersStorefrontState
             return new CartTokenProcessor(
                 $app->make('Webkul\Checkout\Repositories\CartRepository'),
                 $app->make('Webkul\BagistoApi\Repositories\GuestCartTokensRepository'),
+                $app->make(GuestCartMerger::class),
                 $app->make(CartOptionFileStaging::class)
             );
         });

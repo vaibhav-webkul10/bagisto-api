@@ -22,7 +22,7 @@ use Webkul\BagistoApi\State\CustomerTokenRefreshProcessor;
             processor: CustomerTokenRefreshProcessor::class,
             status: 200,
             openapi: new Model\Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: 'Exchange a customer refresh token for a new token pair',
                 description: 'Returns a new access token and a new refresh token in the same session; the refresh token sent stops working. Presenting a refresh token that was already used revokes the whole session. Once the refresh token expires, or the session reaches its absolute lifetime, log in again. Needs the storefront key only.',
                 requestBody: new Model\RequestBody(

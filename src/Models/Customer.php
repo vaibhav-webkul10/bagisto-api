@@ -29,7 +29,7 @@ use Webkul\BagistoApi\State\CustomerProcessor;
                 'skip_null_values' => false,
             ],
             openapi: new Model\Operation(
-                tags: ['Customer'],
+                tags: ['Customer Authentication'],
                 summary: 'Register a new customer',
                 description: 'Register a new customer account',
                 requestBody: new Model\RequestBody(

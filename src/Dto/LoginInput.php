@@ -37,6 +37,12 @@ class LoginInput
     public ?string $clientType = null;
 
     /**
+     * The guest cart token of a cart to merge into the customer's cart on login.
+     */
+    #[Groups(['mutation'])]
+    public ?string $guestCartToken = null;
+
+    /**
      * Create a new instance.
      */
     public function __construct(

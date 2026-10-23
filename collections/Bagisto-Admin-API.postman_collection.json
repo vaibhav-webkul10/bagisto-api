@@ -4793,6 +4793,37 @@
                             ]
                         },
                         {
+                            "name": "Create a new customer",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/customers",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "customers"
+                                    ]
+                                },
+                                "description": "Creates a verified customer on the given channel (the current one by default). `first_name`, `last_name`, a unique `email` and `customer_group_id` are required; by default a password is generated and emailed, or send `send_password: false` with a `password` of at least 6 characters.",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"email\": \"jane@example.com\",\n    \"phone\": \"\",\n    \"gender\": \"\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"customer_group_id\": 2,\n    \"channel_id\": 1,\n    \"status\": 1,\n    \"subscribed_to_news_letter\": false,\n    \"send_password\": true,\n    \"password\": \"\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
                             "name": "Add a note to a customer",
                             "request": {
                                 "method": "POST",
@@ -4862,37 +4893,6 @@
                                     ]
                                 },
                                 "description": "One saved address of the customer. The address must belong to `customerId`; an address of another customer, or an unknown ID, is a 404. Needs the `customers.addresses` permission."
-                            }
-                        },
-                        {
-                            "name": "Create a new customer",
-                            "request": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{baseUrl}}/customers",
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "path": [
-                                        "customers"
-                                    ]
-                                },
-                                "description": "Creates a verified customer on the given channel (the current one by default). `first_name`, `last_name`, a unique `email` and `customer_group_id` are required; by default a password is generated and emailed, or send `send_password: false` with a `password` of at least 6 characters.",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"email\": \"jane@example.com\",\n    \"phone\": \"\",\n    \"gender\": \"\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"customer_group_id\": 2,\n    \"channel_id\": 1,\n    \"status\": 1,\n    \"subscribed_to_news_letter\": false,\n    \"send_password\": true,\n    \"password\": \"\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                }
                             }
                         },
                         {

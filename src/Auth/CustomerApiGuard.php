@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
+use Webkul\BagistoApi\Admin\Services\Jwt\JwtSigner;
 use Webkul\BagistoApi\Exception\CustomerAuthException;
 use Webkul\BagistoApi\Models\CustomerApiSession;
 
@@ -155,6 +156,21 @@ class CustomerApiGuard implements Guard
     public static function looksLikeAccessToken(string $token): bool
     {
         return substr_count($token, '.') === 2;
+    }
+
+    /**
+     * Whether an unverified token says it is a customer access token, read from its payload without checking it.
+     */
+    public static function claimsCustomerAccess(string $token): bool
+    {
+        if (! static::looksLikeAccessToken($token)) {
+            return false;
+        }
+
+        $payload = json_decode((string) base64_decode(strtr(explode('.', $token)[1], '-_', '+/')), true);
+
+        return is_array($payload)
+            && ($payload['typ'] ?? null) === JwtSigner::TYPE_CUSTOMER_ACCESS;
     }
 
     /**

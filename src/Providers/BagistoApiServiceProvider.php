@@ -78,6 +78,7 @@ use Webkul\BagistoApi\Http\Controllers\InvoicePdfController;
 use Webkul\BagistoApi\Http\Controllers\ReturnMessageAttachmentController;
 use Webkul\BagistoApi\Http\Controllers\SwaggerUIController;
 use Webkul\BagistoApi\Http\Middleware\EnforceAdminApiAuth;
+use Webkul\BagistoApi\Http\Middleware\EnforceCustomerApiAuth;
 use Webkul\BagistoApi\Http\Middleware\EnsureJsonContentType;
 use Webkul\BagistoApi\Http\Middleware\LogApiRequests;
 use Webkul\BagistoApi\Http\Middleware\SecurityHeaders;
@@ -387,12 +388,14 @@ class BagistoApiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Prepend the JSON content type middleware to the global HTTP kernel stack.
+     * Add the JSON content type, customer token and customer throttle middleware to the global HTTP kernel stack.
      */
     protected function registerGlobalMiddleware(): void
     {
         $kernel = $this->app->make(Kernel::class);
         $kernel->prependMiddleware(EnsureJsonContentType::class);
+
+        $kernel->pushMiddleware(EnforceCustomerApiAuth::class);
 
         $kernel->pushMiddleware(ThrottleCustomerApi::class);
     }

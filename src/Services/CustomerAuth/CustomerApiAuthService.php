@@ -4,6 +4,7 @@ namespace Webkul\BagistoApi\Services\CustomerAuth;
 
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -12,6 +13,7 @@ use Webkul\BagistoApi\Auth\CustomerApiAuthenticator;
 use Webkul\BagistoApi\Exception\CustomerAuthException;
 use Webkul\BagistoApi\Models\CustomerApiSession;
 use Webkul\BagistoApi\Repositories\CustomerApiRefreshTokenRepository;
+use Webkul\BagistoApi\Services\Cart\GuestCartMerger;
 use Webkul\Customer\Models\Customer;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\User\Models\Admin;
@@ -28,16 +30,20 @@ class CustomerApiAuthService
         protected CustomerApiRefreshTokenRepository $refreshTokenRepository,
         protected RateLimiter $limiter,
         protected AdminApiAuthAuditor $auditor,
+        protected GuestCartMerger $guestCartMerger,
     ) {}
 
     /**
      * Check a customer's email and password on the current channel, as core's storefront login does, and start a session.
      *
+     * A guest cart token, when it names a guest cart that can still be merged, merges that cart into the customer's
+     * cart in the same transaction as the session; any other token is ignored, so a stale cart never blocks a login.
+     *
      * @param  array{name?: ?string, client_type?: ?string}  $client
      *
      * @throws CustomerAuthException
      */
-    public function login(string $email, string $password, Request $request, array $client = []): CustomerApiTokenPair
+    public function login(string $email, string $password, Request $request, array $client = [], ?string $guestCartToken = null): CustomerApiTokenPair
     {
         $throttleKey = 'bagistoapi-customer-login:'.Str::lower($email).'|'.$request->ip();
 
@@ -70,10 +76,21 @@ class CustomerApiAuthService
 
         $this->assertCanLogIn($customer, $request);
 
-        $pair = $this->startSession($customer, $request, $client);
+        $pair = DB::transaction(function () use ($customer, $request, $client, $guestCartToken) {
+            $pair = $this->startSession($customer, $request, $client);
+
+            $guestCart = $this->guestCartMerger->findMergeable($guestCartToken);
+
+            if ($guestCart) {
+                $pair->mergedCartId = (int) $this->guestCartMerger->merge($guestCart, $customer)->id;
+            }
+
+            return $pair;
+        });
 
         $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_LOGIN, $customer, $pair->session, $request, [
             'client_type' => $pair->session->client_type,
+            'merged_cart_id' => $pair->mergedCartId,
         ]);
 
         Event::dispatch('customer.after.login', $customer);

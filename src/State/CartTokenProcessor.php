@@ -12,6 +12,7 @@ use Webkul\BagistoApi\Exception\InvalidInputException;
 use Webkul\BagistoApi\Facades\CartTokenFacade;
 use Webkul\BagistoApi\Facades\TokenHeaderFacade;
 use Webkul\BagistoApi\Repositories\GuestCartTokensRepository;
+use Webkul\BagistoApi\Services\Cart\GuestCartMerger;
 use Webkul\BagistoApi\State\Concerns\HandlesBookingCartItems;
 use Webkul\BagistoApi\State\Concerns\HandlesCartCouponsAndExtras;
 use Webkul\BagistoApi\State\Concerns\HandlesCartItems;
@@ -37,6 +38,7 @@ class CartTokenProcessor implements ProcessorInterface
     public function __construct(
         protected CartRepository $cartRepository,
         protected GuestCartTokensRepository $guestCartTokensRepository,
+        protected GuestCartMerger $guestCartMerger,
         protected CartOptionFileStaging $optionFileStaging
     ) {}
 
@@ -394,25 +396,7 @@ class CartTokenProcessor implements ProcessorInterface
      */
     private function resolveGuestCartForMerge(CartInput $data): ?CartModel
     {
-        if (! $data->guestCartToken) {
-            return null;
-        }
-
-        $guestCart = $this->guestCartTokensRepository->findCartByToken($data->guestCartToken);
-
-        if (
-            ! $guestCart
-            || ! $guestCart->is_active
-            || $guestCart->customer_id
-            || (
-                $data->cartId
-                && (int) $data->cartId !== (int) $guestCart->id
-            )
-        ) {
-            return null;
-        }
-
-        return $guestCart;
+        return $this->guestCartMerger->findMergeable($data->guestCartToken, $data->cartId ? (int) $data->cartId : null);
     }
 
     /**

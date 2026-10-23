@@ -8,6 +8,11 @@ use Webkul\BagistoApi\Models\CustomerApiSession;
 class CustomerApiTokenPair
 {
     /**
+     * The id of the customer's cart a guest cart was merged into at login, or null when none was.
+     */
+    public ?int $mergedCartId = null;
+
+    /**
      * Create a token pair issued for a customer session.
      */
     public function __construct(
