@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Unbekannte Ressource',
             'cannot-update-other-profile' => 'Nicht autorisiert: Das Profil eines anderen Kunden kann nicht aktualisiert werden',
+            'refresh-token-invalid' => 'Das Aktualisierungstoken ist ungültig oder abgelaufen. Bitte melden Sie sich erneut an.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'Die redirect_url muss eine gültige URL sein.',
                 'indices-required' => 'In indices muss mindestens eine ID angegeben werden.',
                 'no-permission' => 'Sie haben keine Berechtigung, Suchbegriffe zu verwalten.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Kundenauthentifizierung',
+                'info' => 'Token-Laufzeiten, Grenzwerte und Sitzungsregeln für Kundenanmeldungen im Shop.',
+
+                'tokens' => [
+                    'title' => 'Token-Laufzeiten',
+                    'info' => 'Wie lange Zugriffstokens, Aktualisierungstokens und Sitzungen gültig bleiben. Änderungen gelten für danach ausgestellte Tokens.',
+                    'access-token-ttl' => 'Laufzeit des Zugriffstokens (Minuten)',
+                    'access-token-ttl-info' => 'Zwischen 5 und 60 Minuten. Standard 15.',
+                    'refresh-token-ttl' => 'Laufzeit des Aktualisierungstokens (Tage)',
+                    'refresh-token-ttl-info' => 'Zwischen 1 und 90 Tagen. Standard 30.',
+                    'session-lifetime' => 'Maximale Sitzungsdauer (Tage)',
+                    'session-lifetime-info' => 'Zwischen 1 und 365 Tagen. Standard 90. Danach muss sich der Admin erneut anmelden, egal wie oft die Sitzung aktualisiert wurde.',
+                    'max-sessions' => 'Maximale aktive Sitzungen je Kunde',
+                    'max-sessions-info' => 'Wird das Limit erreicht, wird die älteste Sitzung beendet. Zwischen 0 und 100. 0 bedeutet kein Limit.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Ratenbegrenzungen',
+                    'info' => 'Maximale Shop-API-Anfragen pro Minute je angemeldetem Kunden.',
+                    'requests-per-minute' => 'Anfragen pro Minute je angemeldetem Kunden',
+                    'requests-per-minute-info' => 'Zwischen 1 und 100000. Standard 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Anmeldeschutz',
+                    'info' => 'Wie viele fehlgeschlagene Anmeldungen und Token-Aktualisierungen erlaubt sind, bevor der Client warten muss.',
+                    'login-max-attempts' => 'Fehlgeschlagene Anmeldungen bis zur Sperre',
+                    'login-max-attempts-info' => 'Je E-Mail-Adresse und IP-Adresse. Zwischen 3 und 20. Standard 5.',
+                    'login-lockout-seconds' => 'Anmeldesperre (Sekunden)',
+                    'login-lockout-seconds-info' => 'Zwischen 60 und 3600. Standard 60.',
+                    'refresh-requests-per-minute' => 'Token-Aktualisierungen pro Minute je Sitzung',
+                    'refresh-requests-per-minute-info' => 'Zwischen 1 und 60. Standard 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Sicherheit',
+                    'info' => 'Was die anderen Sitzungen eines Kunden beendet.',
+                    'revoke-sessions-on-password-change' => 'Sitzungen bei Passwortänderung widerrufen',
+                ],
+
+                'retention' => [
+                    'title' => 'Datenaufbewahrung',
+                    'info' => 'Wie lange beendete Kundensitzungen aufbewahrt werden.',
+                    'session-prune-days' => 'Beendete Sitzungen aufbewahren (Tage)',
+                    'session-prune-days-info' => 'Widerrufene oder abgelaufene Sitzungen werden nach so vielen Tagen gelöscht. Zwischen 1 und 365. Standard 30.',
+                ],
             ],
         ],
         'auth' => [

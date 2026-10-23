@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'अज्ञात संसाधन',
             'cannot-update-other-profile' => 'अनधिकृत: किसी अन्य ग्राहक प्रोफ़ाइल को अपडेट नहीं कर सकते',
+            'refresh-token-invalid' => 'रिफ्रेश टोकन अमान्य है या उसकी अवधि समाप्त हो गई है। कृपया फिर से लॉगिन करें।',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url एक मान्य URL होना चाहिए।',
                 'indices-required' => 'indices में कम से कम एक ID प्रदान की जानी चाहिए।',
                 'no-permission' => 'आपको खोज शब्द प्रबंधित करने की अनुमति नहीं है।',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'ग्राहक प्रमाणीकरण',
+                'info' => 'स्टोरफ़्रंट ग्राहक लॉगिन के लिए टोकन अवधि, सीमाएँ और सेशन नियम।',
+
+                'tokens' => [
+                    'title' => 'टोकन की अवधि',
+                    'info' => 'एक्सेस टोकन, रिफ्रेश टोकन और सेशन कितने समय तक मान्य रहते हैं। बदलाव बाद में जारी होने वाले टोकन पर लागू होते हैं।',
+                    'access-token-ttl' => 'एक्सेस टोकन की अवधि (मिनट)',
+                    'access-token-ttl-info' => '5 से 60 मिनट के बीच। डिफ़ॉल्ट 15।',
+                    'refresh-token-ttl' => 'रिफ्रेश टोकन की अवधि (दिन)',
+                    'refresh-token-ttl-info' => '1 से 90 दिन के बीच। डिफ़ॉल्ट 30।',
+                    'session-lifetime' => 'सेशन की अधिकतम अवधि (दिन)',
+                    'session-lifetime-info' => '1 से 365 दिन के बीच। डिफ़ॉल्ट 90। इसके बाद एडमिन को फिर से लॉगिन करना होगा, चाहे सेशन कितनी भी बार रिफ्रेश हुआ हो।',
+                    'max-sessions' => 'प्रति ग्राहक अधिकतम सक्रिय सेशन',
+                    'max-sessions-info' => 'सीमा पूरी होने पर सबसे पुराना सेशन समाप्त हो जाता है। 0 से 100 के बीच। 0 का अर्थ है कोई सीमा नहीं।',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'रेट लिमिट',
+                    'info' => 'प्रति लॉग-इन ग्राहक प्रति मिनट अधिकतम स्टोरफ़्रंट API अनुरोध।',
+                    'requests-per-minute' => 'प्रति लॉग-इन ग्राहक प्रति मिनट अनुरोध',
+                    'requests-per-minute-info' => '1 से 100000 के बीच। डिफ़ॉल्ट 120।',
+                ],
+
+                'login-protection' => [
+                    'title' => 'लॉगिन सुरक्षा',
+                    'info' => 'क्लाइंट को प्रतीक्षा कराने से पहले कितने विफल लॉगिन और टोकन रिफ़्रेश अनुमत हैं।',
+                    'login-max-attempts' => 'लॉकआउट से पहले विफल लॉगिन',
+                    'login-max-attempts-info' => 'प्रति ईमेल और IP पता। 3 से 20 के बीच। डिफ़ॉल्ट 5।',
+                    'login-lockout-seconds' => 'लॉगिन लॉकआउट (सेकंड)',
+                    'login-lockout-seconds-info' => '60 से 3600 के बीच। डिफ़ॉल्ट 60।',
+                    'refresh-requests-per-minute' => 'प्रति सेशन प्रति मिनट टोकन रिफ़्रेश',
+                    'refresh-requests-per-minute-info' => '1 से 60 के बीच। डिफ़ॉल्ट 10।',
+                ],
+
+                'security' => [
+                    'title' => 'सुरक्षा',
+                    'info' => 'ग्राहक के अन्य सेशन किससे समाप्त होते हैं।',
+                    'revoke-sessions-on-password-change' => 'पासवर्ड बदलने पर सेशन रद्द करें',
+                ],
+
+                'retention' => [
+                    'title' => 'डेटा प्रतिधारण',
+                    'info' => 'समाप्त ग्राहक सेशन कितने समय तक रखे जाते हैं।',
+                    'session-prune-days' => 'समाप्त सेशन रखें (दिन)',
+                    'session-prune-days-info' => 'रद्द या समाप्त सेशन इतने दिनों बाद हटा दिए जाते हैं। 1 से 365 के बीच। डिफ़ॉल्ट 30।',
+                ],
             ],
         ],
         'auth' => [

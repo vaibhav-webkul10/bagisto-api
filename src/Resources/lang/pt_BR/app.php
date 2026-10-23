@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Recurso desconhecido',
             'cannot-update-other-profile' => 'Não autorizado: não é possível atualizar o perfil de outro cliente',
+            'refresh-token-invalid' => 'O token de atualização é inválido ou expirou. Entre novamente.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'O redirect_url deve ser uma URL válida.',
                 'indices-required' => 'Pelo menos um ID deve ser informado em indices.',
                 'no-permission' => 'Você não tem permissão para gerenciar termos de pesquisa.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Autenticação de clientes',
+                'info' => 'Duração dos tokens, limites e regras de sessão para os logins dos clientes da loja.',
+
+                'tokens' => [
+                    'title' => 'Duração dos tokens',
+                    'info' => 'Por quanto tempo tokens de acesso, tokens de atualização e sessões permanecem válidos. As alterações valem para tokens emitidos depois.',
+                    'access-token-ttl' => 'Duração do token de acesso (minutos)',
+                    'access-token-ttl-info' => 'Entre 5 e 60 minutos. Padrão 15.',
+                    'refresh-token-ttl' => 'Duração do token de atualização (dias)',
+                    'refresh-token-ttl-info' => 'Entre 1 e 90 dias. Padrão 30.',
+                    'session-lifetime' => 'Duração máxima da sessão (dias)',
+                    'session-lifetime-info' => 'Entre 1 e 365 dias. Padrão 90. Depois disso o administrador precisa entrar novamente, não importa quantas vezes a sessão foi atualizada.',
+                    'max-sessions' => 'Máximo de sessões ativas por cliente',
+                    'max-sessions-info' => 'Ao atingir o limite, a sessão mais antiga é encerrada. Entre 0 e 100. 0 significa sem limite.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Limites de requisições',
+                    'info' => 'Máximo de requisições à API da loja por minuto para cada cliente conectado.',
+                    'requests-per-minute' => 'Requisições por minuto por cliente conectado',
+                    'requests-per-minute-info' => 'Entre 1 e 100000. Padrão 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Proteção de login',
+                    'info' => 'Quantos logins com falha e renovações de token são permitidos antes que o cliente precise esperar.',
+                    'login-max-attempts' => 'Logins com falha antes do bloqueio',
+                    'login-max-attempts-info' => 'Por e-mail e endereço IP. Entre 3 e 20. Padrão 5.',
+                    'login-lockout-seconds' => 'Bloqueio de login (segundos)',
+                    'login-lockout-seconds-info' => 'Entre 60 e 3600. Padrão 60.',
+                    'refresh-requests-per-minute' => 'Renovações de token por minuto por sessão',
+                    'refresh-requests-per-minute-info' => 'Entre 1 e 60. Padrão 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Segurança',
+                    'info' => 'O que encerra as outras sessões de um cliente.',
+                    'revoke-sessions-on-password-change' => 'Revogar sessões ao alterar a senha',
+                ],
+
+                'retention' => [
+                    'title' => 'Retenção de dados',
+                    'info' => 'Por quanto tempo as sessões encerradas dos clientes são mantidas.',
+                    'session-prune-days' => 'Manter sessões encerradas (dias)',
+                    'session-prune-days-info' => 'Sessões revogadas ou expiradas são excluídas após esse número de dias. Entre 1 e 365. Padrão 30.',
+                ],
             ],
         ],
         'auth' => [

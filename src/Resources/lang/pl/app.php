@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Nieznany zasób',
             'cannot-update-other-profile' => 'Brak autoryzacji: Nie można zaktualizować profilu innego klienta',
+            'refresh-token-invalid' => 'Token odświeżania jest nieprawidłowy lub wygasł. Zaloguj się ponownie.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'Pole redirect_url musi być prawidłowym adresem URL.',
                 'indices-required' => 'W indices należy podać co najmniej jeden identyfikator.',
                 'no-permission' => 'Nie masz uprawnień do zarządzania wyszukiwanymi frazami.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Uwierzytelnianie klientów',
+                'info' => 'Czas ważności tokenów, limity i zasady sesji dla logowań klientów sklepu.',
+
+                'tokens' => [
+                    'title' => 'Czas ważności tokenów',
+                    'info' => 'Jak długo ważne są tokeny dostępu, tokeny odświeżania i sesje. Zmiany dotyczą tokenów wydanych później.',
+                    'access-token-ttl' => 'Czas ważności tokenu dostępu (minuty)',
+                    'access-token-ttl-info' => 'Od 5 do 60 minut. Domyślnie 15.',
+                    'refresh-token-ttl' => 'Czas ważności tokenu odświeżania (dni)',
+                    'refresh-token-ttl-info' => 'Od 1 do 90 dni. Domyślnie 30.',
+                    'session-lifetime' => 'Maksymalny czas trwania sesji (dni)',
+                    'session-lifetime-info' => 'Od 1 do 365 dni. Domyślnie 90. Potem administrator musi zalogować się ponownie, niezależnie od liczby odświeżeń sesji.',
+                    'max-sessions' => 'Maksymalna liczba aktywnych sesji na klienta',
+                    'max-sessions-info' => 'Po osiągnięciu limitu najstarsza sesja jest kończona. Od 0 do 100. 0 oznacza brak limitu.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Limity żądań',
+                    'info' => 'Maksymalna liczba żądań API sklepu na minutę dla każdego zalogowanego klienta.',
+                    'requests-per-minute' => 'Żądania na minutę na zalogowanego klienta',
+                    'requests-per-minute-info' => 'Od 1 do 100000. Domyślnie 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Ochrona logowania',
+                    'info' => 'Ile nieudanych logowań i odświeżeń tokenu jest dozwolonych, zanim klient musi poczekać.',
+                    'login-max-attempts' => 'Nieudane logowania przed blokadą',
+                    'login-max-attempts-info' => 'Na adres e-mail i adres IP. Od 3 do 20. Domyślnie 5.',
+                    'login-lockout-seconds' => 'Blokada logowania (sekundy)',
+                    'login-lockout-seconds-info' => 'Od 60 do 3600. Domyślnie 60.',
+                    'refresh-requests-per-minute' => 'Odświeżenia tokenu na minutę na sesję',
+                    'refresh-requests-per-minute-info' => 'Od 1 do 60. Domyślnie 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Bezpieczeństwo',
+                    'info' => 'Co kończy pozostałe sesje klienta.',
+                    'revoke-sessions-on-password-change' => 'Unieważniaj sesje przy zmianie hasła',
+                ],
+
+                'retention' => [
+                    'title' => 'Przechowywanie danych',
+                    'info' => 'Jak długo przechowywane są zakończone sesje klientów.',
+                    'session-prune-days' => 'Przechowuj zakończone sesje (dni)',
+                    'session-prune-days-info' => 'Unieważnione lub wygasłe sesje są usuwane po tej liczbie dni. Od 1 do 365. Domyślnie 30.',
+                ],
             ],
         ],
         'auth' => [

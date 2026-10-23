@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => '不明なリソースです',
             'cannot-update-other-profile' => '権限がありません: 他の顧客のプロフィールは更新できません',
+            'refresh-token-invalid' => 'リフレッシュトークンが無効か期限切れです。再度ログインしてください。',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url は有効な URL である必要があります。',
                 'indices-required' => 'indices に少なくとも1つの ID を指定する必要があります。',
                 'no-permission' => '検索語を管理する権限がありません。',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => '顧客認証',
+                'info' => 'ストアフロント顧客ログインのトークン有効期間、制限、セッションルール。',
+
+                'tokens' => [
+                    'title' => 'トークンの有効期間',
+                    'info' => 'アクセストークン、リフレッシュトークン、セッションの有効期間。変更はその後に発行されるトークンに適用されます。',
+                    'access-token-ttl' => 'アクセストークンの有効期間（分）',
+                    'access-token-ttl-info' => '5～60 分。既定値 15。',
+                    'refresh-token-ttl' => 'リフレッシュトークンの有効期間（日）',
+                    'refresh-token-ttl-info' => '1～90 日。既定値 30。',
+                    'session-lifetime' => 'セッションの最大有効期間（日）',
+                    'session-lifetime-info' => '1～365 日。既定値 90。この期間を過ぎると、何度リフレッシュしても管理者は再ログインが必要です。',
+                    'max-sessions' => '顧客ごとの最大アクティブセッション数',
+                    'max-sessions-info' => '上限に達すると、最も古いセッションが終了します。0～100。0 は無制限を意味します。',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'レート制限',
+                    'info' => 'ログイン中の顧客ごとの 1 分あたりのストアフロント API リクエストの上限。',
+                    'requests-per-minute' => 'ログイン中の顧客ごとの 1 分あたりのリクエスト数',
+                    'requests-per-minute-info' => '1～100000。既定値 120。',
+                ],
+
+                'login-protection' => [
+                    'title' => 'ログイン保護',
+                    'info' => 'クライアントが待機を求められるまでに許可される、ログイン失敗とトークン更新の回数。',
+                    'login-max-attempts' => 'ロックアウトまでのログイン失敗回数',
+                    'login-max-attempts-info' => 'メールアドレスと IP アドレスごと。3～20。既定値 5。',
+                    'login-lockout-seconds' => 'ログインのロックアウト (秒)',
+                    'login-lockout-seconds-info' => '60～3600。既定値 60。',
+                    'refresh-requests-per-minute' => 'セッションごとの 1 分あたりのトークン更新数',
+                    'refresh-requests-per-minute-info' => '1～60。既定値 10。',
+                ],
+
+                'security' => [
+                    'title' => 'セキュリティ',
+                    'info' => '顧客の他のセッションを終了させる条件。',
+                    'revoke-sessions-on-password-change' => 'パスワード変更時にセッションを失効させる',
+                ],
+
+                'retention' => [
+                    'title' => 'データ保持',
+                    'info' => '終了した顧客セッションを保持する期間。',
+                    'session-prune-days' => '終了したセッションを保持 (日)',
+                    'session-prune-days-info' => '取り消された、または期限切れのセッションはこの日数後に削除されます。1～365。既定値 30。',
+                ],
             ],
         ],
         'auth' => [

@@ -58,7 +58,10 @@ use Webkul\BagistoApi\Console\Commands\OptimizeApiPlatformCommand;
 use Webkul\BagistoApi\Console\Commands\PruneAdminTokensCommand;
 use Webkul\BagistoApi\Console\Commands\PruneAuditsCommand;
 use Webkul\BagistoApi\Console\Commands\PruneCartUploadsCommand;
+use Webkul\BagistoApi\Console\Commands\PruneCustomerTokensCommand;
 use Webkul\BagistoApi\Console\Commands\WarmApiPlatformCacheCommand;
+use Webkul\BagistoApi\Contracts\CustomerApiRefreshToken as CustomerApiRefreshTokenContract;
+use Webkul\BagistoApi\Contracts\CustomerApiSession as CustomerApiSessionContract;
 use Webkul\BagistoApi\GraphQl\QueryScopedSchemaBuilder;
 use Webkul\BagistoApi\GraphQl\ScopedSchemaBuilder;
 use Webkul\BagistoApi\Http\Controllers\AdminGraphQLEntrypointController;
@@ -80,6 +83,8 @@ use Webkul\BagistoApi\Http\Middleware\SetLocaleChannel;
 use Webkul\BagistoApi\Http\Middleware\ThrottleAdminApi;
 use Webkul\BagistoApi\Http\Middleware\VerifyStorefrontKey;
 use Webkul\BagistoApi\Models\CoreAttribute;
+use Webkul\BagistoApi\Models\CustomerApiRefreshToken;
+use Webkul\BagistoApi\Models\CustomerApiSession;
 use Webkul\BagistoApi\Providers\Concerns\RegistersAdminProcessors;
 use Webkul\BagistoApi\Providers\Concerns\RegistersCoreServices;
 use Webkul\BagistoApi\Providers\Concerns\RegistersGraphQlServices;
@@ -105,6 +110,8 @@ class BagistoApiServiceProvider extends ServiceProvider
         AdminApiTokenContract::class => AdminApiToken::class,
         AdminApiTwoFactorChallengeContract::class => AdminApiTwoFactorChallenge::class,
         AdminApiAuditContract::class => AdminApiAudit::class,
+        CustomerApiSessionContract::class => CustomerApiSession::class,
+        CustomerApiRefreshTokenContract::class => CustomerApiRefreshToken::class,
     ];
 
     /**
@@ -423,6 +430,7 @@ class BagistoApiServiceProvider extends ServiceProvider
             JwtKeysCommand::class,
             ApiTokenCreateCommand::class,
             PruneAdminTokensCommand::class,
+            PruneCustomerTokensCommand::class,
             ExportSchemaCommand::class,
         ]);
 
@@ -430,6 +438,8 @@ class BagistoApiServiceProvider extends ServiceProvider
             $schedule->command('bagisto-api:prune-cart-uploads')->everyTwoHours();
 
             $schedule->command('bagisto-api:prune-admin-tokens')->hourly();
+
+            $schedule->command('bagisto-api:prune-customer-tokens')->hourly();
 
             $schedule->command('bagisto-api:prune-audits')->daily();
         });

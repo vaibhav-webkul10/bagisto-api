@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Sumber daya tidak dikenal',
             'cannot-update-other-profile' => 'Tidak sah: Tidak dapat memperbarui profil pelanggan lain',
+            'refresh-token-invalid' => 'Token penyegaran tidak valid atau telah kedaluwarsa. Silakan login kembali.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url harus berupa URL yang valid.',
                 'indices-required' => 'Setidaknya satu ID harus diberikan dalam indices.',
                 'no-permission' => 'Anda tidak memiliki izin untuk mengelola istilah pencarian.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Autentikasi Pelanggan',
+                'info' => 'Masa berlaku token, batas, dan aturan sesi untuk login pelanggan toko.',
+
+                'tokens' => [
+                    'title' => 'Masa Berlaku Token',
+                    'info' => 'Berapa lama token akses, token penyegaran, dan sesi tetap berlaku. Perubahan berlaku untuk token yang diterbitkan setelahnya.',
+                    'access-token-ttl' => 'Masa Berlaku Token Akses (menit)',
+                    'access-token-ttl-info' => 'Antara 5 dan 60 menit. Bawaan 15.',
+                    'refresh-token-ttl' => 'Masa Berlaku Token Penyegaran (hari)',
+                    'refresh-token-ttl-info' => 'Antara 1 dan 90 hari. Bawaan 30.',
+                    'session-lifetime' => 'Masa Berlaku Maksimum Sesi (hari)',
+                    'session-lifetime-info' => 'Antara 1 dan 365 hari. Bawaan 90. Setelah itu admin harus login lagi, berapa kali pun sesi disegarkan.',
+                    'max-sessions' => 'Sesi Aktif Maksimum per Pelanggan',
+                    'max-sessions-info' => 'Saat batas tercapai, sesi tertua diakhiri. Antara 0 dan 100. 0 berarti tanpa batas.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Batas Laju',
+                    'info' => 'Permintaan API toko maksimum per menit untuk setiap pelanggan yang login.',
+                    'requests-per-minute' => 'Permintaan per Menit per Pelanggan yang Login',
+                    'requests-per-minute-info' => 'Antara 1 dan 100000. Bawaan 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Perlindungan Login',
+                    'info' => 'Berapa banyak login gagal dan penyegaran token yang diizinkan sebelum klien harus menunggu.',
+                    'login-max-attempts' => 'Login Gagal Sebelum Penguncian',
+                    'login-max-attempts-info' => 'Per email dan alamat IP. Antara 3 dan 20. Bawaan 5.',
+                    'login-lockout-seconds' => 'Penguncian Login (detik)',
+                    'login-lockout-seconds-info' => 'Antara 60 dan 3600. Bawaan 60.',
+                    'refresh-requests-per-minute' => 'Penyegaran Token per Menit per Sesi',
+                    'refresh-requests-per-minute-info' => 'Antara 1 dan 60. Bawaan 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Keamanan',
+                    'info' => 'Apa yang mengakhiri sesi lain pelanggan.',
+                    'revoke-sessions-on-password-change' => 'Cabut Sesi Saat Kata Sandi Diubah',
+                ],
+
+                'retention' => [
+                    'title' => 'Penyimpanan Data',
+                    'info' => 'Berapa lama sesi pelanggan yang berakhir disimpan.',
+                    'session-prune-days' => 'Simpan Sesi yang Berakhir (hari)',
+                    'session-prune-days-info' => 'Sesi yang dicabut atau kedaluwarsa dihapus setelah sekian hari. Antara 1 dan 365. Bawaan 30.',
+                ],
             ],
         ],
         'auth' => [

@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Recurso desconocido',
             'cannot-update-other-profile' => 'No autorizado: No se puede actualizar el perfil de otro cliente',
+            'refresh-token-invalid' => 'El token de actualización no es válido o ha caducado. Vuelve a iniciar sesión.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'El redirect_url debe ser una URL válida.',
                 'indices-required' => 'Se debe proporcionar al menos un ID en indices.',
                 'no-permission' => 'No tiene permiso para gestionar los términos de búsqueda.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Autenticación de clientes',
+                'info' => 'Duración de los tokens, límites y reglas de sesión para los inicios de sesión de clientes de la tienda.',
+
+                'tokens' => [
+                    'title' => 'Duración de los tokens',
+                    'info' => 'Cuánto tiempo son válidos los tokens de acceso, los tokens de actualización y las sesiones. Los cambios se aplican a los tokens emitidos después.',
+                    'access-token-ttl' => 'Duración del token de acceso (minutos)',
+                    'access-token-ttl-info' => 'Entre 5 y 60 minutos. Por defecto 15.',
+                    'refresh-token-ttl' => 'Duración del token de actualización (días)',
+                    'refresh-token-ttl-info' => 'Entre 1 y 90 días. Por defecto 30.',
+                    'session-lifetime' => 'Duración máxima de la sesión (días)',
+                    'session-lifetime-info' => 'Entre 1 y 365 días. Por defecto 90. Después, el administrador debe iniciar sesión de nuevo, sin importar cuántas veces se haya actualizado la sesión.',
+                    'max-sessions' => 'Máximo de sesiones activas por cliente',
+                    'max-sessions-info' => 'Al alcanzar el límite, se cierra la sesión más antigua. Entre 0 y 100. 0 significa sin límite.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Límites de solicitudes',
+                    'info' => 'Máximo de solicitudes a la API de la tienda por minuto para cada cliente conectado.',
+                    'requests-per-minute' => 'Solicitudes por minuto por cliente conectado',
+                    'requests-per-minute-info' => 'Entre 1 y 100000. Por defecto 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protección del inicio de sesión',
+                    'info' => 'Cuántos inicios de sesión fallidos y renovaciones de token se permiten antes de que el cliente deba esperar.',
+                    'login-max-attempts' => 'Inicios de sesión fallidos antes del bloqueo',
+                    'login-max-attempts-info' => 'Por correo electrónico y dirección IP. Entre 3 y 20. Por defecto 5.',
+                    'login-lockout-seconds' => 'Bloqueo del inicio de sesión (segundos)',
+                    'login-lockout-seconds-info' => 'Entre 60 y 3600. Por defecto 60.',
+                    'refresh-requests-per-minute' => 'Renovaciones de token por minuto por sesión',
+                    'refresh-requests-per-minute-info' => 'Entre 1 y 60. Por defecto 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Seguridad',
+                    'info' => 'Qué cierra las demás sesiones de un cliente.',
+                    'revoke-sessions-on-password-change' => 'Revocar las sesiones al cambiar la contraseña',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservación de datos',
+                    'info' => 'Cuánto tiempo se conservan las sesiones finalizadas de los clientes.',
+                    'session-prune-days' => 'Conservar sesiones finalizadas (días)',
+                    'session-prune-days-info' => 'Las sesiones revocadas o caducadas se eliminan después de estos días. Entre 1 y 365. Por defecto 30.',
+                ],
             ],
         ],
         'auth' => [

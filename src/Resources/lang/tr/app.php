@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Bilinmeyen kaynak',
             'cannot-update-other-profile' => 'Yetkisiz: Başka bir müşteri profili güncellenemez',
+            'refresh-token-invalid' => 'Yenileme belirteci geçersiz veya süresi dolmuş. Lütfen yeniden giriş yapın.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url geçerli bir URL olmalıdır.',
                 'indices-required' => 'indices içinde en az bir kimlik sağlanmalıdır.',
                 'no-permission' => 'Arama terimlerini yönetme izniniz yok.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Müşteri Kimlik Doğrulaması',
+                'info' => 'Mağaza müşteri girişleri için belirteç süreleri, sınırlar ve oturum kuralları.',
+
+                'tokens' => [
+                    'title' => 'Belirteç Süreleri',
+                    'info' => 'Erişim belirteçlerinin, yenileme belirteçlerinin ve oturumların ne kadar geçerli kalacağı. Değişiklikler sonradan verilen belirteçlere uygulanır.',
+                    'access-token-ttl' => 'Erişim Belirteci Süresi (dakika)',
+                    'access-token-ttl-info' => '5 ile 60 dakika arası. Varsayılan 15.',
+                    'refresh-token-ttl' => 'Yenileme Belirteci Süresi (gün)',
+                    'refresh-token-ttl-info' => '1 ile 90 gün arası. Varsayılan 30.',
+                    'session-lifetime' => 'En Uzun Oturum Süresi (gün)',
+                    'session-lifetime-info' => '1 ile 365 gün arası. Varsayılan 90. Bundan sonra oturum kaç kez yenilenmiş olursa olsun yönetici yeniden giriş yapmalıdır.',
+                    'max-sessions' => 'Müşteri Başına En Fazla Etkin Oturum',
+                    'max-sessions-info' => 'Sınıra ulaşıldığında en eski oturum sonlandırılır. 0 ile 100 arası. 0 sınır yok demektir.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'İstek Sınırları',
+                    'info' => 'Giriş yapmış müşteri başına dakikada en fazla mağaza API isteği.',
+                    'requests-per-minute' => 'Giriş Yapmış Müşteri Başına Dakikalık İstek',
+                    'requests-per-minute-info' => '1 ile 100000 arası. Varsayılan 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Giriş Koruması',
+                    'info' => 'İstemci beklemek zorunda kalmadan önce kaç başarısız giriş ve belirteç yenilemesine izin verildiği.',
+                    'login-max-attempts' => 'Kilitlenmeden Önce Başarısız Giriş',
+                    'login-max-attempts-info' => 'E-posta ve IP adresi başına. 3 ile 20 arası. Varsayılan 5.',
+                    'login-lockout-seconds' => 'Giriş Kilidi (saniye)',
+                    'login-lockout-seconds-info' => '60 ile 3600 arası. Varsayılan 60.',
+                    'refresh-requests-per-minute' => 'Oturum Başına Dakikalık Belirteç Yenileme',
+                    'refresh-requests-per-minute-info' => '1 ile 60 arası. Varsayılan 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Güvenlik',
+                    'info' => 'Bir müşterinin diğer oturumlarını neyin sonlandırdığı.',
+                    'revoke-sessions-on-password-change' => 'Parola Değişince Oturumları İptal Et',
+                ],
+
+                'retention' => [
+                    'title' => 'Veri Saklama',
+                    'info' => 'Sona eren müşteri oturumlarının ne kadar süre saklanacağı.',
+                    'session-prune-days' => 'Sona Eren Oturumları Sakla (gün)',
+                    'session-prune-days-info' => 'İptal edilen veya süresi dolan oturumlar bu kadar gün sonra silinir. 1 ile 365 arası. Varsayılan 30.',
+                ],
             ],
         ],
         'auth' => [

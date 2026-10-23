@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Onbekende bron',
             'cannot-update-other-profile' => 'Niet geautoriseerd: kan het profiel van een andere klant niet bijwerken',
+            'refresh-token-invalid' => 'Het vernieuwingstoken is ongeldig of verlopen. Log opnieuw in.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'De redirect_url moet een geldige URL zijn.',
                 'indices-required' => 'Er moet ten minste één ID worden opgegeven in indices.',
                 'no-permission' => 'U hebt geen toestemming om zoektermen te beheren.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Klantauthenticatie',
+                'info' => 'Tokenduur, limieten en sessieregels voor klantlogins in de winkel.',
+
+                'tokens' => [
+                    'title' => 'Tokenlooptijden',
+                    'info' => 'Hoe lang toegangstokens, vernieuwingstokens en sessies geldig blijven. Wijzigingen gelden voor tokens die daarna worden uitgegeven.',
+                    'access-token-ttl' => 'Looptijd toegangstoken (minuten)',
+                    'access-token-ttl-info' => 'Tussen 5 en 60 minuten. Standaard 15.',
+                    'refresh-token-ttl' => 'Looptijd vernieuwingstoken (dagen)',
+                    'refresh-token-ttl-info' => 'Tussen 1 en 90 dagen. Standaard 30.',
+                    'session-lifetime' => 'Maximale sessieduur (dagen)',
+                    'session-lifetime-info' => 'Tussen 1 en 365 dagen. Standaard 90. Daarna moet de beheerder opnieuw inloggen, hoe vaak de sessie ook is vernieuwd.',
+                    'max-sessions' => 'Maximaal aantal actieve sessies per klant',
+                    'max-sessions-info' => 'Als de limiet is bereikt, wordt de oudste sessie beëindigd. Tussen 0 en 100. 0 betekent geen limiet.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Verzoeklimieten',
+                    'info' => 'Maximaal aantal winkel-API-verzoeken per minuut per ingelogde klant.',
+                    'requests-per-minute' => 'Verzoeken per minuut per ingelogde klant',
+                    'requests-per-minute-info' => 'Tussen 1 en 100000. Standaard 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Inlogbeveiliging',
+                    'info' => 'Hoeveel mislukte inlogpogingen en tokenvernieuwingen zijn toegestaan voordat de client moet wachten.',
+                    'login-max-attempts' => 'Mislukte inlogpogingen vóór blokkering',
+                    'login-max-attempts-info' => 'Per e-mailadres en IP-adres. Tussen 3 en 20. Standaard 5.',
+                    'login-lockout-seconds' => 'Inlogblokkering (seconden)',
+                    'login-lockout-seconds-info' => 'Tussen 60 en 3600. Standaard 60.',
+                    'refresh-requests-per-minute' => 'Tokenvernieuwingen per minuut per sessie',
+                    'refresh-requests-per-minute-info' => 'Tussen 1 en 60. Standaard 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Beveiliging',
+                    'info' => 'Wat de andere sessies van een klant beëindigt.',
+                    'revoke-sessions-on-password-change' => 'Sessies intrekken bij wachtwoordwijziging',
+                ],
+
+                'retention' => [
+                    'title' => 'Gegevensbewaring',
+                    'info' => 'Hoe lang beëindigde klantsessies worden bewaard.',
+                    'session-prune-days' => 'Beëindigde sessies bewaren (dagen)',
+                    'session-prune-days-info' => 'Ingetrokken of verlopen sessies worden na dit aantal dagen verwijderd. Tussen 1 en 365. Standaard 30.',
+                ],
             ],
         ],
         'auth' => [

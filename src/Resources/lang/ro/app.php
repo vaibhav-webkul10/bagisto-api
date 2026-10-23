@@ -275,6 +275,7 @@ return [
             'token-required' => 'Tokenul de autentificare este obligatoriu. Vă rugăm să furnizați tokenul în antetul Authorization ca "Bearer <token>"',
             'unknown-resource' => 'Resursă necunoscută',
             'cannot-update-other-profile' => 'Neautorizat: nu puteți actualiza profilul altui client',
+            'refresh-token-invalid' => 'Tokenul de reîmprospătare este invalid sau a expirat. Autentifică-te din nou.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url trebuie să fie un URL valid.',
                 'indices-required' => 'Trebuie furnizat cel puțin un ID în indices.',
                 'no-permission' => 'Nu aveți permisiunea de a gestiona termenii de căutare.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Autentificarea clienților',
+                'info' => 'Durata tokenurilor, limitele și regulile de sesiune pentru autentificările clienților magazinului.',
+
+                'tokens' => [
+                    'title' => 'Durata tokenurilor',
+                    'info' => 'Cât timp rămân valide tokenurile de acces, tokenurile de reîmprospătare și sesiunile. Modificările se aplică tokenurilor emise ulterior.',
+                    'access-token-ttl' => 'Durata tokenului de acces (minute)',
+                    'access-token-ttl-info' => 'Între 5 și 60 de minute. Implicit 15.',
+                    'refresh-token-ttl' => 'Durata tokenului de reîmprospătare (zile)',
+                    'refresh-token-ttl-info' => 'Între 1 și 90 de zile. Implicit 30.',
+                    'session-lifetime' => 'Durata maximă a sesiunii (zile)',
+                    'session-lifetime-info' => 'Între 1 și 365 de zile. Implicit 90. După aceea administratorul trebuie să se autentifice din nou, indiferent de câte ori a fost reîmprospătată sesiunea.',
+                    'max-sessions' => 'Numărul maxim de sesiuni active per client',
+                    'max-sessions-info' => 'Când limita este atinsă, cea mai veche sesiune este încheiată. Între 0 și 100. 0 înseamnă fără limită.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Limite de cereri',
+                    'info' => 'Numărul maxim de cereri API ale magazinului pe minut pentru fiecare client autentificat.',
+                    'requests-per-minute' => 'Cereri pe minut per client autentificat',
+                    'requests-per-minute-info' => 'Între 1 și 100000. Implicit 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protecția autentificării',
+                    'info' => 'Câte autentificări eșuate și reîmprospătări de token sunt permise înainte ca clientul să aștepte.',
+                    'login-max-attempts' => 'Autentificări eșuate înainte de blocare',
+                    'login-max-attempts-info' => 'Per e-mail și adresă IP. Între 3 și 20. Implicit 5.',
+                    'login-lockout-seconds' => 'Blocarea autentificării (secunde)',
+                    'login-lockout-seconds-info' => 'Între 60 și 3600. Implicit 60.',
+                    'refresh-requests-per-minute' => 'Reîmprospătări de token pe minut per sesiune',
+                    'refresh-requests-per-minute-info' => 'Între 1 și 60. Implicit 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Securitate',
+                    'info' => 'Ce încheie celelalte sesiuni ale unui client.',
+                    'revoke-sessions-on-password-change' => 'Revocă sesiunile la schimbarea parolei',
+                ],
+
+                'retention' => [
+                    'title' => 'Păstrarea datelor',
+                    'info' => 'Cât timp sunt păstrate sesiunile încheiate ale clienților.',
+                    'session-prune-days' => 'Păstrează sesiunile încheiate (zile)',
+                    'session-prune-days-info' => 'Sesiunile revocate sau expirate sunt șterse după acest număr de zile. Între 1 și 365. Implicit 30.',
+                ],
             ],
         ],
         'auth' => [

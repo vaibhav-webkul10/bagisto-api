@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'منبع ناشناخته',
             'cannot-update-other-profile' => 'غیرمجاز: نمی‌توان پروفایل مشتری دیگری را به‌روزرسانی کرد',
+            'refresh-token-invalid' => 'توکن تازه‌سازی نامعتبر یا منقضی است. لطفاً دوباره وارد شوید.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url باید یک URL معتبر باشد.',
                 'indices-required' => 'حداقل یک شناسه باید در indices ارائه شود.',
                 'no-permission' => 'شما مجوز مدیریت عبارت‌های جستجو را ندارید.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'احراز هویت مشتریان',
+                'info' => 'مدت اعتبار توکن‌ها، محدودیت‌ها و قواعد نشست برای ورود مشتریان فروشگاه.',
+
+                'tokens' => [
+                    'title' => 'مدت اعتبار توکن‌ها',
+                    'info' => 'مدت اعتبار توکن‌های دسترسی، توکن‌های تازه‌سازی و نشست‌ها. تغییرات برای توکن‌های صادرشده پس از آن اعمال می‌شود.',
+                    'access-token-ttl' => 'مدت اعتبار توکن دسترسی (دقیقه)',
+                    'access-token-ttl-info' => 'بین ۵ تا ۶۰ دقیقه. پیش‌فرض ۱۵.',
+                    'refresh-token-ttl' => 'مدت اعتبار توکن تازه‌سازی (روز)',
+                    'refresh-token-ttl-info' => 'بین ۱ تا ۹۰ روز. پیش‌فرض ۳۰.',
+                    'session-lifetime' => 'حداکثر مدت نشست (روز)',
+                    'session-lifetime-info' => 'بین ۱ تا ۳۶۵ روز. پیش‌فرض ۹۰. پس از آن مدیر باید دوباره وارد شود، هر چند بار که نشست تازه‌سازی شده باشد.',
+                    'max-sessions' => 'حداکثر نشست‌های فعال برای هر مشتری',
+                    'max-sessions-info' => 'با رسیدن به حد، قدیمی‌ترین نشست پایان می‌یابد. بین ۰ تا ۱۰۰. ۰ یعنی بدون محدودیت.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'محدودیت نرخ',
+                    'info' => 'حداکثر درخواست‌های API فروشگاه در دقیقه برای هر مشتری واردشده.',
+                    'requests-per-minute' => 'درخواست در دقیقه برای هر مشتری واردشده',
+                    'requests-per-minute-info' => 'بین ۱ تا ۱۰۰۰۰۰. پیش‌فرض ۱۲۰.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'محافظت از ورود',
+                    'info' => 'چه تعداد ورود ناموفق و تمدید توکن مجاز است تا کلاینت مجبور به انتظار شود.',
+                    'login-max-attempts' => 'ورودهای ناموفق پیش از قفل شدن',
+                    'login-max-attempts-info' => 'برای هر ایمیل و نشانی IP. بین ۳ تا ۲۰. پیش‌فرض ۵.',
+                    'login-lockout-seconds' => 'قفل ورود (ثانیه)',
+                    'login-lockout-seconds-info' => 'بین ۶۰ تا ۳۶۰۰. پیش‌فرض ۶۰.',
+                    'refresh-requests-per-minute' => 'تمدید توکن در دقیقه برای هر نشست',
+                    'refresh-requests-per-minute-info' => 'بین ۱ تا ۶۰. پیش‌فرض ۱۰.',
+                ],
+
+                'security' => [
+                    'title' => 'امنیت',
+                    'info' => 'چه چیزی نشست‌های دیگر مشتری را پایان می‌دهد.',
+                    'revoke-sessions-on-password-change' => 'لغو نشست‌ها هنگام تغییر رمز عبور',
+                ],
+
+                'retention' => [
+                    'title' => 'نگهداری داده‌ها',
+                    'info' => 'نشست‌های پایان‌یافته مشتریان چه مدت نگهداری می‌شوند.',
+                    'session-prune-days' => 'نگهداری نشست‌های پایان‌یافته (روز)',
+                    'session-prune-days-info' => 'نشست‌های لغوشده یا منقضی پس از این تعداد روز حذف می‌شوند. بین ۱ تا ۳۶۵. پیش‌فرض ۳۰.',
+                ],
             ],
         ],
         'auth' => [

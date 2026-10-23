@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Risorsa sconosciuta',
             'cannot-update-other-profile' => 'Non autorizzato: impossibile aggiornare il profilo di un altro cliente',
+            'refresh-token-invalid' => 'Il token di aggiornamento non è valido o è scaduto. Accedi di nuovo.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url deve essere un URL valido.',
                 'indices-required' => 'È necessario fornire almeno un ID in indices.',
                 'no-permission' => 'Non hai l\'autorizzazione per gestire i termini di ricerca.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Autenticazione dei clienti',
+                'info' => 'Durata dei token, limiti e regole di sessione per gli accessi dei clienti del negozio.',
+
+                'tokens' => [
+                    'title' => 'Durata dei token',
+                    'info' => 'Per quanto tempo restano validi i token di accesso, i token di aggiornamento e le sessioni. Le modifiche si applicano ai token emessi in seguito.',
+                    'access-token-ttl' => 'Durata del token di accesso (minuti)',
+                    'access-token-ttl-info' => 'Tra 5 e 60 minuti. Predefinito 15.',
+                    'refresh-token-ttl' => 'Durata del token di aggiornamento (giorni)',
+                    'refresh-token-ttl-info' => 'Tra 1 e 90 giorni. Predefinito 30.',
+                    'session-lifetime' => 'Durata massima della sessione (giorni)',
+                    'session-lifetime-info' => 'Tra 1 e 365 giorni. Predefinito 90. Dopo, l\'amministratore deve accedere di nuovo, indipendentemente da quante volte la sessione è stata aggiornata.',
+                    'max-sessions' => 'Sessioni attive massime per cliente',
+                    'max-sessions-info' => 'Raggiunto il limite, la sessione più vecchia viene chiusa. Tra 0 e 100. 0 significa nessun limite.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Limiti di richieste',
+                    'info' => 'Richieste massime all\'API del negozio al minuto per ogni cliente connesso.',
+                    'requests-per-minute' => 'Richieste al minuto per cliente connesso',
+                    'requests-per-minute-info' => 'Tra 1 e 100000. Predefinito 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protezione dell\'accesso',
+                    'info' => 'Quanti accessi non riusciti e rinnovi del token sono consentiti prima che il client debba attendere.',
+                    'login-max-attempts' => 'Accessi non riusciti prima del blocco',
+                    'login-max-attempts-info' => 'Per email e indirizzo IP. Tra 3 e 20. Predefinito 5.',
+                    'login-lockout-seconds' => 'Blocco dell\'accesso (secondi)',
+                    'login-lockout-seconds-info' => 'Tra 60 e 3600. Predefinito 60.',
+                    'refresh-requests-per-minute' => 'Rinnovi del token al minuto per sessione',
+                    'refresh-requests-per-minute-info' => 'Tra 1 e 60. Predefinito 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Sicurezza',
+                    'info' => 'Cosa chiude le altre sessioni di un cliente.',
+                    'revoke-sessions-on-password-change' => 'Revoca le sessioni al cambio password',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservazione dei dati',
+                    'info' => 'Per quanto tempo vengono conservate le sessioni terminate dei clienti.',
+                    'session-prune-days' => 'Conserva le sessioni terminate (giorni)',
+                    'session-prune-days-info' => 'Le sessioni revocate o scadute vengono eliminate dopo questo numero di giorni. Tra 1 e 365. Predefinito 30.',
+                ],
             ],
         ],
         'auth' => [

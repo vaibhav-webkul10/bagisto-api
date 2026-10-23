@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'משאב לא ידוע',
             'cannot-update-other-profile' => 'לא מורשה: לא ניתן לעדכן פרופיל לקוח אחר',
+            'refresh-token-invalid' => 'אסימון הרענון אינו תקף או שפג תוקפו. נא להתחבר מחדש.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'redirect_url חייב להיות URL תקף.',
                 'indices-required' => 'יש לספק לפחות מזהה אחד ב-indices.',
                 'no-permission' => 'אין לך הרשאה לנהל מונחי חיפוש.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'אימות לקוחות',
+                'info' => 'משכי אסימונים, מגבלות וכללי סשן להתחברות לקוחות החנות.',
+
+                'tokens' => [
+                    'title' => 'משכי תוקף של אסימונים',
+                    'info' => 'כמה זמן אסימוני גישה, אסימוני רענון והפעלות נשארים בתוקף. השינויים חלים על אסימונים שיונפקו לאחר מכן.',
+                    'access-token-ttl' => 'משך תוקף אסימון הגישה (דקות)',
+                    'access-token-ttl-info' => 'בין 5 ל-60 דקות. ברירת מחדל 15.',
+                    'refresh-token-ttl' => 'משך תוקף אסימון הרענון (ימים)',
+                    'refresh-token-ttl-info' => 'בין 1 ל-90 ימים. ברירת מחדל 30.',
+                    'session-lifetime' => 'משך מרבי של הפעלה (ימים)',
+                    'session-lifetime-info' => 'בין 1 ל-365 ימים. ברירת מחדל 90. לאחר מכן המנהל חייב להתחבר מחדש, לא משנה כמה פעמים ההפעלה רועננה.',
+                    'max-sessions' => 'מקסימום סשנים פעילים ללקוח',
+                    'max-sessions-info' => 'כשמגיעים למגבלה, הסשן הוותיק ביותר מסתיים. בין 0 ל-100. 0 פירושו ללא מגבלה.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'מגבלות קצב',
+                    'info' => 'מקסימום בקשות API של החנות לדקה לכל לקוח מחובר.',
+                    'requests-per-minute' => 'בקשות לדקה לכל לקוח מחובר',
+                    'requests-per-minute-info' => 'בין 1 ל-100000. ברירת מחדל 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'הגנת התחברות',
+                    'info' => 'כמה התחברויות שנכשלו ורענוני אסימון מותרים לפני שהלקוח חייב להמתין.',
+                    'login-max-attempts' => 'התחברויות שנכשלו לפני נעילה',
+                    'login-max-attempts-info' => 'לכל כתובת דוא"ל וכתובת IP. בין 3 ל-20. ברירת מחדל 5.',
+                    'login-lockout-seconds' => 'נעילת התחברות (שניות)',
+                    'login-lockout-seconds-info' => 'בין 60 ל-3600. ברירת מחדל 60.',
+                    'refresh-requests-per-minute' => 'רענוני אסימון לדקה לכל סשן',
+                    'refresh-requests-per-minute-info' => 'בין 1 ל-60. ברירת מחדל 10.',
+                ],
+
+                'security' => [
+                    'title' => 'אבטחה',
+                    'info' => 'מה מסיים את הסשנים האחרים של לקוח.',
+                    'revoke-sessions-on-password-change' => 'בטל הפעלות בעת שינוי סיסמה',
+                ],
+
+                'retention' => [
+                    'title' => 'שמירת נתונים',
+                    'info' => 'כמה זמן נשמרים סשנים שהסתיימו של לקוחות.',
+                    'session-prune-days' => 'שמירת סשנים שהסתיימו (ימים)',
+                    'session-prune-days-info' => 'סשנים שבוטלו או פגו נמחקים לאחר מספר ימים זה. בין 1 ל-365. ברירת מחדל 30.',
+                ],
             ],
         ],
         'auth' => [

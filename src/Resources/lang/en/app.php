@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Unknown resource',
             'cannot-update-other-profile' => 'Unauthorized: Cannot update another customer profile',
+            'refresh-token-invalid' => 'The refresh token is invalid or has expired. Please log in again.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'The redirect_url must be a valid URL.',
                 'indices-required' => 'At least one ID must be provided in indices.',
                 'no-permission' => 'You do not have permission to manage search terms.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Customer Authentication',
+                'info' => 'Token lifetimes, limits and session rules for storefront customer logins.',
+
+                'tokens' => [
+                    'title' => 'Token Lifetimes',
+                    'info' => 'How long access tokens, refresh tokens and sessions stay valid. Changes apply to tokens issued afterwards.',
+                    'access-token-ttl' => 'Access Token Lifetime (minutes)',
+                    'access-token-ttl-info' => 'Between 5 and 60 minutes. Default 15.',
+                    'refresh-token-ttl' => 'Refresh Token Lifetime (days)',
+                    'refresh-token-ttl-info' => 'Between 1 and 90 days. Default 30.',
+                    'session-lifetime' => 'Absolute Session Lifetime (days)',
+                    'session-lifetime-info' => 'Between 1 and 365 days. Default 90. After this the admin must log in again, however often the session is refreshed.',
+                    'max-sessions' => 'Maximum Active Sessions per Customer',
+                    'max-sessions-info' => 'When the limit is reached, the oldest session is ended. Between 0 and 100. 0 means no limit.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Rate Limits',
+                    'info' => 'Maximum storefront API requests per minute for each signed-in customer.',
+                    'requests-per-minute' => 'Requests per Minute per Signed-in Customer',
+                    'requests-per-minute-info' => 'Between 1 and 100000. Default 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Login Protection',
+                    'info' => 'How many failed logins and token refreshes are allowed before the client must wait.',
+                    'login-max-attempts' => 'Failed Logins Before Lockout',
+                    'login-max-attempts-info' => 'Per email and IP address. Between 3 and 20. Default 5.',
+                    'login-lockout-seconds' => 'Login Lockout (seconds)',
+                    'login-lockout-seconds-info' => 'Between 60 and 3600. Default 60.',
+                    'refresh-requests-per-minute' => 'Token Refreshes per Minute per Session',
+                    'refresh-requests-per-minute-info' => 'Between 1 and 60. Default 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Security',
+                    'info' => 'What ends a customer\'s other sessions.',
+                    'revoke-sessions-on-password-change' => 'Revoke Sessions on Password Change',
+                ],
+
+                'retention' => [
+                    'title' => 'Data Retention',
+                    'info' => 'How long ended customer sessions are kept.',
+                    'session-prune-days' => 'Keep Ended Sessions (days)',
+                    'session-prune-days-info' => 'Revoked or expired sessions are deleted after this many days. Between 1 and 365. Default 30.',
+                ],
             ],
         ],
         'auth' => [

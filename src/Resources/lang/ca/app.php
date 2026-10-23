@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Recurs desconegut',
             'cannot-update-other-profile' => 'No autoritzat: No es pot actualitzar el perfil d\'un altre client',
+            'refresh-token-invalid' => 'El token de refresc no és vàlid o ha caducat. Torna a iniciar sessió.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'El redirect_url ha de ser un URL vàlid.',
                 'indices-required' => 'Cal proporcionar almenys un ID a indices.',
                 'no-permission' => 'No teniu permís per gestionar els termes de cerca.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Autenticació de clients',
+                'info' => 'Durades dels tokens, límits i regles de sessió per als inicis de sessió dels clients de la botiga.',
+
+                'tokens' => [
+                    'title' => 'Durada dels tokens',
+                    'info' => 'Quant de temps són vàlids els tokens d\'accés, els tokens de refresc i les sessions. Els canvis s\'apliquen als tokens emesos després.',
+                    'access-token-ttl' => 'Durada del token d\'accés (minuts)',
+                    'access-token-ttl-info' => 'Entre 5 i 60 minuts. Per defecte 15.',
+                    'refresh-token-ttl' => 'Durada del token de refresc (dies)',
+                    'refresh-token-ttl-info' => 'Entre 1 i 90 dies. Per defecte 30.',
+                    'session-lifetime' => 'Durada màxima de la sessió (dies)',
+                    'session-lifetime-info' => 'Entre 1 i 365 dies. Per defecte 90. Després, l\'administrador ha de tornar a iniciar sessió, per molt que s\'hagi refrescat la sessió.',
+                    'max-sessions' => 'Màxim de sessions actives per client',
+                    'max-sessions-info' => 'En arribar al límit, es tanca la sessió més antiga. Entre 0 i 100. 0 vol dir sense límit.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Límits de peticions',
+                    'info' => 'Màxim de peticions a l\'API de la botiga per minut per a cada client connectat.',
+                    'requests-per-minute' => 'Peticions per minut per client connectat',
+                    'requests-per-minute-info' => 'Entre 1 i 100000. Per defecte 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protecció de l\'inici de sessió',
+                    'info' => 'Quants inicis de sessió fallits i renovacions de token es permeten abans que el client hagi d\'esperar.',
+                    'login-max-attempts' => 'Inicis de sessió fallits abans del bloqueig',
+                    'login-max-attempts-info' => 'Per correu electrònic i adreça IP. Entre 3 i 20. Per defecte 5.',
+                    'login-lockout-seconds' => 'Bloqueig de l\'inici de sessió (segons)',
+                    'login-lockout-seconds-info' => 'Entre 60 i 3600. Per defecte 60.',
+                    'refresh-requests-per-minute' => 'Renovacions de token per minut per sessió',
+                    'refresh-requests-per-minute-info' => 'Entre 1 i 60. Per defecte 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Seguretat',
+                    'info' => 'Què tanca les altres sessions d\'un client.',
+                    'revoke-sessions-on-password-change' => 'Revocar les sessions en canviar la contrasenya',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservació de dades',
+                    'info' => 'Quant de temps es conserven les sessions acabades dels clients.',
+                    'session-prune-days' => 'Conservar les sessions acabades (dies)',
+                    'session-prune-days-info' => 'Les sessions revocades o caducades s\'eliminen després d\'aquests dies. Entre 1 i 365. Per defecte 30.',
+                ],
             ],
         ],
         'auth' => [

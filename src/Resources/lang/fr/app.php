@@ -275,6 +275,7 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Ressource inconnue',
             'cannot-update-other-profile' => 'Non autorisé : impossible de mettre à jour le profil d\'un autre client',
+            'refresh-token-invalid' => 'Le jeton de rafraîchissement est invalide ou a expiré. Veuillez vous reconnecter.',
         ],
 
         'upload' => [
@@ -1623,6 +1624,56 @@ return [
                 'redirect-url-invalid' => 'Le redirect_url doit être une URL valide.',
                 'indices-required' => 'Au moins un ID doit être fourni dans indices.',
                 'no-permission' => 'Vous n\'avez pas la permission de gérer les termes de recherche.',
+            ],
+        ],
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Authentification des clients',
+                'info' => 'Durées des jetons, limites et règles de session pour les connexions des clients de la boutique.',
+
+                'tokens' => [
+                    'title' => 'Durées des jetons',
+                    'info' => 'Durée de validité des jetons d\'accès, des jetons de rafraîchissement et des sessions. Les modifications s\'appliquent aux jetons émis ensuite.',
+                    'access-token-ttl' => 'Durée du jeton d\'accès (minutes)',
+                    'access-token-ttl-info' => 'Entre 5 et 60 minutes. Par défaut 15.',
+                    'refresh-token-ttl' => 'Durée du jeton de rafraîchissement (jours)',
+                    'refresh-token-ttl-info' => 'Entre 1 et 90 jours. Par défaut 30.',
+                    'session-lifetime' => 'Durée maximale de la session (jours)',
+                    'session-lifetime-info' => 'Entre 1 et 365 jours. Par défaut 90. Ensuite, l\'administrateur doit se reconnecter, quel que soit le nombre de rafraîchissements.',
+                    'max-sessions' => 'Nombre maximal de sessions actives par client',
+                    'max-sessions-info' => 'Une fois la limite atteinte, la session la plus ancienne est fermée. Entre 0 et 100. 0 signifie aucune limite.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Limites de requêtes',
+                    'info' => 'Nombre maximal de requêtes à l\'API de la boutique par minute pour chaque client connecté.',
+                    'requests-per-minute' => 'Requêtes par minute par client connecté',
+                    'requests-per-minute-info' => 'Entre 1 et 100000. Par défaut 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protection de la connexion',
+                    'info' => 'Nombre de connexions échouées et de renouvellements de jeton autorisés avant que le client doive patienter.',
+                    'login-max-attempts' => 'Connexions échouées avant blocage',
+                    'login-max-attempts-info' => 'Par adresse e-mail et adresse IP. Entre 3 et 20. Par défaut 5.',
+                    'login-lockout-seconds' => 'Blocage de la connexion (secondes)',
+                    'login-lockout-seconds-info' => 'Entre 60 et 3600. Par défaut 60.',
+                    'refresh-requests-per-minute' => 'Renouvellements de jeton par minute par session',
+                    'refresh-requests-per-minute-info' => 'Entre 1 et 60. Par défaut 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Sécurité',
+                    'info' => 'Ce qui ferme les autres sessions d\'un client.',
+                    'revoke-sessions-on-password-change' => 'Révoquer les sessions lors d\'un changement de mot de passe',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservation des données',
+                    'info' => 'Durée de conservation des sessions terminées des clients.',
+                    'session-prune-days' => 'Conserver les sessions terminées (jours)',
+                    'session-prune-days-info' => 'Les sessions révoquées ou expirées sont supprimées après ce nombre de jours. Entre 1 et 365. Par défaut 30.',
+                ],
             ],
         ],
         'auth' => [
