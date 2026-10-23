@@ -305,6 +305,42 @@ class CustomerTest extends RestApiTestCase
     }
 
     /**
+     * Test update profile with an invalid email is rejected and leaves the email unchanged.
+     */
+    public function test_update_profile_with_invalid_email_is_rejected(): void
+    {
+        $this->seedRequiredData();
+        $customer = $this->createCustomer();
+
+        $response = $this->authenticatedPut(
+            $customer,
+            '/api/shop/customer-profile-updates/'.$customer->id,
+            ['email' => 'not-an-email']
+        );
+
+        expect($response->getStatusCode())->toBe(400);
+        expect($customer->fresh()->email)->not()->toBe('not-an-email');
+    }
+
+    /**
+     * Test update profile accepts an email another channel's customer uses, as core does.
+     */
+    public function test_update_profile_with_email_used_on_another_channel_is_accepted(): void
+    {
+        $this->seedRequiredData();
+        $customer = $this->createCustomer();
+        $other = $this->createCustomer(['channel_id' => 999]);
+
+        $this->authenticatedPut(
+            $customer,
+            '/api/shop/customer-profile-updates/'.$customer->id,
+            ['email' => $other->email]
+        )->assertOk();
+
+        expect($customer->fresh()->email)->toBe($other->email);
+    }
+
+    /**
      * Test update profile password mismatch returns error.
      */
     public function test_update_profile_password_mismatch_returns_error(): void

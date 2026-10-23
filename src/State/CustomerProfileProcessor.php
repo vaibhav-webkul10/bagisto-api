@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Webkul\BagistoApi\Dto\CustomerProfileOutput;
 use Webkul\BagistoApi\Exception\AuthenticationException;
 use Webkul\BagistoApi\Exception\InvalidInputException;
@@ -125,12 +126,18 @@ class CustomerProfileProcessor implements ProcessorInterface
     }
 
     /**
-     * The email column is unique per channel, so a clash would otherwise surface
-     * as a raw database error instead of a validation failure.
+     * Refuse an invalid email, and one another customer of the same channel uses, as core's profile request does.
      */
     private function assertEmailAvailable(string $email, Customer $authenticatedCustomer): void
     {
+        $validator = Validator::make(['email' => $email], ['email' => 'email']);
+
+        if ($validator->fails()) {
+            throw new InvalidInputException($validator->errors()->first('email'));
+        }
+
         $taken = Customer::where('email', $email)
+            ->where('channel_id', $authenticatedCustomer->channel_id)
             ->where('id', '!=', $authenticatedCustomer->id)
             ->exists();
 

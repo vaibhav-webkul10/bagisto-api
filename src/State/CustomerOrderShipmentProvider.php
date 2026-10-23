@@ -13,6 +13,7 @@ use Webkul\BagistoApi\Exception\ResourceNotFoundException;
 use Webkul\BagistoApi\Models\CustomerOrderShipment;
 use Webkul\BagistoApi\State\Concerns\ClampsPageSize;
 use Webkul\BagistoApi\State\Concerns\ResolvesCursorWindow;
+use Webkul\BagistoApi\State\Concerns\ScopesNestedConnections;
 use Webkul\BagistoApi\Support\CurrentCustomer;
 use Webkul\Customer\Models\Customer;
 
@@ -20,6 +21,7 @@ class CustomerOrderShipmentProvider implements ProviderInterface
 {
     use ClampsPageSize;
     use ResolvesCursorWindow;
+    use ScopesNestedConnections;
 
     /**
      * Create a new instance.
@@ -87,6 +89,8 @@ class CustomerOrderShipmentProvider implements ProviderInterface
             $query->where('customer_id', $customer->id)
                 ->where('customer_type', Customer::class);
         })->with(['items', 'shippingAddress', 'order']);
+
+        $this->scopeToParent($query, $context);
 
         $orderId = $args['orderId']
             ?? $filters['orderId']

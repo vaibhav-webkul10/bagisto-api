@@ -281,6 +281,31 @@ class CustomerProfileTest extends GraphQLTestCase
     }
 
     /**
+     * Test: An invalid email is refused and the email is unchanged.
+     */
+    public function test_update_customer_email_rejects_an_invalid_address(): void
+    {
+        $customer = $this->createCustomer([
+            'email' => 'kept-'.uniqid().'@example.com',
+        ]);
+
+        $mutation = <<<'GQL'
+            mutation updateProfile($input: createCustomerProfileUpdateInput!) {
+              createCustomerProfileUpdate(input: $input) {
+                clientMutationId
+              }
+            }
+        GQL;
+
+        $response = $this->authenticatedGraphQL($customer, $mutation, [
+            'input' => ['email' => 'not-an-email'],
+        ]);
+
+        expect($response->json('errors'))->not->toBeNull();
+        expect($customer->fresh()->email)->not->toBe('not-an-email');
+    }
+
+    /**
      * Test: Update customer date of birth.
      */
     public function test_update_customer_date_of_birth(): void

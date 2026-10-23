@@ -10,11 +10,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Webkul\BagistoApi\Models\Category;
 use Webkul\BagistoApi\State\Concerns\ClampsPageSize;
 use Webkul\BagistoApi\State\Concerns\ResolvesCursorWindow;
+use Webkul\BagistoApi\State\Concerns\ScopesNestedConnections;
 
 class CursorAwareCollectionProvider implements ProviderInterface
 {
     use ClampsPageSize;
     use ResolvesCursorWindow;
+    use ScopesNestedConnections;
 
     /**
      * Create a new instance.
@@ -46,6 +48,8 @@ class CursorAwareCollectionProvider implements ProviderInterface
                 'modelClass' => $operation->getClass(),
             ] + $context
         );
+
+        $this->scopeToParent($query, $context);
 
         if ($model instanceof Category) {
             $query->where($model->getTable().'.status', 1);
