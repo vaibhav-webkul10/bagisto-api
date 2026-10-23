@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Numero massimo di richieste all\'API di amministrazione al minuto.',
                     'session-requests-per-minute' => 'Richieste al minuto per amministratore connesso',
                     'api-token-requests-per-minute' => 'Richieste al minuto per token API',
+                    'session-requests-per-minute-info' => 'Tra 1 e 100000. Predefinito 60.',
+                    'api-token-requests-per-minute-info' => 'Tra 1 e 100000. Predefinito 60.',
+                    'unauthenticated-requests-per-minute' => 'Richieste al minuto senza token, per indirizzo IP',
+                    'unauthenticated-requests-per-minute-info' => 'Tra 10 e 1000. Predefinito 60. Comprende le richieste di accesso, doppio fattore, rinnovo e password.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS verifica che la richiesta provenga da un indirizzo IP a cui punta il dominio del token. Origin verifica l\'intestazione Origin o Referer ed è adatto solo ai browser.',
                     'domain-binding-dns' => 'DNS (indirizzo IP del client)',
                     'domain-binding-origin' => 'Intestazione Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protezione dell\'accesso',
+                    'info' => 'Quanti accessi non riusciti, codici a doppio fattore errati e richieste di password sono consentiti prima che il client debba attendere.',
+                    'login-max-attempts' => 'Accessi non riusciti prima del blocco',
+                    'login-max-attempts-info' => 'Per email e indirizzo IP. Tra 3 e 20. Predefinito 5.',
+                    'login-lockout-seconds' => 'Blocco dell\'accesso (secondi)',
+                    'login-lockout-seconds-info' => 'Tra 60 e 3600. Predefinito 60.',
+                    'two-factor-challenge-lifetime' => 'Durata della verifica a doppio fattore (minuti)',
+                    'two-factor-challenge-lifetime-info' => 'Tra 1 e 15. Predefinito 5.',
+                    'two-factor-max-failures' => 'Codici a doppio fattore errati al minuto',
+                    'two-factor-max-failures-info' => 'Per amministratore, su tutte le verifiche. Tra 3 e 20. Predefinito 5.',
+                    'password-requests-per-minute' => 'Richieste di password al minuto',
+                    'password-requests-per-minute-info' => 'Richieste di recupero e reimpostazione della password per indirizzo IP. Tra 1 e 20. Predefinito 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservazione dei dati',
+                    'info' => 'Per quanto tempo vengono conservate le sessioni terminate e la cronologia di audit dell\'API.',
+                    'session-prune-days' => 'Conserva le sessioni terminate (giorni)',
+                    'session-prune-days-info' => 'Le sessioni revocate o scadute vengono eliminate dopo questo numero di giorni. Tra 1 e 365. Predefinito 30.',
+                    'audit-retention-days' => 'Conserva la cronologia di audit dell\'API (giorni)',
+                    'audit-retention-days-info' => 'Le voci più vecchie vengono eliminate ogni giorno. Tra 0 e 3650. Vuoto o 0 le conserva per sempre.',
                 ],
             ],
 

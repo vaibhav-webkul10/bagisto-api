@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Máximo de solicitudes a la API de administración por minuto.',
                     'session-requests-per-minute' => 'Solicitudes por minuto por administrador conectado',
                     'api-token-requests-per-minute' => 'Solicitudes por minuto por token de API',
+                    'session-requests-per-minute-info' => 'Entre 1 y 100000. Por defecto 60.',
+                    'api-token-requests-per-minute-info' => 'Entre 1 y 100000. Por defecto 60.',
+                    'unauthenticated-requests-per-minute' => 'Solicitudes por minuto sin token, por dirección IP',
+                    'unauthenticated-requests-per-minute-info' => 'Entre 10 y 1000. Por defecto 60. Incluye las solicitudes de inicio de sesión, doble factor, renovación y contraseña.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS comprueba que la solicitud procede de una dirección IP a la que resuelve el dominio del token. Origin comprueba la cabecera Origin o Referer y solo sirve para navegadores.',
                     'domain-binding-dns' => 'DNS (dirección IP del cliente)',
                     'domain-binding-origin' => 'Cabecera Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protección del inicio de sesión',
+                    'info' => 'Cuántos inicios de sesión fallidos, códigos de doble factor erróneos y solicitudes de contraseña se permiten antes de que el cliente deba esperar.',
+                    'login-max-attempts' => 'Inicios de sesión fallidos antes del bloqueo',
+                    'login-max-attempts-info' => 'Por correo electrónico y dirección IP. Entre 3 y 20. Por defecto 5.',
+                    'login-lockout-seconds' => 'Bloqueo del inicio de sesión (segundos)',
+                    'login-lockout-seconds-info' => 'Entre 60 y 3600. Por defecto 60.',
+                    'two-factor-challenge-lifetime' => 'Duración del desafío de doble factor (minutos)',
+                    'two-factor-challenge-lifetime-info' => 'Entre 1 y 15. Por defecto 5.',
+                    'two-factor-max-failures' => 'Códigos de doble factor erróneos por minuto',
+                    'two-factor-max-failures-info' => 'Por administrador, en todos los desafíos. Entre 3 y 20. Por defecto 5.',
+                    'password-requests-per-minute' => 'Solicitudes de contraseña por minuto',
+                    'password-requests-per-minute-info' => 'Solicitudes de olvido y restablecimiento de contraseña por dirección IP. Entre 1 y 20. Por defecto 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservación de datos',
+                    'info' => 'Cuánto tiempo se conservan las sesiones finalizadas y el historial de auditoría de la API.',
+                    'session-prune-days' => 'Conservar sesiones finalizadas (días)',
+                    'session-prune-days-info' => 'Las sesiones revocadas o caducadas se eliminan después de estos días. Entre 1 y 365. Por defecto 30.',
+                    'audit-retention-days' => 'Conservar el historial de auditoría de la API (días)',
+                    'audit-retention-days-info' => 'Las entradas más antiguas se eliminan a diario. Entre 0 y 3650. Vacío o 0 las conserva para siempre.',
                 ],
             ],
 

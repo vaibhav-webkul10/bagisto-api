@@ -1646,6 +1646,10 @@ return [
                     'info' => 'প্রতি মিনিটে সর্বোচ্চ অ্যাডমিন API অনুরোধ।',
                     'session-requests-per-minute' => 'প্রতি লগইন করা অ্যাডমিনের জন্য প্রতি মিনিটে অনুরোধ',
                     'api-token-requests-per-minute' => 'প্রতি API টোকেনের জন্য প্রতি মিনিটে অনুরোধ',
+                    'session-requests-per-minute-info' => '১ থেকে ১০০০০০। ডিফল্ট ৬০।',
+                    'api-token-requests-per-minute-info' => '১ থেকে ১০০০০০। ডিফল্ট ৬০।',
+                    'unauthenticated-requests-per-minute' => 'টোকেন ছাড়া প্রতি IP ঠিকানায় প্রতি মিনিটে অনুরোধ',
+                    'unauthenticated-requests-per-minute-info' => '১০ থেকে ১০০০। ডিফল্ট ৬০। লগইন, টু-ফ্যাক্টর, রিফ্রেশ এবং পাসওয়ার্ড অনুরোধ এর অন্তর্ভুক্ত।',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS যাচাই করে অনুরোধটি টোকেনের ডোমেইন যে IP ঠিকানায় রিজলভ হয় সেখান থেকে এসেছে কিনা। Origin, Origin বা Referer হেডার যাচাই করে এবং শুধু ব্রাউজারের জন্য উপযুক্ত।',
                     'domain-binding-dns' => 'DNS (ক্লায়েন্টের IP ঠিকানা)',
                     'domain-binding-origin' => 'Origin হেডার',
+                ],
+
+                'login-protection' => [
+                    'title' => 'লগইন সুরক্ষা',
+                    'info' => 'ক্লায়েন্টকে অপেক্ষা করানোর আগে কতগুলি ব্যর্থ লগইন, ভুল টু-ফ্যাক্টর কোড এবং পাসওয়ার্ড অনুরোধ অনুমোদিত।',
+                    'login-max-attempts' => 'লকআউটের আগে ব্যর্থ লগইন',
+                    'login-max-attempts-info' => 'প্রতি ইমেল এবং IP ঠিকানায়। ৩ থেকে ২০। ডিফল্ট ৫।',
+                    'login-lockout-seconds' => 'লগইন লকআউট (সেকেন্ড)',
+                    'login-lockout-seconds-info' => '৬০ থেকে ৩৬০০। ডিফল্ট ৬০।',
+                    'two-factor-challenge-lifetime' => 'টু-ফ্যাক্টর চ্যালেঞ্জের মেয়াদ (মিনিট)',
+                    'two-factor-challenge-lifetime-info' => '১ থেকে ১৫। ডিফল্ট ৫।',
+                    'two-factor-max-failures' => 'প্রতি মিনিটে ভুল টু-ফ্যাক্টর কোড',
+                    'two-factor-max-failures-info' => 'প্রতি অ্যাডমিন, সব চ্যালেঞ্জ মিলিয়ে। ৩ থেকে ২০। ডিফল্ট ৫।',
+                    'password-requests-per-minute' => 'প্রতি মিনিটে পাসওয়ার্ড অনুরোধ',
+                    'password-requests-per-minute-info' => 'প্রতি IP ঠিকানায় পাসওয়ার্ড ভুলে যাওয়া ও রিসেট অনুরোধ। ১ থেকে ২০। ডিফল্ট ৫।',
+                ],
+
+                'retention' => [
+                    'title' => 'ডেটা সংরক্ষণ',
+                    'info' => 'শেষ হওয়া সেশন এবং API অডিট ইতিহাস কতদিন রাখা হবে।',
+                    'session-prune-days' => 'শেষ হওয়া সেশন রাখুন (দিন)',
+                    'session-prune-days-info' => 'বাতিল বা মেয়াদোত্তীর্ণ সেশন এত দিন পরে মুছে ফেলা হয়। ১ থেকে ৩৬৫। ডিফল্ট ৩০।',
+                    'audit-retention-days' => 'API অডিট ইতিহাস রাখুন (দিন)',
+                    'audit-retention-days-info' => 'পুরনো এন্ট্রি প্রতিদিন মুছে ফেলা হয়। ০ থেকে ৩৬৫০। খালি বা ০ রাখলে চিরকাল থাকবে।',
                 ],
             ],
 

@@ -759,7 +759,7 @@
                                         "login"
                                     ]
                                 },
-                                "description": "Starts a session and returns a short-lived JWT access token and a refresh token. Send the access token as `Authorization: Bearer <accessToken>` and exchange the refresh token at `/api/admin/auth/refresh` before or after the access token expires. When the admin has two-factor authentication enabled, the response is `202` with `twoFactorRequired: true` and a single-use `challengeToken` valid for 5 minutes, and no tokens: send it with the code to `/api/admin/auth/two-factor`. Five failed attempts per email and address in a minute lock the login for that minute.",
+                                "description": "Starts a session and returns a short-lived JWT access token and a refresh token. Send the access token as `Authorization: Bearer <accessToken>` and exchange the refresh token at `/api/admin/auth/refresh` before or after the access token expires. When the admin has two-factor authentication enabled, the response is `202` with `twoFactorRequired: true` and a single-use `challengeToken` valid for 5 minutes by default, and no tokens: send it with the code to `/api/admin/auth/two-factor`. Five failed attempts per email and address lock the login for 60 seconds by default; both are configurable under Configuration → API → Admin Authentication → Login Protection.",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"email\": \"{{adminEmail}}\",\n    \"password\": \"{{adminPassword}}\",\n    \"device_name\": \"Postman\",\n    \"client_type\": \"other\"\n}",
@@ -812,7 +812,7 @@
                                         "two-factor"
                                     ]
                                 },
-                                "description": "Exchanges the `challengeToken` of a `202` login, with the 6-digit authenticator `code` or a `backupCode`, for the access and refresh token pair. A challenge works once and for 5 minutes; five wrong codes revoke it, and five wrong codes a minute for the same admin lock further codes for that minute. A code from an already used time window is refused, and a backup code is used up.",
+                                "description": "Exchanges the `challengeToken` of a `202` login, with the 6-digit authenticator `code` or a `backupCode`, for the access and refresh token pair. A challenge works once and for 5 minutes by default; five wrong codes revoke it, and five wrong codes a minute for the same admin (configurable) lock further codes for that minute. A code from an already used time window is refused, and a backup code is used up.",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"challenge_token\": \"{{adminChallengeToken}}\",\n    \"code\": \"123456\"\n}",
@@ -1063,7 +1063,7 @@
                                         "forgot-password"
                                     ]
                                 },
-                                "description": "Sends core's admin password reset email when the address belongs to an admin. The answer is the same whether or not it does. Five requests a minute per client address are allowed.",
+                                "description": "Sends core's admin password reset email when the address belongs to an admin. The answer is the same whether or not it does. Five requests a minute per client address are allowed by default (configurable).",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"email\": \"admin@example.com\"\n}",
@@ -1095,7 +1095,7 @@
                                         "reset-password"
                                     ]
                                 },
-                                "description": "Sets a new password with the token from the reset email, through core's admin password broker. Every API session of the admin is revoked, and every API token too when *Revoke API Tokens on Password Change* is on; log in again afterwards. Five requests a minute per client address are allowed.",
+                                "description": "Sets a new password with the token from the reset email, through core's admin password broker. Every API session of the admin is revoked, and every API token too when *Revoke API Tokens on Password Change* is on; log in again afterwards. Five requests a minute per client address are allowed by default (configurable).",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"token\": \"6f1c0e...\",\n    \"email\": \"admin@example.com\",\n    \"password\": \"new-secret\",\n    \"password_confirmation\": \"new-secret\"\n}",

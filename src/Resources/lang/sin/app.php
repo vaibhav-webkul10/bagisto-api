@@ -1646,6 +1646,10 @@ return [
                     'info' => 'මිනිත්තුවකට උපරිම පරිපාලක API ඉල්ලීම්.',
                     'session-requests-per-minute' => 'පිවිසි එක් පරිපාලකයෙකුට මිනිත්තුවකට ඉල්ලීම්',
                     'api-token-requests-per-minute' => 'එක් API ටෝකනයකට මිනිත්තුවකට ඉල්ලීම්',
+                    'session-requests-per-minute-info' => '1 සිට 100000 දක්වා. පෙරනිමිය 60.',
+                    'api-token-requests-per-minute-info' => '1 සිට 100000 දක්වා. පෙරනිමිය 60.',
+                    'unauthenticated-requests-per-minute' => 'ටෝකනයක් නොමැතිව එක් IP ලිපිනයකට මිනිත්තුවකට ඉල්ලීම්',
+                    'unauthenticated-requests-per-minute-info' => '10 සිට 1000 දක්වා. පෙරනිමිය 60. පිවිසීම, ද්වි-සාධක, නැවුම් කිරීම සහ මුරපද ඉල්ලීම් ඇතුළත් වේ.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS මඟින් ඉල්ලීම ටෝකනයේ වසම යොමු වන IP ලිපිනයකින් පැමිණේදැයි පරීක්ෂා කරයි. Origin මඟින් Origin හෝ Referer ශීර්ෂය පරීක්ෂා කරන අතර එය බ්‍රව්සර් සඳහා පමණක් සුදුසුය.',
                     'domain-binding-dns' => 'DNS (සේවාලාභී IP ලිපිනය)',
                     'domain-binding-origin' => 'Origin ශීර්ෂය',
+                ],
+
+                'login-protection' => [
+                    'title' => 'පිවිසුම් ආරක්ෂාව',
+                    'info' => 'සේවාලාභියාට රැඳී සිටීමට සිදුවීමට පෙර අසාර්ථක පිවිසුම්, වැරදි ද්වි-සාධක කේත සහ මුරපද ඉල්ලීම් කීයක් ඉඩ දෙන්නේද.',
+                    'login-max-attempts' => 'අගුළු දැමීමට පෙර අසාර්ථක පිවිසුම්',
+                    'login-max-attempts-info' => 'එක් ඊමේල් ලිපිනයකට සහ IP ලිපිනයකට. 3 සිට 20 දක්වා. පෙරනිමිය 5.',
+                    'login-lockout-seconds' => 'පිවිසුම් අගුළු දැමීම (තත්පර)',
+                    'login-lockout-seconds-info' => '60 සිට 3600 දක්වා. පෙරනිමිය 60.',
+                    'two-factor-challenge-lifetime' => 'ද්වි-සාධක අභියෝගයේ කාලය (මිනිත්තු)',
+                    'two-factor-challenge-lifetime-info' => '1 සිට 15 දක්වා. පෙරනිමිය 5.',
+                    'two-factor-max-failures' => 'මිනිත්තුවකට වැරදි ද්වි-සාධක කේත',
+                    'two-factor-max-failures-info' => 'එක් පරිපාලකයෙකුට, සියලු අභියෝග හරහා. 3 සිට 20 දක්වා. පෙරනිමිය 5.',
+                    'password-requests-per-minute' => 'මිනිත්තුවකට මුරපද ඉල්ලීම්',
+                    'password-requests-per-minute-info' => 'එක් IP ලිපිනයකට මුරපදය අමතක වීම සහ යළි සැකසීමේ ඉල්ලීම්. 1 සිට 20 දක්වා. පෙරනිමිය 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'දත්ත රඳවා ගැනීම',
+                    'info' => 'අවසන් වූ සැසි සහ API විගණන ඉතිහාසය කොපමණ කාලයක් තබා ගන්නේද.',
+                    'session-prune-days' => 'අවසන් වූ සැසි තබා ගන්න (දින)',
+                    'session-prune-days-info' => 'අවලංගු කළ හෝ කල් ඉකුත් වූ සැසි මෙතරම් දිනකට පසු මකා දමයි. 1 සිට 365 දක්වා. පෙරනිමිය 30.',
+                    'audit-retention-days' => 'API විගණන ඉතිහාසය තබා ගන්න (දින)',
+                    'audit-retention-days-info' => 'පැරණි ඇතුළත් කිරීම් දිනපතා මකා දමයි. 0 සිට 3650 දක්වා. හිස් හෝ 0 නම් ඒවා සදහටම තබා ගනී.',
                 ],
             ],
 

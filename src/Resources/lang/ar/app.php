@@ -1646,6 +1646,10 @@ return [
                     'info' => 'الحد الأقصى لطلبات API المسؤول في الدقيقة.',
                     'session-requests-per-minute' => 'الطلبات في الدقيقة لكل مسؤول مسجَّل الدخول',
                     'api-token-requests-per-minute' => 'الطلبات في الدقيقة لكل رمز API',
+                    'session-requests-per-minute-info' => 'بين 1 و100000. القيمة الافتراضية 60.',
+                    'api-token-requests-per-minute-info' => 'بين 1 و100000. القيمة الافتراضية 60.',
+                    'unauthenticated-requests-per-minute' => 'الطلبات في الدقيقة بدون رمز لكل عنوان IP',
+                    'unauthenticated-requests-per-minute-info' => 'بين 10 و1000. القيمة الافتراضية 60. يشمل طلبات تسجيل الدخول والتحقق الثنائي والتحديث وكلمة المرور.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'يتحقق DNS من أن الطلب صادر من عنوان IP يشير إليه نطاق الرمز. يتحقق Origin من ترويسة Origin أو Referer ويناسب المتصفحات فقط.',
                     'domain-binding-dns' => 'DNS (عنوان IP للعميل)',
                     'domain-binding-origin' => 'ترويسة Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'حماية تسجيل الدخول',
+                    'info' => 'عدد محاولات تسجيل الدخول الفاشلة ورموز التحقق الثنائي الخاطئة وطلبات كلمة المرور المسموح بها قبل أن ينتظر العميل.',
+                    'login-max-attempts' => 'محاولات تسجيل الدخول الفاشلة قبل القفل',
+                    'login-max-attempts-info' => 'لكل بريد إلكتروني وعنوان IP. بين 3 و20. القيمة الافتراضية 5.',
+                    'login-lockout-seconds' => 'مدة قفل تسجيل الدخول (بالثواني)',
+                    'login-lockout-seconds-info' => 'بين 60 و3600. القيمة الافتراضية 60.',
+                    'two-factor-challenge-lifetime' => 'مدة صلاحية تحدي التحقق الثنائي (بالدقائق)',
+                    'two-factor-challenge-lifetime-info' => 'بين 1 و15. القيمة الافتراضية 5.',
+                    'two-factor-max-failures' => 'رموز التحقق الثنائي الخاطئة في الدقيقة',
+                    'two-factor-max-failures-info' => 'لكل مسؤول، عبر جميع التحديات. بين 3 و20. القيمة الافتراضية 5.',
+                    'password-requests-per-minute' => 'طلبات كلمة المرور في الدقيقة',
+                    'password-requests-per-minute-info' => 'طلبات نسيان كلمة المرور وإعادة تعيينها لكل عنوان IP. بين 1 و20. القيمة الافتراضية 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'الاحتفاظ بالبيانات',
+                    'info' => 'مدة الاحتفاظ بالجلسات المنتهية وسجل تدقيق واجهة API.',
+                    'session-prune-days' => 'الاحتفاظ بالجلسات المنتهية (بالأيام)',
+                    'session-prune-days-info' => 'تُحذف الجلسات الملغاة أو المنتهية بعد هذا العدد من الأيام. بين 1 و365. القيمة الافتراضية 30.',
+                    'audit-retention-days' => 'الاحتفاظ بسجل تدقيق API (بالأيام)',
+                    'audit-retention-days-info' => 'تُحذف الإدخالات الأقدم يوميًا. بين 0 و3650. القيمة الفارغة أو 0 تحتفظ بها إلى الأبد.',
                 ],
             ],
 

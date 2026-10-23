@@ -144,6 +144,12 @@ On Bagisto v2.5.0 the theme endpoints are `/api/admin/appearance/themes`, `/api/
 - HTML sent to the admin API for CMS pages, email templates, category descriptions and WYSIWYG product attributes is now cleaned with core's `clean_content()` before it is saved. Content that was saved through the API before this change keeps its markup until it is next saved; open and save it again, through the API or the admin panel, to clean it.
 - Product images uploaded through the admin API are stored as webp under a generated name in `products/{id}/`, as the admin panel stores them. Images uploaded earlier stay where they are.
 
+## 7a. Configuration clean-up (unreleased)
+
+- The `rate_limit` block of `config/api-platform.php` and the `RATE_LIMIT_*` environment variables are gone. They were read only by a middleware that no route used, so removing them changes no limit. If you set them, delete them from `.env`; the published `config/api-platform.php` may keep the block, which is now ignored.
+- The `security_headers` values of `config/api-platform.php` now apply. Check `csp_header` in your published copy: a custom value replaces the default Content-Security-Policy, and `enabled => false` stops the API's own headers (Bagisto core still sends its `X-Frame-Options`, `Referrer-Policy` and `Strict-Transport-Security`).
+- The audit retention moved to *Configuration → API → Admin Authentication → Data Retention*. `BAGISTO_API_AUDIT_RETENTION_DAYS` is still used while that field is empty, and `bagisto-api:prune-audits` now runs daily through the scheduler.
+
 ## 8. Admin RMA message attachments
 
 Earlier versions saved the files an admin attached to an RMA message through `POST /api/admin/rma/messages` on the default disk, which is `public` on a standard store, under `rma-conversation/{message id}/`. Anyone with the link can download those files from `/storage/rma-conversation/...`. New uploads go to the `private` disk under `rmas/{rma id}/conversations/{message id}/`, as the admin panel stores them.

@@ -1646,6 +1646,10 @@ return [
                     'info' => '1 分あたりの管理者 API リクエストの上限。',
                     'session-requests-per-minute' => 'ログイン中の管理者ごとの 1 分あたりのリクエスト数',
                     'api-token-requests-per-minute' => 'API トークンごとの 1 分あたりのリクエスト数',
+                    'session-requests-per-minute-info' => '1～100000。既定値 60。',
+                    'api-token-requests-per-minute-info' => '1～100000。既定値 60。',
+                    'unauthenticated-requests-per-minute' => 'トークンなしの IP アドレスごとの 1 分あたりのリクエスト数',
+                    'unauthenticated-requests-per-minute-info' => '10～1000。既定値 60。ログイン、二要素認証、更新、パスワードのリクエストが対象です。',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS は、トークンのドメインが解決される IP アドレスからのリクエストかを確認します。Origin は Origin または Referer ヘッダーを確認し、ブラウザーからの呼び出しにのみ適しています。',
                     'domain-binding-dns' => 'DNS（クライアントの IP アドレス）',
                     'domain-binding-origin' => 'Origin ヘッダー',
+                ],
+
+                'login-protection' => [
+                    'title' => 'ログイン保護',
+                    'info' => 'クライアントが待機を求められるまでに許可される、ログイン失敗、誤った二要素コード、パスワードリクエストの回数。',
+                    'login-max-attempts' => 'ロックアウトまでのログイン失敗回数',
+                    'login-max-attempts-info' => 'メールアドレスと IP アドレスごと。3～20。既定値 5。',
+                    'login-lockout-seconds' => 'ログインのロックアウト (秒)',
+                    'login-lockout-seconds-info' => '60～3600。既定値 60。',
+                    'two-factor-challenge-lifetime' => '二要素認証チャレンジの有効期間 (分)',
+                    'two-factor-challenge-lifetime-info' => '1～15。既定値 5。',
+                    'two-factor-max-failures' => '1 分あたりの誤った二要素コード数',
+                    'two-factor-max-failures-info' => '管理者ごと、すべてのチャレンジの合計。3～20。既定値 5。',
+                    'password-requests-per-minute' => '1 分あたりのパスワードリクエスト数',
+                    'password-requests-per-minute-info' => 'IP アドレスごとのパスワード忘れ・再設定リクエスト。1～20。既定値 5。',
+                ],
+
+                'retention' => [
+                    'title' => 'データ保持',
+                    'info' => '終了したセッションと API 監査履歴を保持する期間。',
+                    'session-prune-days' => '終了したセッションを保持 (日)',
+                    'session-prune-days-info' => '取り消された、または期限切れのセッションはこの日数後に削除されます。1～365。既定値 30。',
+                    'audit-retention-days' => 'API 監査履歴を保持 (日)',
+                    'audit-retention-days-info' => '古いエントリは毎日削除されます。0～3650。空または 0 の場合は無期限に保持されます。',
                 ],
             ],
 

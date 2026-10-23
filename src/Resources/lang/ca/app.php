@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Màxim de peticions a l\'API d\'administració per minut.',
                     'session-requests-per-minute' => 'Peticions per minut per administrador connectat',
                     'api-token-requests-per-minute' => 'Peticions per minut per token d\'API',
+                    'session-requests-per-minute-info' => 'Entre 1 i 100000. Per defecte 60.',
+                    'api-token-requests-per-minute-info' => 'Entre 1 i 100000. Per defecte 60.',
+                    'unauthenticated-requests-per-minute' => 'Peticions per minut sense token, per adreça IP',
+                    'unauthenticated-requests-per-minute-info' => 'Entre 10 i 1000. Per defecte 60. Inclou les peticions d\'inici de sessió, doble factor, renovació i contrasenya.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS comprova que la petició ve d\'una adreça IP a la qual resol el domini del token. Origin comprova la capçalera Origin o Referer i només és adequat per a navegadors.',
                     'domain-binding-dns' => 'DNS (adreça IP del client)',
                     'domain-binding-origin' => 'Capçalera Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protecció de l\'inici de sessió',
+                    'info' => 'Quants inicis de sessió fallits, codis de doble factor erronis i peticions de contrasenya es permeten abans que el client hagi d\'esperar.',
+                    'login-max-attempts' => 'Inicis de sessió fallits abans del bloqueig',
+                    'login-max-attempts-info' => 'Per correu electrònic i adreça IP. Entre 3 i 20. Per defecte 5.',
+                    'login-lockout-seconds' => 'Bloqueig de l\'inici de sessió (segons)',
+                    'login-lockout-seconds-info' => 'Entre 60 i 3600. Per defecte 60.',
+                    'two-factor-challenge-lifetime' => 'Durada del repte de doble factor (minuts)',
+                    'two-factor-challenge-lifetime-info' => 'Entre 1 i 15. Per defecte 5.',
+                    'two-factor-max-failures' => 'Codis de doble factor erronis per minut',
+                    'two-factor-max-failures-info' => 'Per administrador, en tots els reptes. Entre 3 i 20. Per defecte 5.',
+                    'password-requests-per-minute' => 'Peticions de contrasenya per minut',
+                    'password-requests-per-minute-info' => 'Peticions d\'oblit i restabliment de contrasenya per adreça IP. Entre 1 i 20. Per defecte 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservació de dades',
+                    'info' => 'Quant de temps es conserven les sessions acabades i l\'historial d\'auditoria de l\'API.',
+                    'session-prune-days' => 'Conservar les sessions acabades (dies)',
+                    'session-prune-days-info' => 'Les sessions revocades o caducades s\'eliminen després d\'aquests dies. Entre 1 i 365. Per defecte 30.',
+                    'audit-retention-days' => 'Conservar l\'historial d\'auditoria de l\'API (dies)',
+                    'audit-retention-days-info' => 'Les entrades més antigues s\'eliminen cada dia. Entre 0 i 3650. Buit o 0 les conserva per sempre.',
                 ],
             ],
 

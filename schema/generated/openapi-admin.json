@@ -3050,7 +3050,7 @@
                         "links": []
                     },
                     "429": {
-                        "description": "More than five forgot-password requests from this address in a minute (`too_many_password_requests`), or more than 60 requests a minute (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
+                        "description": "More than the forgot-password requests allowed from this address in a minute, five by default (`too_many_password_requests`), or more than the requests allowed a minute, 60 by default (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3088,7 +3088,7 @@
                     }
                 },
                 "summary": "Email a password reset link",
-                "description": "Sends core's admin password reset email when the address belongs to an admin. The answer is the same whether or not it does. Five requests a minute per client address are allowed.",
+                "description": "Sends core's admin password reset email when the address belongs to an admin. The answer is the same whether or not it does. Five requests a minute per client address are allowed by default (configurable).",
                 "parameters": [],
                 "requestBody": {
                     "description": "The new AdminForgotPassword resource",
@@ -3363,7 +3363,7 @@
                     }
                 },
                 "summary": "Log in with email and password",
-                "description": "Starts a session and returns a short-lived JWT access token and a refresh token. Send the access token as `Authorization: Bearer <accessToken>` and exchange the refresh token at `/api/admin/auth/refresh` before or after the access token expires. When the admin has two-factor authentication enabled, the response is `202` with `twoFactorRequired: true` and a single-use `challengeToken` valid for 5 minutes, and no tokens: send it with the code to `/api/admin/auth/two-factor`. Five failed attempts per email and address in a minute lock the login for that minute.",
+                "description": "Starts a session and returns a short-lived JWT access token and a refresh token. Send the access token as `Authorization: Bearer <accessToken>` and exchange the refresh token at `/api/admin/auth/refresh` before or after the access token expires. When the admin has two-factor authentication enabled, the response is `202` with `twoFactorRequired: true` and a single-use `challengeToken` valid for 5 minutes by default, and no tokens: send it with the code to `/api/admin/auth/two-factor`. Five failed attempts per email and address lock the login for 60 seconds by default; both are configurable under Configuration → API → Admin Authentication → Login Protection.",
                 "parameters": [],
                 "requestBody": {
                     "description": "The new AdminLogin resource",
@@ -3725,7 +3725,7 @@
                         "links": []
                     },
                     "429": {
-                        "description": "More than 60 requests a minute from this address (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
+                        "description": "More than the requests allowed a minute from this address, 60 by default (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3854,7 +3854,7 @@
                         "links": []
                     },
                     "429": {
-                        "description": "More than five reset-password requests from this address in a minute (`too_many_password_requests`), or more than 60 requests a minute (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
+                        "description": "More than the reset-password requests allowed from this address in a minute, five by default (`too_many_password_requests`), or more than the requests allowed a minute, 60 by default (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3892,7 +3892,7 @@
                     }
                 },
                 "summary": "Reset a password with the emailed token",
-                "description": "Sets a new password with the token from the reset email, through core's admin password broker. Every API session of the admin is revoked, and every API token too when *Revoke API Tokens on Password Change* is on; log in again afterwards. Five requests a minute per client address are allowed.",
+                "description": "Sets a new password with the token from the reset email, through core's admin password broker. Every API session of the admin is revoked, and every API token too when *Revoke API Tokens on Password Change* is on; log in again afterwards. Five requests a minute per client address are allowed by default (configurable).",
                 "parameters": [],
                 "requestBody": {
                     "description": "The new AdminResetPassword resource",
@@ -4301,7 +4301,7 @@
                         "links": []
                     },
                     "429": {
-                        "description": "Five wrong codes for this admin in a minute (`too_many_login_attempts`), or more than 60 requests a minute from this address (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
+                        "description": "Too many wrong codes for this admin in a minute, five by default (`too_many_login_attempts`), or more than the requests allowed a minute from this address, 60 by default (`rate_limit_exceeded`). Wait for `Retry-After` seconds.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4339,7 +4339,7 @@
                     }
                 },
                 "summary": "Finish a login with a two-factor code",
-                "description": "Exchanges the `challengeToken` of a `202` login, with the 6-digit authenticator `code` or a `backupCode`, for the access and refresh token pair. A challenge works once and for 5 minutes; five wrong codes revoke it, and five wrong codes a minute for the same admin lock further codes for that minute. A code from an already used time window is refused, and a backup code is used up.",
+                "description": "Exchanges the `challengeToken` of a `202` login, with the 6-digit authenticator `code` or a `backupCode`, for the access and refresh token pair. A challenge works once and for 5 minutes by default; five wrong codes revoke it, and five wrong codes a minute for the same admin (configurable) lock further codes for that minute. A code from an already used time window is refused, and a backup code is used up.",
                 "parameters": [],
                 "requestBody": {
                     "description": "The new AdminTwoFactorVerify resource",

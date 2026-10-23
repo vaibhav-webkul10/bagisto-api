@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Máximo de requisições à API de administração por minuto.',
                     'session-requests-per-minute' => 'Requisições por minuto por administrador conectado',
                     'api-token-requests-per-minute' => 'Requisições por minuto por token de API',
+                    'session-requests-per-minute-info' => 'Entre 1 e 100000. Padrão 60.',
+                    'api-token-requests-per-minute-info' => 'Entre 1 e 100000. Padrão 60.',
+                    'unauthenticated-requests-per-minute' => 'Requisições por minuto sem token, por endereço IP',
+                    'unauthenticated-requests-per-minute-info' => 'Entre 10 e 1000. Padrão 60. Inclui as requisições de login, dois fatores, renovação e senha.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS verifica se a requisição vem de um endereço IP para o qual o domínio do token aponta. Origin verifica o cabeçalho Origin ou Referer e serve apenas para navegadores.',
                     'domain-binding-dns' => 'DNS (endereço IP do cliente)',
                     'domain-binding-origin' => 'Cabeçalho Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Proteção de login',
+                    'info' => 'Quantos logins com falha, códigos de dois fatores incorretos e requisições de senha são permitidos antes que o cliente precise esperar.',
+                    'login-max-attempts' => 'Logins com falha antes do bloqueio',
+                    'login-max-attempts-info' => 'Por e-mail e endereço IP. Entre 3 e 20. Padrão 5.',
+                    'login-lockout-seconds' => 'Bloqueio de login (segundos)',
+                    'login-lockout-seconds-info' => 'Entre 60 e 3600. Padrão 60.',
+                    'two-factor-challenge-lifetime' => 'Duração do desafio de dois fatores (minutos)',
+                    'two-factor-challenge-lifetime-info' => 'Entre 1 e 15. Padrão 5.',
+                    'two-factor-max-failures' => 'Códigos de dois fatores incorretos por minuto',
+                    'two-factor-max-failures-info' => 'Por administrador, em todos os desafios. Entre 3 e 20. Padrão 5.',
+                    'password-requests-per-minute' => 'Requisições de senha por minuto',
+                    'password-requests-per-minute-info' => 'Requisições de esqueci a senha e redefinição por endereço IP. Entre 1 e 20. Padrão 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Retenção de dados',
+                    'info' => 'Por quanto tempo as sessões encerradas e o histórico de auditoria da API são mantidos.',
+                    'session-prune-days' => 'Manter sessões encerradas (dias)',
+                    'session-prune-days-info' => 'Sessões revogadas ou expiradas são excluídas após esse número de dias. Entre 1 e 365. Padrão 30.',
+                    'audit-retention-days' => 'Manter histórico de auditoria da API (dias)',
+                    'audit-retention-days-info' => 'Entradas mais antigas são excluídas diariamente. Entre 0 e 3650. Vazio ou 0 as mantém para sempre.',
                 ],
             ],
 

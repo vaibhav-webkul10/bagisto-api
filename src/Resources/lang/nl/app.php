@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Maximaal aantal admin-API-verzoeken per minuut.',
                     'session-requests-per-minute' => 'Verzoeken per minuut per ingelogde beheerder',
                     'api-token-requests-per-minute' => 'Verzoeken per minuut per API-token',
+                    'session-requests-per-minute-info' => 'Tussen 1 en 100000. Standaard 60.',
+                    'api-token-requests-per-minute-info' => 'Tussen 1 en 100000. Standaard 60.',
+                    'unauthenticated-requests-per-minute' => 'Verzoeken per minuut zonder token, per IP-adres',
+                    'unauthenticated-requests-per-minute-info' => 'Tussen 10 en 1000. Standaard 60. Omvat inlog-, tweestaps-, vernieuwings- en wachtwoordverzoeken.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS controleert of het verzoek komt van een IP-adres waarnaar het domein van het token verwijst. Origin controleert de Origin- of Referer-header en is alleen geschikt voor browsers.',
                     'domain-binding-dns' => 'DNS (IP-adres van de client)',
                     'domain-binding-origin' => 'Origin-header',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Inlogbeveiliging',
+                    'info' => 'Hoeveel mislukte inlogpogingen, onjuiste tweestapscodes en wachtwoordverzoeken zijn toegestaan voordat de client moet wachten.',
+                    'login-max-attempts' => 'Mislukte inlogpogingen vóór blokkering',
+                    'login-max-attempts-info' => 'Per e-mailadres en IP-adres. Tussen 3 en 20. Standaard 5.',
+                    'login-lockout-seconds' => 'Inlogblokkering (seconden)',
+                    'login-lockout-seconds-info' => 'Tussen 60 en 3600. Standaard 60.',
+                    'two-factor-challenge-lifetime' => 'Geldigheid van de tweestapsverificatie (minuten)',
+                    'two-factor-challenge-lifetime-info' => 'Tussen 1 en 15. Standaard 5.',
+                    'two-factor-max-failures' => 'Onjuiste tweestapscodes per minuut',
+                    'two-factor-max-failures-info' => 'Per beheerder, over alle verificaties. Tussen 3 en 20. Standaard 5.',
+                    'password-requests-per-minute' => 'Wachtwoordverzoeken per minuut',
+                    'password-requests-per-minute-info' => 'Verzoeken om een wachtwoord te vergeten en opnieuw in te stellen per IP-adres. Tussen 1 en 20. Standaard 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Gegevensbewaring',
+                    'info' => 'Hoe lang beëindigde sessies en de API-auditgeschiedenis worden bewaard.',
+                    'session-prune-days' => 'Beëindigde sessies bewaren (dagen)',
+                    'session-prune-days-info' => 'Ingetrokken of verlopen sessies worden na dit aantal dagen verwijderd. Tussen 1 en 365. Standaard 30.',
+                    'audit-retention-days' => 'API-auditgeschiedenis bewaren (dagen)',
+                    'audit-retention-days-info' => 'Oudere vermeldingen worden dagelijks verwijderd. Tussen 0 en 3650. Leeg of 0 bewaart ze voor altijd.',
                 ],
             ],
 

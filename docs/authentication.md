@@ -118,7 +118,7 @@ mutation {
 }
 ```
 
-A wrong email or password answers `401 invalid_credentials` with the same message whether or not the email exists. An inactive admin gets `403 account_inactive`. Five failed logins for the same email and client address within a minute lock that pair for the rest of the minute (`429 too_many_login_attempts` with `Retry-After`).
+A wrong email or password answers `401 invalid_credentials` with the same message whether or not the email exists. An inactive admin gets `403 account_inactive`. Five failed logins for the same email and client address lock that pair for 60 seconds by default (`429 too_many_login_attempts` with `Retry-After`); both numbers are set under *Login Protection* (see [Configuration](#configuration)).
 
 ### Two-factor authentication
 
@@ -170,8 +170,8 @@ curl -X POST https://shop.example.com/api/admin/auth/two-factor \
 ```
 
 - Send either `code` (6 digits) or `backup_code`, not both. A backup code works once; a code from an already used time window is refused.
-- The challenge token is single-use and valid for **5 minutes**.
-- Five wrong codes revoke the challenge. Five wrong codes within a minute for the same admin, across challenges, answer `429 too_many_login_attempts` with `Retry-After`.
+- The challenge token is single-use and valid for **5 minutes** by default (*Two-Factor Challenge Lifetime*).
+- Five wrong codes revoke the challenge. Five wrong codes within a minute for the same admin, across challenges, answer `429 too_many_login_attempts` with `Retry-After`; that second number is *Wrong Two-Factor Codes per Minute*.
 - Over GraphQL the login returns `twoFactorRequired: true` in a normal GraphQL answer (there is no `202`), and the second step is `createAdminTwoFactorVerify(input: { challengeToken, code })` (or `backupCode`), selecting `adminTwoFactorVerify { accessToken refreshToken ... }`.
 
 ### Refreshing the access token
@@ -262,7 +262,7 @@ The admin panel's *Settings → API Sessions* screen does the same, and can revo
 
 ### Password reset and account update
 
-`POST /api/admin/auth/forgot-password` with `{ "email": "..." }` sends core's admin reset email and answers `200` the same way whether or not the email belongs to an admin. `POST /api/admin/auth/reset-password` with `token` (from the emailed link), `email`, `password` (at least 6 characters) and `password_confirmation` sets the new password through core's `admins` password broker. A token that does not match answers `422 password_reset_token_invalid`. Each of the two allows five requests a minute per client address (`429 too_many_password_requests` with `Retry-After`). Both are public, and their GraphQL forms are `createAdminForgotPassword` and `createAdminResetPassword`.
+`POST /api/admin/auth/forgot-password` with `{ "email": "..." }` sends core's admin reset email and answers `200` the same way whether or not the email belongs to an admin. `POST /api/admin/auth/reset-password` with `token` (from the emailed link), `email`, `password` (at least 6 characters) and `password_confirmation` sets the new password through core's `admins` password broker. A token that does not match answers `422 password_reset_token_invalid`. Each of the two allows five requests a minute per client address by default, set by *Password Requests per Minute* (`429 too_many_password_requests` with `Retry-After`). Both are public, and their GraphQL forms are `createAdminForgotPassword` and `createAdminResetPassword`.
 
 A successful reset logs the admin out of the admin panel, as core does, and **revokes every API session** of the admin, whatever the configuration — and every API token too when *Revoke API Tokens on Password Change* is on.
 
@@ -381,7 +381,7 @@ Over GraphQL these come back as `errors[]` entries with `extensions.code`, `exte
 | 422 | `invalid_current_password` | Wrong current password on an account update | Correct the input |
 | 422 | `password_reset_token_invalid` | The reset token or email does not match a reset request | Request a new reset link |
 | 422 | — | Validation failure (problem document; `detail` holds the first message) | Correct the input |
-| 429 | `too_many_login_attempts` | Five failed logins for an email and address, or five wrong codes for an admin, in a minute | Wait for `Retry-After` seconds |
+| 429 | `too_many_login_attempts` | Too many failed logins for an email and address, or wrong codes for an admin (five each by default) | Wait for `Retry-After` seconds |
 | 429 | `too_many_password_requests` | Five forgot or reset requests from an address in a minute | Wait for `Retry-After` seconds |
 | 429 | `rate_limit_exceeded` | Over the request rate limit (see below) | Wait for `Retry-After` seconds |
 
@@ -391,7 +391,7 @@ Admin API requests are counted per minute:
 
 - per **admin** for requests with a login session's access token — *Requests per Minute per Signed-in Admin*, 60 by default;
 - per **API token** — *Requests per Minute per API Token*, 60 by default;
-- per **client address**, 60 a minute, for requests without a valid token, the public sign-in operations included.
+- per **client address** for requests without a valid token, the public sign-in operations included — *Requests per Minute without a Token, per IP Address*, 60 by default.
 
 Over the limit, a request answers `429` with `{ "message": "Too Many Attempts.", "error": "rate_limit_exceeded" }` and a `Retry-After` header.
 
@@ -404,14 +404,22 @@ The admin panel's **Configuration → API → Admin Authentication** sets:
 | Token Lifetimes | Access Token Lifetime (minutes) | 15 | 5–60 |
 | Token Lifetimes | Refresh Token Lifetime (days) | 30 | 1–90 |
 | Token Lifetimes | Absolute Session Lifetime (days) | 90 | 1–365 |
-| Rate Limits | Requests per Minute per Signed-in Admin | 60 | 1 or more |
-| Rate Limits | Requests per Minute per API Token | 60 | 1 or more |
+| Rate Limits | Requests per Minute per Signed-in Admin | 60 | 1–100000 |
+| Rate Limits | Requests per Minute per API Token | 60 | 1–100000 |
+| Rate Limits | Requests per Minute without a Token, per IP Address | 60 | 10–1000 |
 | Security | Revoke Sessions on Password Change | Yes | Yes / No |
 | Security | Revoke API Tokens on Password Change | No | Yes / No |
 | Security | Allow API Tokens Without Expiry | Yes | Yes / No |
 | Security | Domain Binding Mode | DNS (client IP address) | DNS / Origin header |
+| Login Protection | Failed Logins Before Lockout | 5 | 3–20 |
+| Login Protection | Login Lockout (seconds) | 60 | 60–3600 |
+| Login Protection | Two-Factor Challenge Lifetime (minutes) | 5 | 1–15 |
+| Login Protection | Wrong Two-Factor Codes per Minute | 5 | 3–20 |
+| Login Protection | Password Requests per Minute | 5 | 1–20 |
+| Data Retention | Keep Ended Sessions (days) | 30 | 1–365 |
+| Data Retention | Keep API Audit History (days) | empty (keep forever) | 0–3650, 0 or empty keeps it forever |
 
-Lifetime changes apply to tokens issued afterwards. The defaults, used when the configuration has no value, live in the package's `src/Admin/Config/admin-auth.php` (`bagistoapi.admin_auth`), which also holds settings with no admin field: the DNS cache time (300 seconds), how long ended sessions are kept before they are pruned (30 days) and the JWT settings (audience, the 30-second leeway and the key location).
+Lifetime changes apply to tokens issued afterwards. The defaults, used when the configuration has no value, live in the package's `src/Admin/Config/admin-auth.php` (`bagistoapi.admin_auth`), which also holds settings with no admin field: the DNS cache time (300 seconds) and the JWT settings (audience, the 30-second leeway and the key location). An empty audit retention falls back to `BAGISTO_API_AUDIT_RETENTION_DAYS`; `php artisan bagisto-api:prune-audits` applies it and is scheduled daily.
 
 **Signing keys.** `php artisan bagisto-api-platform:install` creates the ES256 key pair with `php artisan bagisto-api:jwt-keys` under `storage/app/private/bagisto-api/jwt/`. On several servers, give every node the same keys through `BAGISTO_API_JWT_PRIVATE_KEY` and `BAGISTO_API_JWT_PUBLIC_KEY` (PEM or base64-encoded PEM, P-256). `bagisto-api:jwt-keys --rotate` makes a new signing key and keeps the old public key, so issued tokens keep working; `--reissue-api-tokens` signs the API tokens that use an older key again and prints each new token once. `php artisan bagisto-api:prune-admin-tokens`, scheduled hourly, deletes expired refresh tokens and two-factor challenges, long-ended sessions and retired keys nothing uses.
 
@@ -481,7 +489,7 @@ async function adminFetch(path, options = {}) {
 
 **Use `client_type` and `device_name`.** They label the session in *My sessions* and *Settings → API Sessions*, so the admin can tell their phone from their laptop and revoke the right one.
 
-**Handle `202` on login.** An app that may be used by an admin with two-factor authentication must show a code screen when the login answers `202`, and send the code within 5 minutes.
+**Handle `202` on login.** An app that may be used by an admin with two-factor authentication must show a code screen when the login answers `202`, and send the code within the challenge lifetime (5 minutes by default).
 
 ---
 

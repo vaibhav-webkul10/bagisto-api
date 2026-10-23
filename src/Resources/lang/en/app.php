@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Maximum admin API requests per minute.',
                     'session-requests-per-minute' => 'Requests per Minute per Signed-in Admin',
                     'api-token-requests-per-minute' => 'Requests per Minute per API Token',
+                    'session-requests-per-minute-info' => 'Between 1 and 100000. Default 60.',
+                    'api-token-requests-per-minute-info' => 'Between 1 and 100000. Default 60.',
+                    'unauthenticated-requests-per-minute' => 'Requests per Minute without a Token, per IP Address',
+                    'unauthenticated-requests-per-minute-info' => 'Between 10 and 1000. Default 60. Covers login, two-factor, refresh and password requests.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS checks that the request comes from an IP address the token\'s domain resolves to. Origin checks the Origin or Referer header and only suits browser callers.',
                     'domain-binding-dns' => 'DNS (client IP address)',
                     'domain-binding-origin' => 'Origin header',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Login Protection',
+                    'info' => 'How many failed logins, wrong two-factor codes and password requests are allowed before the client must wait.',
+                    'login-max-attempts' => 'Failed Logins Before Lockout',
+                    'login-max-attempts-info' => 'Per email and IP address. Between 3 and 20. Default 5.',
+                    'login-lockout-seconds' => 'Login Lockout (seconds)',
+                    'login-lockout-seconds-info' => 'Between 60 and 3600. Default 60.',
+                    'two-factor-challenge-lifetime' => 'Two-Factor Challenge Lifetime (minutes)',
+                    'two-factor-challenge-lifetime-info' => 'Between 1 and 15. Default 5.',
+                    'two-factor-max-failures' => 'Wrong Two-Factor Codes per Minute',
+                    'two-factor-max-failures-info' => 'Per admin, across all challenges. Between 3 and 20. Default 5.',
+                    'password-requests-per-minute' => 'Password Requests per Minute',
+                    'password-requests-per-minute-info' => 'Forgot and reset password requests per IP address. Between 1 and 20. Default 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Data Retention',
+                    'info' => 'How long ended sessions and the API audit history are kept.',
+                    'session-prune-days' => 'Keep Ended Sessions (days)',
+                    'session-prune-days-info' => 'Revoked or expired sessions are deleted after this many days. Between 1 and 365. Default 30.',
+                    'audit-retention-days' => 'Keep API Audit History (days)',
+                    'audit-retention-days-info' => 'Older entries are deleted daily. Between 0 and 3650. Empty or 0 keeps them forever.',
                 ],
             ],
 

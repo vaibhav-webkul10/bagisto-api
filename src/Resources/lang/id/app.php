@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Jumlah maksimum permintaan API admin per menit.',
                     'session-requests-per-minute' => 'Permintaan per Menit per Admin yang Login',
                     'api-token-requests-per-minute' => 'Permintaan per Menit per Token API',
+                    'session-requests-per-minute-info' => 'Antara 1 dan 100000. Bawaan 60.',
+                    'api-token-requests-per-minute-info' => 'Antara 1 dan 100000. Bawaan 60.',
+                    'unauthenticated-requests-per-minute' => 'Permintaan per Menit tanpa Token, per Alamat IP',
+                    'unauthenticated-requests-per-minute-info' => 'Antara 10 dan 1000. Bawaan 60. Mencakup permintaan login, dua faktor, penyegaran, dan kata sandi.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS memeriksa bahwa permintaan berasal dari alamat IP tujuan domain token. Origin memeriksa header Origin atau Referer dan hanya cocok untuk browser.',
                     'domain-binding-dns' => 'DNS (alamat IP klien)',
                     'domain-binding-origin' => 'Header Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Perlindungan Login',
+                    'info' => 'Berapa banyak login gagal, kode dua faktor yang salah, dan permintaan kata sandi yang diizinkan sebelum klien harus menunggu.',
+                    'login-max-attempts' => 'Login Gagal Sebelum Penguncian',
+                    'login-max-attempts-info' => 'Per email dan alamat IP. Antara 3 dan 20. Bawaan 5.',
+                    'login-lockout-seconds' => 'Penguncian Login (detik)',
+                    'login-lockout-seconds-info' => 'Antara 60 dan 3600. Bawaan 60.',
+                    'two-factor-challenge-lifetime' => 'Masa Berlaku Tantangan Dua Faktor (menit)',
+                    'two-factor-challenge-lifetime-info' => 'Antara 1 dan 15. Bawaan 5.',
+                    'two-factor-max-failures' => 'Kode Dua Faktor Salah per Menit',
+                    'two-factor-max-failures-info' => 'Per admin, di semua tantangan. Antara 3 dan 20. Bawaan 5.',
+                    'password-requests-per-minute' => 'Permintaan Kata Sandi per Menit',
+                    'password-requests-per-minute-info' => 'Permintaan lupa dan atur ulang kata sandi per alamat IP. Antara 1 dan 20. Bawaan 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Penyimpanan Data',
+                    'info' => 'Berapa lama sesi yang berakhir dan riwayat audit API disimpan.',
+                    'session-prune-days' => 'Simpan Sesi yang Berakhir (hari)',
+                    'session-prune-days-info' => 'Sesi yang dicabut atau kedaluwarsa dihapus setelah sekian hari. Antara 1 dan 365. Bawaan 30.',
+                    'audit-retention-days' => 'Simpan Riwayat Audit API (hari)',
+                    'audit-retention-days-info' => 'Entri yang lebih lama dihapus setiap hari. Antara 0 dan 3650. Kosong atau 0 menyimpannya selamanya.',
                 ],
             ],
 

@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Dakika başına en fazla yönetici API isteği.',
                     'session-requests-per-minute' => 'Giriş Yapmış Yönetici Başına Dakikalık İstek',
                     'api-token-requests-per-minute' => 'API Belirteci Başına Dakikalık İstek',
+                    'session-requests-per-minute-info' => '1 ile 100000 arası. Varsayılan 60.',
+                    'api-token-requests-per-minute-info' => '1 ile 100000 arası. Varsayılan 60.',
+                    'unauthenticated-requests-per-minute' => 'Belirteç Olmadan IP Adresi Başına Dakikalık İstek',
+                    'unauthenticated-requests-per-minute-info' => '10 ile 1000 arası. Varsayılan 60. Giriş, iki faktörlü doğrulama, yenileme ve parola isteklerini kapsar.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS, isteğin belirtecin alan adının çözümlendiği bir IP adresinden geldiğini denetler. Origin, Origin veya Referer başlığını denetler ve yalnızca tarayıcılar için uygundur.',
                     'domain-binding-dns' => 'DNS (istemci IP adresi)',
                     'domain-binding-origin' => 'Origin başlığı',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Giriş Koruması',
+                    'info' => 'İstemci beklemek zorunda kalmadan önce kaç başarısız giriş, yanlış iki faktörlü kod ve parola isteğine izin verildiği.',
+                    'login-max-attempts' => 'Kilitlenmeden Önce Başarısız Giriş',
+                    'login-max-attempts-info' => 'E-posta ve IP adresi başına. 3 ile 20 arası. Varsayılan 5.',
+                    'login-lockout-seconds' => 'Giriş Kilidi (saniye)',
+                    'login-lockout-seconds-info' => '60 ile 3600 arası. Varsayılan 60.',
+                    'two-factor-challenge-lifetime' => 'İki Faktörlü Doğrulama Süresi (dakika)',
+                    'two-factor-challenge-lifetime-info' => '1 ile 15 arası. Varsayılan 5.',
+                    'two-factor-max-failures' => 'Dakika Başına Yanlış İki Faktörlü Kod',
+                    'two-factor-max-failures-info' => 'Yönetici başına, tüm doğrulamalarda. 3 ile 20 arası. Varsayılan 5.',
+                    'password-requests-per-minute' => 'Dakika Başına Parola İsteği',
+                    'password-requests-per-minute-info' => 'IP adresi başına parolamı unuttum ve sıfırlama istekleri. 1 ile 20 arası. Varsayılan 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Veri Saklama',
+                    'info' => 'Sona eren oturumların ve API denetim geçmişinin ne kadar süre saklanacağı.',
+                    'session-prune-days' => 'Sona Eren Oturumları Sakla (gün)',
+                    'session-prune-days-info' => 'İptal edilen veya süresi dolan oturumlar bu kadar gün sonra silinir. 1 ile 365 arası. Varsayılan 30.',
+                    'audit-retention-days' => 'API Denetim Geçmişini Sakla (gün)',
+                    'audit-retention-days-info' => 'Daha eski kayıtlar her gün silinir. 0 ile 3650 arası. Boş veya 0 bunları süresiz saklar.',
                 ],
             ],
 

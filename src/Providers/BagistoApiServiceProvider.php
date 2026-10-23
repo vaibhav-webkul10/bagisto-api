@@ -74,7 +74,6 @@ use Webkul\BagistoApi\Http\Controllers\SwaggerUIController;
 use Webkul\BagistoApi\Http\Middleware\EnforceAdminApiAuth;
 use Webkul\BagistoApi\Http\Middleware\EnsureJsonContentType;
 use Webkul\BagistoApi\Http\Middleware\LogApiRequests;
-use Webkul\BagistoApi\Http\Middleware\RateLimitApi;
 use Webkul\BagistoApi\Http\Middleware\SecurityHeaders;
 use Webkul\BagistoApi\Http\Middleware\SetAdminApiAuditContext;
 use Webkul\BagistoApi\Http\Middleware\SetLocaleChannel;
@@ -367,7 +366,6 @@ class BagistoApiServiceProvider extends ServiceProvider
     {
         $this->app['router']->aliasMiddleware('storefront.key', VerifyStorefrontKey::class);
         $this->app['router']->aliasMiddleware('api.locale-channel', SetLocaleChannel::class);
-        $this->app['router']->aliasMiddleware('api.rate-limit', RateLimitApi::class);
         $this->app['router']->aliasMiddleware('api.security-headers', SecurityHeaders::class);
         $this->app['router']->aliasMiddleware('api.log-requests', LogApiRequests::class);
     }
@@ -432,6 +430,8 @@ class BagistoApiServiceProvider extends ServiceProvider
             $schedule->command('bagisto-api:prune-cart-uploads')->everyTwoHours();
 
             $schedule->command('bagisto-api:prune-admin-tokens')->hourly();
+
+            $schedule->command('bagisto-api:prune-audits')->daily();
         });
     }
 

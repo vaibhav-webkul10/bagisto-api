@@ -1646,6 +1646,10 @@ return [
                     'info' => 'حداکثر درخواست‌های API مدیر در دقیقه.',
                     'session-requests-per-minute' => 'درخواست در دقیقه برای هر مدیر واردشده',
                     'api-token-requests-per-minute' => 'درخواست در دقیقه برای هر توکن API',
+                    'session-requests-per-minute-info' => 'بین ۱ تا ۱۰۰۰۰۰. پیش‌فرض ۶۰.',
+                    'api-token-requests-per-minute-info' => 'بین ۱ تا ۱۰۰۰۰۰. پیش‌فرض ۶۰.',
+                    'unauthenticated-requests-per-minute' => 'درخواست در دقیقه بدون توکن برای هر نشانی IP',
+                    'unauthenticated-requests-per-minute-info' => 'بین ۱۰ تا ۱۰۰۰. پیش‌فرض ۶۰. شامل درخواست‌های ورود، تأیید دومرحله‌ای، تمدید و رمز عبور است.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS بررسی می‌کند که درخواست از نشانی IP‌ای باشد که دامنه توکن به آن اشاره می‌کند. Origin سرآیند Origin یا Referer را بررسی می‌کند و فقط برای مرورگرها مناسب است.',
                     'domain-binding-dns' => 'DNS (نشانی IP کلاینت)',
                     'domain-binding-origin' => 'سرآیند Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'محافظت از ورود',
+                    'info' => 'چه تعداد ورود ناموفق، کد دومرحله‌ای نادرست و درخواست رمز عبور مجاز است تا کلاینت مجبور به انتظار شود.',
+                    'login-max-attempts' => 'ورودهای ناموفق پیش از قفل شدن',
+                    'login-max-attempts-info' => 'برای هر ایمیل و نشانی IP. بین ۳ تا ۲۰. پیش‌فرض ۵.',
+                    'login-lockout-seconds' => 'قفل ورود (ثانیه)',
+                    'login-lockout-seconds-info' => 'بین ۶۰ تا ۳۶۰۰. پیش‌فرض ۶۰.',
+                    'two-factor-challenge-lifetime' => 'مدت اعتبار چالش دومرحله‌ای (دقیقه)',
+                    'two-factor-challenge-lifetime-info' => 'بین ۱ تا ۱۵. پیش‌فرض ۵.',
+                    'two-factor-max-failures' => 'کدهای دومرحله‌ای نادرست در دقیقه',
+                    'two-factor-max-failures-info' => 'برای هر مدیر، در همه چالش‌ها. بین ۳ تا ۲۰. پیش‌فرض ۵.',
+                    'password-requests-per-minute' => 'درخواست رمز عبور در دقیقه',
+                    'password-requests-per-minute-info' => 'درخواست‌های فراموشی و بازنشانی رمز عبور برای هر نشانی IP. بین ۱ تا ۲۰. پیش‌فرض ۵.',
+                ],
+
+                'retention' => [
+                    'title' => 'نگهداری داده‌ها',
+                    'info' => 'نشست‌های پایان‌یافته و تاریخچه حسابرسی API چه مدت نگهداری می‌شوند.',
+                    'session-prune-days' => 'نگهداری نشست‌های پایان‌یافته (روز)',
+                    'session-prune-days-info' => 'نشست‌های لغوشده یا منقضی پس از این تعداد روز حذف می‌شوند. بین ۱ تا ۳۶۵. پیش‌فرض ۳۰.',
+                    'audit-retention-days' => 'نگهداری تاریخچه حسابرسی API (روز)',
+                    'audit-retention-days-info' => 'ورودی‌های قدیمی‌تر هر روز حذف می‌شوند. بین ۰ تا ۳۶۵۰. خالی یا ۰ آن‌ها را برای همیشه نگه می‌دارد.',
                 ],
             ],
 

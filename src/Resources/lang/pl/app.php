@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Maksymalna liczba żądań do API administratora na minutę.',
                     'session-requests-per-minute' => 'Żądania na minutę na zalogowanego administratora',
                     'api-token-requests-per-minute' => 'Żądania na minutę na token API',
+                    'session-requests-per-minute-info' => 'Od 1 do 100000. Domyślnie 60.',
+                    'api-token-requests-per-minute-info' => 'Od 1 do 100000. Domyślnie 60.',
+                    'unauthenticated-requests-per-minute' => 'Żądania na minutę bez tokenu, na adres IP',
+                    'unauthenticated-requests-per-minute-info' => 'Od 10 do 1000. Domyślnie 60. Obejmuje żądania logowania, uwierzytelniania dwuskładnikowego, odświeżania i hasła.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS sprawdza, czy żądanie pochodzi z adresu IP, na który wskazuje domena tokenu. Origin sprawdza nagłówek Origin lub Referer i nadaje się tylko dla przeglądarek.',
                     'domain-binding-dns' => 'DNS (adres IP klienta)',
                     'domain-binding-origin' => 'Nagłówek Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Ochrona logowania',
+                    'info' => 'Ile nieudanych logowań, błędnych kodów dwuskładnikowych i żądań hasła jest dozwolonych, zanim klient musi poczekać.',
+                    'login-max-attempts' => 'Nieudane logowania przed blokadą',
+                    'login-max-attempts-info' => 'Na adres e-mail i adres IP. Od 3 do 20. Domyślnie 5.',
+                    'login-lockout-seconds' => 'Blokada logowania (sekundy)',
+                    'login-lockout-seconds-info' => 'Od 60 do 3600. Domyślnie 60.',
+                    'two-factor-challenge-lifetime' => 'Ważność wyzwania dwuskładnikowego (minuty)',
+                    'two-factor-challenge-lifetime-info' => 'Od 1 do 15. Domyślnie 5.',
+                    'two-factor-max-failures' => 'Błędne kody dwuskładnikowe na minutę',
+                    'two-factor-max-failures-info' => 'Na administratora, we wszystkich wyzwaniach. Od 3 do 20. Domyślnie 5.',
+                    'password-requests-per-minute' => 'Żądania hasła na minutę',
+                    'password-requests-per-minute-info' => 'Żądania przypomnienia i resetu hasła na adres IP. Od 1 do 20. Domyślnie 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Przechowywanie danych',
+                    'info' => 'Jak długo przechowywane są zakończone sesje i historia audytu API.',
+                    'session-prune-days' => 'Przechowuj zakończone sesje (dni)',
+                    'session-prune-days-info' => 'Unieważnione lub wygasłe sesje są usuwane po tej liczbie dni. Od 1 do 365. Domyślnie 30.',
+                    'audit-retention-days' => 'Przechowuj historię audytu API (dni)',
+                    'audit-retention-days-info' => 'Starsze wpisy są usuwane codziennie. Od 0 do 3650. Puste lub 0 przechowuje je na zawsze.',
                 ],
             ],
 

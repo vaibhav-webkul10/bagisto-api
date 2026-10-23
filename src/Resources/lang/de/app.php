@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Maximale Admin-API-Anfragen pro Minute.',
                     'session-requests-per-minute' => 'Anfragen pro Minute je angemeldetem Admin',
                     'api-token-requests-per-minute' => 'Anfragen pro Minute je API-Token',
+                    'session-requests-per-minute-info' => 'Zwischen 1 und 100000. Standard 60.',
+                    'api-token-requests-per-minute-info' => 'Zwischen 1 und 100000. Standard 60.',
+                    'unauthenticated-requests-per-minute' => 'Anfragen pro Minute ohne Token je IP-Adresse',
+                    'unauthenticated-requests-per-minute-info' => 'Zwischen 10 und 1000. Standard 60. Umfasst Anmelde-, Zwei-Faktor-, Aktualisierungs- und Passwortanfragen.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS prüft, dass die Anfrage von einer IP-Adresse kommt, auf die die Domain des Tokens auflöst. Origin prüft den Origin- oder Referer-Header und eignet sich nur für Browser.',
                     'domain-binding-dns' => 'DNS (IP-Adresse des Clients)',
                     'domain-binding-origin' => 'Origin-Header',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Anmeldeschutz',
+                    'info' => 'Wie viele fehlgeschlagene Anmeldungen, falsche Zwei-Faktor-Codes und Passwortanfragen erlaubt sind, bevor der Client warten muss.',
+                    'login-max-attempts' => 'Fehlgeschlagene Anmeldungen bis zur Sperre',
+                    'login-max-attempts-info' => 'Je E-Mail-Adresse und IP-Adresse. Zwischen 3 und 20. Standard 5.',
+                    'login-lockout-seconds' => 'Anmeldesperre (Sekunden)',
+                    'login-lockout-seconds-info' => 'Zwischen 60 und 3600. Standard 60.',
+                    'two-factor-challenge-lifetime' => 'Gültigkeit der Zwei-Faktor-Abfrage (Minuten)',
+                    'two-factor-challenge-lifetime-info' => 'Zwischen 1 und 15. Standard 5.',
+                    'two-factor-max-failures' => 'Falsche Zwei-Faktor-Codes pro Minute',
+                    'two-factor-max-failures-info' => 'Je Admin, über alle Abfragen hinweg. Zwischen 3 und 20. Standard 5.',
+                    'password-requests-per-minute' => 'Passwortanfragen pro Minute',
+                    'password-requests-per-minute-info' => 'Anfragen zum Vergessen und Zurücksetzen des Passworts je IP-Adresse. Zwischen 1 und 20. Standard 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Datenaufbewahrung',
+                    'info' => 'Wie lange beendete Sitzungen und der API-Prüfverlauf aufbewahrt werden.',
+                    'session-prune-days' => 'Beendete Sitzungen aufbewahren (Tage)',
+                    'session-prune-days-info' => 'Widerrufene oder abgelaufene Sitzungen werden nach so vielen Tagen gelöscht. Zwischen 1 und 365. Standard 30.',
+                    'audit-retention-days' => 'API-Prüfverlauf aufbewahren (Tage)',
+                    'audit-retention-days-info' => 'Ältere Einträge werden täglich gelöscht. Zwischen 0 und 3650. Leer oder 0 bewahrt sie dauerhaft auf.',
                 ],
             ],
 

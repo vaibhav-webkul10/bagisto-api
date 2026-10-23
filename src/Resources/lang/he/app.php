@@ -1646,6 +1646,10 @@ return [
                     'info' => 'מספר מרבי של בקשות API של מנהל בדקה.',
                     'session-requests-per-minute' => 'בקשות לדקה לכל מנהל מחובר',
                     'api-token-requests-per-minute' => 'בקשות לדקה לכל אסימון API',
+                    'session-requests-per-minute-info' => 'בין 1 ל-100000. ברירת מחדל 60.',
+                    'api-token-requests-per-minute-info' => 'בין 1 ל-100000. ברירת מחדל 60.',
+                    'unauthenticated-requests-per-minute' => 'בקשות לדקה ללא אסימון, לכל כתובת IP',
+                    'unauthenticated-requests-per-minute-info' => 'בין 10 ל-1000. ברירת מחדל 60. כולל בקשות התחברות, אימות דו-שלבי, רענון וסיסמה.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS בודק שהבקשה מגיעה מכתובת IP שאליה מצביע הדומיין של האסימון. Origin בודק את הכותרת Origin או Referer ומתאים לדפדפנים בלבד.',
                     'domain-binding-dns' => 'DNS (כתובת IP של הלקוח)',
                     'domain-binding-origin' => 'כותרת Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'הגנת התחברות',
+                    'info' => 'כמה התחברויות שנכשלו, קודי אימות דו-שלבי שגויים ובקשות סיסמה מותרים לפני שהלקוח חייב להמתין.',
+                    'login-max-attempts' => 'התחברויות שנכשלו לפני נעילה',
+                    'login-max-attempts-info' => 'לכל כתובת דוא"ל וכתובת IP. בין 3 ל-20. ברירת מחדל 5.',
+                    'login-lockout-seconds' => 'נעילת התחברות (שניות)',
+                    'login-lockout-seconds-info' => 'בין 60 ל-3600. ברירת מחדל 60.',
+                    'two-factor-challenge-lifetime' => 'משך אתגר האימות הדו-שלבי (דקות)',
+                    'two-factor-challenge-lifetime-info' => 'בין 1 ל-15. ברירת מחדל 5.',
+                    'two-factor-max-failures' => 'קודי אימות דו-שלבי שגויים לדקה',
+                    'two-factor-max-failures-info' => 'לכל מנהל, בכל האתגרים. בין 3 ל-20. ברירת מחדל 5.',
+                    'password-requests-per-minute' => 'בקשות סיסמה לדקה',
+                    'password-requests-per-minute-info' => 'בקשות לשכחת סיסמה ולאיפוסה לכל כתובת IP. בין 1 ל-20. ברירת מחדל 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'שמירת נתונים',
+                    'info' => 'כמה זמן נשמרים סשנים שהסתיימו והיסטוריית הביקורת של ה-API.',
+                    'session-prune-days' => 'שמירת סשנים שהסתיימו (ימים)',
+                    'session-prune-days-info' => 'סשנים שבוטלו או פגו נמחקים לאחר מספר ימים זה. בין 1 ל-365. ברירת מחדל 30.',
+                    'audit-retention-days' => 'שמירת היסטוריית ביקורת API (ימים)',
+                    'audit-retention-days-info' => 'רשומות ישנות יותר נמחקות מדי יום. בין 0 ל-3650. ריק או 0 שומר אותן לתמיד.',
                 ],
             ],
 

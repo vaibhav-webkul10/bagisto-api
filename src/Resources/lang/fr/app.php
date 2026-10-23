@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Nombre maximal de requêtes à l\'API d\'administration par minute.',
                     'session-requests-per-minute' => 'Requêtes par minute par administrateur connecté',
                     'api-token-requests-per-minute' => 'Requêtes par minute par jeton d\'API',
+                    'session-requests-per-minute-info' => 'Entre 1 et 100000. Par défaut 60.',
+                    'api-token-requests-per-minute-info' => 'Entre 1 et 100000. Par défaut 60.',
+                    'unauthenticated-requests-per-minute' => 'Requêtes par minute sans jeton, par adresse IP',
+                    'unauthenticated-requests-per-minute-info' => 'Entre 10 et 1000. Par défaut 60. Couvre les requêtes de connexion, de double authentification, de renouvellement et de mot de passe.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS vérifie que la requête provient d\'une adresse IP vers laquelle pointe le domaine du jeton. Origin vérifie l\'en-tête Origin ou Referer et ne convient qu\'aux navigateurs.',
                     'domain-binding-dns' => 'DNS (adresse IP du client)',
                     'domain-binding-origin' => 'En-tête Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protection de la connexion',
+                    'info' => 'Nombre de connexions échouées, de codes de double authentification erronés et de requêtes de mot de passe autorisés avant que le client doive patienter.',
+                    'login-max-attempts' => 'Connexions échouées avant blocage',
+                    'login-max-attempts-info' => 'Par adresse e-mail et adresse IP. Entre 3 et 20. Par défaut 5.',
+                    'login-lockout-seconds' => 'Blocage de la connexion (secondes)',
+                    'login-lockout-seconds-info' => 'Entre 60 et 3600. Par défaut 60.',
+                    'two-factor-challenge-lifetime' => 'Durée du défi de double authentification (minutes)',
+                    'two-factor-challenge-lifetime-info' => 'Entre 1 et 15. Par défaut 5.',
+                    'two-factor-max-failures' => 'Codes de double authentification erronés par minute',
+                    'two-factor-max-failures-info' => 'Par administrateur, sur tous les défis. Entre 3 et 20. Par défaut 5.',
+                    'password-requests-per-minute' => 'Requêtes de mot de passe par minute',
+                    'password-requests-per-minute-info' => 'Requêtes d\'oubli et de réinitialisation du mot de passe par adresse IP. Entre 1 et 20. Par défaut 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservation des données',
+                    'info' => 'Durée de conservation des sessions terminées et de l\'historique d\'audit de l\'API.',
+                    'session-prune-days' => 'Conserver les sessions terminées (jours)',
+                    'session-prune-days-info' => 'Les sessions révoquées ou expirées sont supprimées après ce nombre de jours. Entre 1 et 365. Par défaut 30.',
+                    'audit-retention-days' => 'Conserver l\'historique d\'audit de l\'API (jours)',
+                    'audit-retention-days-info' => 'Les entrées plus anciennes sont supprimées chaque jour. Entre 0 et 3650. Vide ou 0 les conserve indéfiniment.',
                 ],
             ],
 

@@ -1646,6 +1646,10 @@ return [
                     'info' => 'प्रति मिनट अधिकतम एडमिन API अनुरोध।',
                     'session-requests-per-minute' => 'प्रति लॉग-इन एडमिन प्रति मिनट अनुरोध',
                     'api-token-requests-per-minute' => 'प्रति API टोकन प्रति मिनट अनुरोध',
+                    'session-requests-per-minute-info' => '1 से 100000 के बीच। डिफ़ॉल्ट 60।',
+                    'api-token-requests-per-minute-info' => '1 से 100000 के बीच। डिफ़ॉल्ट 60।',
+                    'unauthenticated-requests-per-minute' => 'बिना टोकन प्रति IP पता प्रति मिनट अनुरोध',
+                    'unauthenticated-requests-per-minute-info' => '10 से 1000 के बीच। डिफ़ॉल्ट 60। इसमें लॉगिन, टू-फ़ैक्टर, रिफ़्रेश और पासवर्ड अनुरोध शामिल हैं।',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS जाँचता है कि अनुरोध उस IP पते से आया है जिस पर टोकन का डोमेन रिज़ॉल्व होता है। Origin, Origin या Referer हेडर जाँचता है और केवल ब्राउज़र के लिए उपयुक्त है।',
                     'domain-binding-dns' => 'DNS (क्लाइंट का IP पता)',
                     'domain-binding-origin' => 'Origin हेडर',
+                ],
+
+                'login-protection' => [
+                    'title' => 'लॉगिन सुरक्षा',
+                    'info' => 'क्लाइंट को प्रतीक्षा कराने से पहले कितने विफल लॉगिन, गलत टू-फ़ैक्टर कोड और पासवर्ड अनुरोध अनुमत हैं।',
+                    'login-max-attempts' => 'लॉकआउट से पहले विफल लॉगिन',
+                    'login-max-attempts-info' => 'प्रति ईमेल और IP पता। 3 से 20 के बीच। डिफ़ॉल्ट 5।',
+                    'login-lockout-seconds' => 'लॉगिन लॉकआउट (सेकंड)',
+                    'login-lockout-seconds-info' => '60 से 3600 के बीच। डिफ़ॉल्ट 60।',
+                    'two-factor-challenge-lifetime' => 'टू-फ़ैक्टर चुनौती की अवधि (मिनट)',
+                    'two-factor-challenge-lifetime-info' => '1 से 15 के बीच। डिफ़ॉल्ट 5।',
+                    'two-factor-max-failures' => 'प्रति मिनट गलत टू-फ़ैक्टर कोड',
+                    'two-factor-max-failures-info' => 'प्रति एडमिन, सभी चुनौतियों में। 3 से 20 के बीच। डिफ़ॉल्ट 5।',
+                    'password-requests-per-minute' => 'प्रति मिनट पासवर्ड अनुरोध',
+                    'password-requests-per-minute-info' => 'प्रति IP पता पासवर्ड भूलने और रीसेट करने के अनुरोध। 1 से 20 के बीच। डिफ़ॉल्ट 5।',
+                ],
+
+                'retention' => [
+                    'title' => 'डेटा प्रतिधारण',
+                    'info' => 'समाप्त सेशन और API ऑडिट इतिहास कितने समय तक रखे जाते हैं।',
+                    'session-prune-days' => 'समाप्त सेशन रखें (दिन)',
+                    'session-prune-days-info' => 'रद्द या समाप्त सेशन इतने दिनों बाद हटा दिए जाते हैं। 1 से 365 के बीच। डिफ़ॉल्ट 30।',
+                    'audit-retention-days' => 'API ऑडिट इतिहास रखें (दिन)',
+                    'audit-retention-days-info' => 'पुरानी प्रविष्टियाँ प्रतिदिन हटाई जाती हैं। 0 से 3650 के बीच। खाली या 0 उन्हें हमेशा रखता है।',
                 ],
             ],
 

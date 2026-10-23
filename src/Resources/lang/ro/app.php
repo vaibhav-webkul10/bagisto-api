@@ -1646,6 +1646,10 @@ return [
                     'info' => 'Numărul maxim de cereri către API-ul de administrare pe minut.',
                     'session-requests-per-minute' => 'Cereri pe minut per administrator autentificat',
                     'api-token-requests-per-minute' => 'Cereri pe minut per token API',
+                    'session-requests-per-minute-info' => 'Între 1 și 100000. Implicit 60.',
+                    'api-token-requests-per-minute-info' => 'Între 1 și 100000. Implicit 60.',
+                    'unauthenticated-requests-per-minute' => 'Cereri pe minut fără token, per adresă IP',
+                    'unauthenticated-requests-per-minute-info' => 'Între 10 și 1000. Implicit 60. Include cererile de autentificare, doi factori, reîmprospătare și parolă.',
                 ],
 
                 'security' => [
@@ -1658,6 +1662,30 @@ return [
                     'domain-binding-mode-info' => 'DNS verifică dacă cererea vine de la o adresă IP la care se rezolvă domeniul tokenului. Origin verifică antetul Origin sau Referer și este potrivit doar pentru browsere.',
                     'domain-binding-dns' => 'DNS (adresa IP a clientului)',
                     'domain-binding-origin' => 'Antetul Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protecția autentificării',
+                    'info' => 'Câte autentificări eșuate, coduri în doi factori greșite și cereri de parolă sunt permise înainte ca clientul să aștepte.',
+                    'login-max-attempts' => 'Autentificări eșuate înainte de blocare',
+                    'login-max-attempts-info' => 'Per e-mail și adresă IP. Între 3 și 20. Implicit 5.',
+                    'login-lockout-seconds' => 'Blocarea autentificării (secunde)',
+                    'login-lockout-seconds-info' => 'Între 60 și 3600. Implicit 60.',
+                    'two-factor-challenge-lifetime' => 'Durata provocării în doi factori (minute)',
+                    'two-factor-challenge-lifetime-info' => 'Între 1 și 15. Implicit 5.',
+                    'two-factor-max-failures' => 'Coduri în doi factori greșite pe minut',
+                    'two-factor-max-failures-info' => 'Per administrator, în toate provocările. Între 3 și 20. Implicit 5.',
+                    'password-requests-per-minute' => 'Cereri de parolă pe minut',
+                    'password-requests-per-minute-info' => 'Cereri de parolă uitată și resetare per adresă IP. Între 1 și 20. Implicit 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Păstrarea datelor',
+                    'info' => 'Cât timp sunt păstrate sesiunile încheiate și istoricul de audit al API-ului.',
+                    'session-prune-days' => 'Păstrează sesiunile încheiate (zile)',
+                    'session-prune-days-info' => 'Sesiunile revocate sau expirate sunt șterse după acest număr de zile. Între 1 și 365. Implicit 30.',
+                    'audit-retention-days' => 'Păstrează istoricul de audit al API-ului (zile)',
+                    'audit-retention-days-info' => 'Intrările mai vechi sunt șterse zilnic. Între 0 și 3650. Gol sau 0 le păstrează pentru totdeauna.',
                 ],
             ],
 
