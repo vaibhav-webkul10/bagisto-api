@@ -3,6 +3,7 @@
 namespace Webkul\BagistoApi\Tests\Feature\GraphQL;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Testing\TestResponse;
 use Webkul\BagistoApi\Admin\Services\Jwt\JwtSigner;
 use Webkul\BagistoApi\Models\CustomerApiSession;
@@ -164,6 +165,35 @@ class CustomerSessionAuthTest extends GraphQLTestCase
 
         $this->assertNull($login->json('errors'));
         $this->assertNotEmpty($login->json('data.createCustomerLogin.customerLogin.accessToken'));
+    }
+
+    /**
+     * Test createResetPassword ends every session of the customer.
+     */
+    public function test_reset_password_ends_every_session(): void
+    {
+        $customer = $this->customerWithPassword();
+
+        $first = $this->customerTokenPair($customer);
+        $second = $this->customerTokenPair($customer);
+
+        $response = $this->graphQL(
+            'mutation ($input: createResetPasswordInput!) { createResetPassword(input: $input) { resetPassword { success message } } }',
+            ['input' => [
+                'token' => Password::broker('customers')->createToken($customer),
+                'email' => $customer->email,
+                'password' => 'New-password-123',
+                'passwordConfirmation' => 'New-password-123',
+            ]],
+            $this->storefrontHeaders(),
+        );
+
+        $this->assertNull($response->json('errors'));
+        $this->assertTrue($response->json('data.createResetPassword.resetPassword.success'));
+
+        $this->assertSame(CustomerApiSession::REVOKED_PASSWORD_RESET, $first->session->fresh()->revoked_reason);
+        $this->assertSame(CustomerApiSession::REVOKED_PASSWORD_RESET, $second->session->fresh()->revoked_reason);
+        $this->assertSame('unauthenticated', $this->graphQL('{ readCustomerProfile { email } }', [], $this->bearer($first->accessToken))->json('errors.0.extensions.code'));
     }
 
     /**

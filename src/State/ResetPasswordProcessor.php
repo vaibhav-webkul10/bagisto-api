@@ -100,11 +100,11 @@ class ResetPasswordProcessor implements ProcessorInterface
             ];
 
             $response = $this->broker()->reset($credentials, function ($customer, $password) {
+                app(CustomerApiAuthService::class)->passwordReset($customer);
+
                 $customer->password = Hash::make($password);
                 $customer->setRememberToken(Str::random(60));
                 $customer->save();
-
-                app(CustomerApiAuthService::class)->passwordReset($customer);
 
                 app(SessionPurger::class)->forget('customer', $customer->id);
 
