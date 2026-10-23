@@ -852,10 +852,6 @@ return [
                 'created' => 'Note ajoutée avec succès.',
             ],
 
-            'impersonate' => [
-                'success' => 'Jeton d\'usurpation d\'identité émis.',
-            ],
-
             'review' => [
                 'not-found' => 'Avis introuvable.',
                 'no-permission' => 'Vous n\'avez pas la permission d\'effectuer cette action.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'Vous n\'avez pas la permission de gérer les termes de recherche.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sessions API',
+            ],
+
+            'acl' => [
+                'title' => 'Sessions API',
+                'delete' => 'Révoquer',
+            ],
+
+            'index' => [
+                'title' => 'Sessions API des clients',
+                'info' => 'Clients connectés à l\'API de la boutique depuis des applications web, mobiles, de caisse ou de bureau. Révoquer une session déconnecte cet appareil immédiatement.',
+            ],
+
+            'fields' => [
+                'customer' => 'Client',
+                'email' => 'E-mail',
+                'channel' => 'Canal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Révoquer toutes les sessions du client',
+            ],
+
+            'card' => [
+                'title' => 'Sessions API (:count)',
+                'empty' => 'Ce client n\'a aucune session API active.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Vous n\'avez pas l\'autorisation de gérer les sessions API des clients.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Authentification des clients',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Session de connexion',
                 'api-token' => 'Jeton d\'API',
                 'integration' => 'Jeton d\'intégration (supprimé)',
+                'customer-session' => 'Session de connexion client',
             ],
 
             'channels' => [

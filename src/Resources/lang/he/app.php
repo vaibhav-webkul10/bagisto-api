@@ -852,10 +852,6 @@ return [
                 'created' => 'ההערה נוספה בהצלחה.',
             ],
 
-            'impersonate' => [
-                'success' => 'הונפק אסימון התחזות.',
-            ],
-
             'review' => [
                 'not-found' => 'הביקורת לא נמצאה.',
                 'no-permission' => 'אין לך הרשאה לבצע פעולה זו.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'אין לך הרשאה לנהל מונחי חיפוש.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'הפעלות API',
+            ],
+
+            'acl' => [
+                'title' => 'הפעלות API',
+                'delete' => 'ביטול',
+            ],
+
+            'index' => [
+                'title' => 'סשנים של API ללקוחות',
+                'info' => 'לקוחות שמחוברים ל-API של החנות מאפליקציות כמו ווב, מובייל, קופה או דסקטופ. ביטול סשן מנתק את המכשיר מיד.',
+            ],
+
+            'fields' => [
+                'customer' => 'לקוח',
+                'email' => 'דוא"ל',
+                'channel' => 'ערוץ',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'ביטול כל הסשנים של הלקוח',
+            ],
+
+            'card' => [
+                'title' => 'סשנים של API (:count)',
+                'empty' => 'ללקוח זה אין סשנים פעילים של API.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'אין לך הרשאה לנהל סשנים של API של לקוחות.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'אימות לקוחות',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'הפעלת התחברות',
                 'api-token' => 'אסימון API',
                 'integration' => 'אסימון אינטגרציה (הוסר)',
+                'customer-session' => 'סשן התחברות של לקוח',
             ],
 
             'channels' => [

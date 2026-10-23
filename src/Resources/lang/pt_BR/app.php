@@ -852,10 +852,6 @@ return [
                 'created' => 'Observação adicionada com sucesso.',
             ],
 
-            'impersonate' => [
-                'success' => 'Token de personificação emitido.',
-            ],
-
             'review' => [
                 'not-found' => 'Avaliação não encontrada.',
                 'no-permission' => 'Você não tem permissão para realizar esta ação.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'Você não tem permissão para gerenciar termos de pesquisa.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sessões de API',
+            ],
+
+            'acl' => [
+                'title' => 'Sessões de API',
+                'delete' => 'Revogar',
+            ],
+
+            'index' => [
+                'title' => 'Sessões de API dos clientes',
+                'info' => 'Clientes conectados à API da loja por aplicativos web, móveis, de PDV ou de desktop. Revogar uma sessão desconecta esse dispositivo na hora.',
+            ],
+
+            'fields' => [
+                'customer' => 'Cliente',
+                'email' => 'E-mail',
+                'channel' => 'Canal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Revogar todas as sessões do cliente',
+            ],
+
+            'card' => [
+                'title' => 'Sessões de API (:count)',
+                'empty' => 'Este cliente não tem sessões de API ativas.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Você não tem permissão para gerenciar as sessões de API dos clientes.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Autenticação de clientes',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Sessão de login',
                 'api-token' => 'Token de API',
                 'integration' => 'Token de integração (removido)',
+                'customer-session' => 'Sessão de login do cliente',
             ],
 
             'channels' => [

@@ -30,6 +30,8 @@ use Webkul\BagistoApi\Admin\Models\AdminConfigurationSlug;
 use Webkul\BagistoApi\Admin\Models\AdminConfigurationValues;
 use Webkul\BagistoApi\Admin\Models\AdminCustomer;
 use Webkul\BagistoApi\Admin\Models\AdminCustomerAddress;
+use Webkul\BagistoApi\Admin\Models\AdminCustomerApiSession;
+use Webkul\BagistoApi\Admin\Models\AdminCustomerApiSessionRevoke;
 use Webkul\BagistoApi\Admin\Models\AdminCustomerCartItem;
 use Webkul\BagistoApi\Admin\Models\AdminCustomerCompareItem;
 use Webkul\BagistoApi\Admin\Models\AdminCustomerGdprRequest;
@@ -186,6 +188,8 @@ class AdminReadPermissions
         AdminSettingsRole::class => 'settings.roles',
         AdminSettingsUserSession::class => 'settings.api_sessions',
         AdminSettingsApiSession::class => 'settings.api_sessions',
+        AdminCustomerApiSession::class => 'customers.api_sessions',
+        AdminCustomerApiSessionRevoke::class => 'customers.api_sessions.delete',
         AdminSettingsApiToken::class => 'settings.api_tokens',
         AdminSettingsTaxCategory::class => 'settings.taxes.tax_categories',
         AdminSettingsTaxRate::class => 'settings.taxes.tax_rates',

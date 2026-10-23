@@ -21,10 +21,6 @@ export const ADMIN_CUSTOMERS = {
   CUSTOMER_NOTES: (customerId: number | string) =>
     `/api/admin/customers/${customerId}/notes`,
 
-  // ── Customer impersonate ───────────────────────────────────────
-  CUSTOMER_IMPERSONATE: (customerId: number | string) =>
-    `/api/admin/customers/${customerId}/impersonate`,
-
   // ── Customer groups ────────────────────────────────────────────
   GROUPS: '/api/admin/customers/groups',
   GROUP: (id: number | string) => `/api/admin/customers/groups/${id}`,

@@ -23,6 +23,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -557,6 +558,10 @@ class BagistoApiServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Admin/Resources/views', 'bagistoapi');
 
         $this->registerAdminMenu();
+
+        Event::listen('bagisto.admin.customers.customers.view.card.notes.after', function ($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('bagistoapi::customer-api-sessions.customer-card');
+        });
 
         Auth::extend('admin-api', function ($app, $name, array $config) {
             return new AdminApiGuard(

@@ -852,10 +852,6 @@ return [
                 'created' => '备注已成功添加。',
             ],
 
-            'impersonate' => [
-                'success' => '已签发模拟登录令牌。',
-            ],
-
             'review' => [
                 'not-found' => '未找到评价。',
                 'no-permission' => '您没有执行此操作的权限。',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => '您没有管理搜索词的权限。',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'API 会话',
+            ],
+
+            'acl' => [
+                'title' => 'API 会话',
+                'delete' => '撤销',
+            ],
+
+            'index' => [
+                'title' => '客户 API 会话',
+                'info' => '通过网页、移动、POS 或桌面等应用登录店面 API 的客户。撤销会话会立即让该设备退出登录。',
+            ],
+
+            'fields' => [
+                'customer' => '客户',
+                'email' => '邮箱',
+                'channel' => '渠道',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => '撤销该客户的所有会话',
+            ],
+
+            'card' => [
+                'title' => 'API 会话（:count）',
+                'empty' => '该客户没有活跃的 API 会话。',
+            ],
+
+            'errors' => [
+                'no-permission' => '您没有管理客户 API 会话的权限。',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => '客户认证',
@@ -2003,6 +2034,7 @@ return [
                 'session' => '登录会话',
                 'api-token' => 'API 令牌',
                 'integration' => '集成令牌(已移除)',
+                'customer-session' => '客户登录会话',
             ],
 
             'channels' => [

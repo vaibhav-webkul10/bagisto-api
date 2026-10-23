@@ -852,10 +852,6 @@ return [
                 'created' => 'Notitie succesvol toegevoegd.',
             ],
 
-            'impersonate' => [
-                'success' => 'Token voor imitatie uitgegeven.',
-            ],
-
             'review' => [
                 'not-found' => 'Beoordeling niet gevonden.',
                 'no-permission' => 'U hebt geen toestemming om deze actie uit te voeren.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'U hebt geen toestemming om zoektermen te beheren.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'API-sessies',
+            ],
+
+            'acl' => [
+                'title' => 'API-sessies',
+                'delete' => 'Intrekken',
+            ],
+
+            'index' => [
+                'title' => 'API-sessies van klanten',
+                'info' => 'Klanten die via apps zoals web, mobiel, kassa of desktop zijn ingelogd op de winkel-API. Een sessie intrekken meldt dat apparaat direct af.',
+            ],
+
+            'fields' => [
+                'customer' => 'Klant',
+                'email' => 'E-mail',
+                'channel' => 'Kanaal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Alle sessies van de klant intrekken',
+            ],
+
+            'card' => [
+                'title' => 'API-sessies (:count)',
+                'empty' => 'Deze klant heeft geen actieve API-sessies.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'U hebt geen toestemming om API-sessies van klanten te beheren.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Klantauthenticatie',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Inlogsessie',
                 'api-token' => 'API-token',
                 'integration' => 'Integratietoken (verwijderd)',
+                'customer-session' => 'Inlogsessie van klant',
             ],
 
             'channels' => [

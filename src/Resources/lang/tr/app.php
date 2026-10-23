@@ -852,10 +852,6 @@ return [
                 'created' => 'Not başarıyla eklendi.',
             ],
 
-            'impersonate' => [
-                'success' => 'Kimliğine bürünme jetonu oluşturuldu.',
-            ],
-
             'review' => [
                 'not-found' => 'Değerlendirme bulunamadı.',
                 'no-permission' => 'Bu işlemi gerçekleştirme izniniz yok.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'Arama terimlerini yönetme izniniz yok.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'API Oturumları',
+            ],
+
+            'acl' => [
+                'title' => 'API Oturumları',
+                'delete' => 'İptal Et',
+            ],
+
+            'index' => [
+                'title' => 'Müşteri API Oturumları',
+                'info' => 'Web, mobil, POS veya masaüstü gibi uygulamalardan mağaza API\'sine giriş yapmış müşteriler. Bir oturumu iptal etmek o cihazın oturumunu hemen kapatır.',
+            ],
+
+            'fields' => [
+                'customer' => 'Müşteri',
+                'email' => 'E-posta',
+                'channel' => 'Kanal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Müşterinin Tüm Oturumlarını İptal Et',
+            ],
+
+            'card' => [
+                'title' => 'API Oturumları (:count)',
+                'empty' => 'Bu müşterinin etkin API oturumu yok.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Müşteri API oturumlarını yönetme izniniz yok.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Müşteri Kimlik Doğrulaması',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Oturum Açma Oturumu',
                 'api-token' => 'API Belirteci',
                 'integration' => 'Entegrasyon Belirteci (kaldırıldı)',
+                'customer-session' => 'Müşteri Giriş Oturumu',
             ],
 
             'channels' => [

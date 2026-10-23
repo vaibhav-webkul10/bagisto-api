@@ -852,10 +852,6 @@ return [
                 'created' => 'Notiz erfolgreich hinzugefügt.',
             ],
 
-            'impersonate' => [
-                'success' => 'Token für den Identitätswechsel ausgestellt.',
-            ],
-
             'review' => [
                 'not-found' => 'Bewertung nicht gefunden.',
                 'no-permission' => 'Sie haben keine Berechtigung, diese Aktion auszuführen.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'Sie haben keine Berechtigung, Suchbegriffe zu verwalten.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'API-Sitzungen',
+            ],
+
+            'acl' => [
+                'title' => 'API-Sitzungen',
+                'delete' => 'Widerrufen',
+            ],
+
+            'index' => [
+                'title' => 'Kunden-API-Sitzungen',
+                'info' => 'Kunden, die über Apps wie Web-, Mobil-, Kassen- oder Desktop-Apps an der Shop-API angemeldet sind. Das Widerrufen einer Sitzung meldet das Gerät sofort ab.',
+            ],
+
+            'fields' => [
+                'customer' => 'Kunde',
+                'email' => 'E-Mail',
+                'channel' => 'Kanal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Alle Sitzungen des Kunden widerrufen',
+            ],
+
+            'card' => [
+                'title' => 'API-Sitzungen (:count)',
+                'empty' => 'Dieser Kunde hat keine aktiven API-Sitzungen.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Sie haben keine Berechtigung, Kunden-API-Sitzungen zu verwalten.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Kundenauthentifizierung',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Anmeldesitzung',
                 'api-token' => 'API-Token',
                 'integration' => 'Integrations-Token (entfernt)',
+                'customer-session' => 'Kunden-Anmeldesitzung',
             ],
 
             'channels' => [

@@ -852,10 +852,6 @@ return [
                 'created' => 'Nota afegida correctament.',
             ],
 
-            'impersonate' => [
-                'success' => 'S\'ha emès el testimoni de suplantació.',
-            ],
-
             'review' => [
                 'not-found' => 'Ressenya no trobada.',
                 'no-permission' => 'No teniu permís per realitzar aquesta acció.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'No teniu permís per gestionar els termes de cerca.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sessions d\'API',
+            ],
+
+            'acl' => [
+                'title' => 'Sessions d\'API',
+                'delete' => 'Revoca',
+            ],
+
+            'index' => [
+                'title' => 'Sessions d\'API dels clients',
+                'info' => 'Clients connectats a l\'API de la botiga des d\'aplicacions web, mòbils, de TPV o d\'escriptori. Revocar una sessió desconnecta aquell dispositiu a l\'instant.',
+            ],
+
+            'fields' => [
+                'customer' => 'Client',
+                'email' => 'Correu electrònic',
+                'channel' => 'Canal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Revoca totes les sessions del client',
+            ],
+
+            'card' => [
+                'title' => 'Sessions d\'API (:count)',
+                'empty' => 'Aquest client no té cap sessió d\'API activa.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'No teniu permís per gestionar les sessions d\'API dels clients.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Autenticació de clients',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Sessió d\'inici de sessió',
                 'api-token' => 'Token d\'API',
                 'integration' => 'Token d\'integració (eliminat)',
+                'customer-session' => 'Sessió d\'inici de sessió del client',
             ],
 
             'channels' => [

@@ -852,10 +852,6 @@ return [
                 'created' => 'Note added successfully.',
             ],
 
-            'impersonate' => [
-                'success' => 'Impersonation token issued.',
-            ],
-
             'review' => [
                 'not-found' => 'Review not found.',
                 'no-permission' => 'You do not have permission to perform this action.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'You do not have permission to manage search terms.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'API Sessions',
+            ],
+
+            'acl' => [
+                'title' => 'API Sessions',
+                'delete' => 'Revoke',
+            ],
+
+            'index' => [
+                'title' => 'Customer API Sessions',
+                'info' => 'Customers signed in to the storefront API from apps such as a web, mobile, POS or desktop app. Revoking a session signs that device out at once.',
+            ],
+
+            'fields' => [
+                'customer' => 'Customer',
+                'email' => 'Email',
+                'channel' => 'Channel',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Revoke All of the Customer\'s Sessions',
+            ],
+
+            'card' => [
+                'title' => 'API Sessions (:count)',
+                'empty' => 'This customer has no active API sessions.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'You do not have permission to manage customer API sessions.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Customer Authentication',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Login Session',
                 'api-token' => 'API Token',
                 'integration' => 'Integration Token (removed)',
+                'customer-session' => 'Customer Login Session',
             ],
 
             'channels' => [

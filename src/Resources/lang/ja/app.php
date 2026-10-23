@@ -852,10 +852,6 @@ return [
                 'created' => 'メモが正常に追加されました。',
             ],
 
-            'impersonate' => [
-                'success' => 'なりすましトークンが発行されました。',
-            ],
-
             'review' => [
                 'not-found' => 'レビューが見つかりません。',
                 'no-permission' => 'この操作を実行する権限がありません。',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => '検索語を管理する権限がありません。',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'APIセッション',
+            ],
+
+            'acl' => [
+                'title' => 'APIセッション',
+                'delete' => '失効',
+            ],
+
+            'index' => [
+                'title' => '顧客 API セッション',
+                'info' => 'Web、モバイル、POS、デスクトップなどのアプリからストアフロント API にサインインしている顧客。セッションを取り消すと、そのデバイスはすぐにサインアウトされます。',
+            ],
+
+            'fields' => [
+                'customer' => '顧客',
+                'email' => 'メールアドレス',
+                'channel' => 'チャネル',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => '顧客のすべてのセッションを取り消す',
+            ],
+
+            'card' => [
+                'title' => 'API セッション (:count)',
+                'empty' => 'この顧客にアクティブな API セッションはありません。',
+            ],
+
+            'errors' => [
+                'no-permission' => '顧客 API セッションを管理する権限がありません。',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => '顧客認証',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'ログインセッション',
                 'api-token' => 'APIトークン',
                 'integration' => '連携トークン(削除済み)',
+                'customer-session' => '顧客ログインセッション',
             ],
 
             'channels' => [

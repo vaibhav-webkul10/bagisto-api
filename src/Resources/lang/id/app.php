@@ -852,10 +852,6 @@ return [
                 'created' => 'Catatan berhasil ditambahkan.',
             ],
 
-            'impersonate' => [
-                'success' => 'Token peniruan identitas diterbitkan.',
-            ],
-
             'review' => [
                 'not-found' => 'Ulasan tidak ditemukan.',
                 'no-permission' => 'Anda tidak memiliki izin untuk melakukan tindakan ini.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'Anda tidak memiliki izin untuk mengelola istilah pencarian.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sesi API',
+            ],
+
+            'acl' => [
+                'title' => 'Sesi API',
+                'delete' => 'Cabut',
+            ],
+
+            'index' => [
+                'title' => 'Sesi API Pelanggan',
+                'info' => 'Pelanggan yang masuk ke API toko dari aplikasi seperti web, seluler, POS, atau desktop. Mencabut sesi langsung mengeluarkan perangkat tersebut.',
+            ],
+
+            'fields' => [
+                'customer' => 'Pelanggan',
+                'email' => 'Email',
+                'channel' => 'Saluran',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Cabut Semua Sesi Pelanggan',
+            ],
+
+            'card' => [
+                'title' => 'Sesi API (:count)',
+                'empty' => 'Pelanggan ini tidak memiliki sesi API aktif.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Anda tidak memiliki izin untuk mengelola sesi API pelanggan.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Autentikasi Pelanggan',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Sesi Login',
                 'api-token' => 'Token API',
                 'integration' => 'Token Integrasi (dihapus)',
+                'customer-session' => 'Sesi Login Pelanggan',
             ],
 
             'channels' => [

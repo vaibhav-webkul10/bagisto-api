@@ -852,10 +852,6 @@ return [
                 'created' => 'Nota agregada correctamente.',
             ],
 
-            'impersonate' => [
-                'success' => 'Token de suplantación emitido.',
-            ],
-
             'review' => [
                 'not-found' => 'Reseña no encontrada.',
                 'no-permission' => 'No tiene permiso para realizar esta acción.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'No tiene permiso para gestionar los términos de búsqueda.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sesiones de API',
+            ],
+
+            'acl' => [
+                'title' => 'Sesiones de API',
+                'delete' => 'Revocar',
+            ],
+
+            'index' => [
+                'title' => 'Sesiones de API de clientes',
+                'info' => 'Clientes conectados a la API de la tienda desde aplicaciones web, móviles, de TPV o de escritorio. Revocar una sesión desconecta ese dispositivo al instante.',
+            ],
+
+            'fields' => [
+                'customer' => 'Cliente',
+                'email' => 'Correo electrónico',
+                'channel' => 'Canal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Revocar todas las sesiones del cliente',
+            ],
+
+            'card' => [
+                'title' => 'Sesiones de API (:count)',
+                'empty' => 'Este cliente no tiene sesiones de API activas.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'No tiene permiso para gestionar las sesiones de API de los clientes.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Autenticación de clientes',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Sesión de inicio de sesión',
                 'api-token' => 'Token de API',
                 'integration' => 'Token de integración (eliminado)',
+                'customer-session' => 'Sesión de inicio de sesión del cliente',
             ],
 
             'channels' => [

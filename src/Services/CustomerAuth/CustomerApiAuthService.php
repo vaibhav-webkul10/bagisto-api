@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Webkul\BagistoApi\Admin\Audit\AdminApiAuthAuditor;
 use Webkul\BagistoApi\Auth\CustomerApiAuthenticator;
 use Webkul\BagistoApi\Exception\CustomerAuthException;
 use Webkul\BagistoApi\Models\CustomerApiSession;
 use Webkul\BagistoApi\Repositories\CustomerApiRefreshTokenRepository;
 use Webkul\Customer\Models\Customer;
 use Webkul\Customer\Repositories\CustomerRepository;
+use Webkul\User\Models\Admin;
 
 class CustomerApiAuthService
 {
@@ -25,6 +27,7 @@ class CustomerApiAuthService
         protected CustomerRepository $customerRepository,
         protected CustomerApiRefreshTokenRepository $refreshTokenRepository,
         protected RateLimiter $limiter,
+        protected AdminApiAuthAuditor $auditor,
     ) {}
 
     /**
@@ -39,6 +42,8 @@ class CustomerApiAuthService
         $throttleKey = 'bagistoapi-customer-login:'.Str::lower($email).'|'.$request->ip();
 
         if ($this->limiter->tooManyAttempts($throttleKey, $this->settings->loginMaxAttempts())) {
+            $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_LOCKOUT, null, null, $request, ['email' => $email]);
+
             $this->rejectThrottled('too-many-login-attempts', CustomerAuthException::CODE_TOO_MANY_LOGIN_ATTEMPTS, $throttleKey);
         }
 
@@ -53,6 +58,8 @@ class CustomerApiAuthService
         ) {
             $this->limiter->hit($throttleKey, $this->settings->loginLockoutSeconds());
 
+            $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_LOGIN_FAILED, $customer, null, $request, ['email' => $email]);
+
             throw new CustomerAuthException(
                 trans('bagistoapi::app.graphql.login.invalid-credentials'),
                 CustomerAuthException::CODE_INVALID_CREDENTIALS,
@@ -61,9 +68,13 @@ class CustomerApiAuthService
 
         $this->limiter->clear($throttleKey);
 
-        $this->assertCanLogIn($customer);
+        $this->assertCanLogIn($customer, $request);
 
         $pair = $this->startSession($customer, $request, $client);
+
+        $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_LOGIN, $customer, $pair->session, $request, [
+            'client_type' => $pair->session->client_type,
+        ]);
 
         Event::dispatch('customer.after.login', $customer);
 
@@ -101,11 +112,25 @@ class CustomerApiAuthService
 
         $this->limiter->hit($throttleKey, 60);
 
-        return $this->tokenService->rotate($refreshToken, [
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'channel' => CustomerApiAuthenticator::channel($request),
-        ]);
+        try {
+            $pair = $this->tokenService->rotate($refreshToken, [
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'channel' => CustomerApiAuthenticator::channel($request),
+            ]);
+        } catch (InvalidCustomerRefreshTokenException $exception) {
+            if ($exception->wasReused()) {
+                $session = $exception->session();
+
+                $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_REFRESH_REUSE, $session?->customer, $session, $request);
+            }
+
+            throw $exception;
+        }
+
+        $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_REFRESH, $pair->session->customer, $pair->session, $request);
+
+        return $pair;
     }
 
     /**
@@ -113,7 +138,11 @@ class CustomerApiAuthService
      */
     public function logout(CustomerApiSession $session): CustomerApiSession
     {
-        return $this->tokenService->revoke($session, CustomerApiSession::REVOKED_LOGOUT);
+        $session = $this->tokenService->revoke($session, CustomerApiSession::REVOKED_LOGOUT);
+
+        $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_LOGOUT, $session->customer, $session, request());
+
+        return $session;
     }
 
     /**
@@ -121,7 +150,11 @@ class CustomerApiAuthService
      */
     public function logoutAll(Customer $customer): int
     {
-        return $this->tokenService->revokeAllForCustomer((int) $customer->id, CustomerApiSession::REVOKED_LOGOUT_ALL);
+        $revoked = $this->tokenService->revokeAllForCustomer((int) $customer->id, CustomerApiSession::REVOKED_LOGOUT_ALL);
+
+        $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_LOGOUT_ALL, $customer, null, request(), ['revoked' => $revoked]);
+
+        return $revoked;
     }
 
     /**
@@ -129,7 +162,52 @@ class CustomerApiAuthService
      */
     public function revokeSession(CustomerApiSession $session): CustomerApiSession
     {
-        return $this->tokenService->revoke($session, CustomerApiSession::REVOKED_BY_CUSTOMER);
+        $session = $this->tokenService->revoke($session, CustomerApiSession::REVOKED_BY_CUSTOMER);
+
+        $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_SESSION_REVOKED, $session->customer, $session, request());
+
+        return $session;
+    }
+
+    /**
+     * End one customer session on an admin's behalf.
+     */
+    public function revokeSessionAsAdmin(Admin $admin, CustomerApiSession $session, Request $request): CustomerApiSession
+    {
+        $session = $this->tokenService->revoke($session, CustomerApiSession::REVOKED_BY_ADMIN);
+
+        $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_SESSION_REVOKED, $session->customer, $session, $request, [], $admin);
+
+        return $session;
+    }
+
+    /**
+     * End every session of a customer on an admin's behalf and return how many were ended.
+     */
+    public function revokeAllAsAdmin(Admin $admin, Customer $customer, Request $request): int
+    {
+        $revoked = $this->tokenService->revokeAllForCustomer((int) $customer->id, CustomerApiSession::REVOKED_BY_ADMIN);
+
+        $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_SESSIONS_REVOKED, $customer, null, $request, ['revoked' => $revoked], $admin);
+
+        return $revoked;
+    }
+
+    /**
+     * End every session of a customer for a reason the system decided, and audit it.
+     */
+    public function revokeAutomatically(Customer $customer, string $reason, ?int $exceptSessionId = null): int
+    {
+        $revoked = $this->tokenService->revokeAllForCustomer((int) $customer->id, $reason, $exceptSessionId);
+
+        if ($revoked > 0) {
+            $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_CREDENTIALS_AUTO_REVOKED, $customer, null, request(), [
+                'reason' => $reason,
+                'revoked' => $revoked,
+            ]);
+        }
+
+        return $revoked;
     }
 
     /**
@@ -141,11 +219,7 @@ class CustomerApiAuthService
             return 0;
         }
 
-        return $this->tokenService->revokeAllForCustomer(
-            (int) $customer->id,
-            CustomerApiSession::REVOKED_PASSWORD_CHANGE,
-            $current?->id,
-        );
+        return $this->revokeAutomatically($customer, CustomerApiSession::REVOKED_PASSWORD_CHANGE, $current?->id);
     }
 
     /**
@@ -153,7 +227,7 @@ class CustomerApiAuthService
      */
     public function passwordReset(Customer $customer): int
     {
-        return $this->tokenService->revokeAllForCustomer((int) $customer->id, CustomerApiSession::REVOKED_PASSWORD_RESET);
+        return $this->revokeAutomatically($customer, CustomerApiSession::REVOKED_PASSWORD_RESET);
     }
 
     /**
@@ -161,8 +235,17 @@ class CustomerApiAuthService
      *
      * @throws CustomerAuthException
      */
-    protected function assertCanLogIn(Customer $customer): void
+    protected function assertCanLogIn(Customer $customer, Request $request): void
     {
+        if (
+            ! $customer->status
+            || ! $customer->is_verified
+        ) {
+            $this->auditor->recordForCustomer(AdminApiAuthAuditor::EVENT_LOGIN_FAILED, $customer, null, $request, [
+                'reason' => ! $customer->status ? 'inactive' : 'unverified',
+            ]);
+        }
+
         if (! $customer->status) {
             throw new CustomerAuthException(
                 trans('bagistoapi::app.graphql.login.account-inactive'),

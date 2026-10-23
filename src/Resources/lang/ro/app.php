@@ -852,10 +852,6 @@ return [
                 'created' => 'Nota a fost adăugată cu succes.',
             ],
 
-            'impersonate' => [
-                'success' => 'Tokenul de impersonare a fost emis.',
-            ],
-
             'review' => [
                 'not-found' => 'Recenzia nu a fost găsită.',
                 'no-permission' => 'Nu aveți permisiunea de a efectua această acțiune.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'Nu aveți permisiunea de a gestiona termenii de căutare.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sesiuni API',
+            ],
+
+            'acl' => [
+                'title' => 'Sesiuni API',
+                'delete' => 'Revocă',
+            ],
+
+            'index' => [
+                'title' => 'Sesiuni API ale clienților',
+                'info' => 'Clienți autentificați în API-ul magazinului din aplicații web, mobile, POS sau desktop. Revocarea unei sesiuni deconectează imediat acel dispozitiv.',
+            ],
+
+            'fields' => [
+                'customer' => 'Client',
+                'email' => 'E-mail',
+                'channel' => 'Canal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Revocă toate sesiunile clientului',
+            ],
+
+            'card' => [
+                'title' => 'Sesiuni API (:count)',
+                'empty' => 'Acest client nu are sesiuni API active.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Nu aveți permisiunea de a gestiona sesiunile API ale clienților.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Autentificarea clienților',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Sesiune de autentificare',
                 'api-token' => 'Token API',
                 'integration' => 'Token de integrare (eliminat)',
+                'customer-session' => 'Sesiune de autentificare a clientului',
             ],
 
             'channels' => [

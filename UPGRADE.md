@@ -159,6 +159,7 @@ Customers no longer authenticate with Laravel Sanctum tokens. The installer's `m
 - A refused login is now an HTTP error (`401 invalid_credentials`, `403 account_inactive` or `account_unverified`, `429 too_many_login_attempts`) instead of `201` with `success: false`.
 - An access token is tied to the channel it was issued on.
 - The lifetimes and limits are set under *Configuration → API → Customer Authentication*.
+- `POST /api/admin/customers/{id}/impersonate` and `createAdminCustomerImpersonate` are removed. An admin views and ends a customer's sessions under *Customers → API Sessions*, or through `/api/admin/customers/api-sessions`; grant roles `customers.api_sessions` and `customers.api_sessions.delete` for it.
 
 ## 8. Admin RMA message attachments
 

@@ -852,10 +852,6 @@ return [
                 'created' => 'Notatka pomyślnie dodana.',
             ],
 
-            'impersonate' => [
-                'success' => 'Wydano token podszywania się.',
-            ],
-
             'review' => [
                 'not-found' => 'Recenzja nie znaleziona.',
                 'no-permission' => 'Nie masz uprawnień do wykonania tej akcji.',
@@ -1633,6 +1629,41 @@ return [
                 'no-permission' => 'Nie masz uprawnień do zarządzania wyszukiwanymi frazami.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sesje API',
+            ],
+
+            'acl' => [
+                'title' => 'Sesje API',
+                'delete' => 'Unieważnij',
+            ],
+
+            'index' => [
+                'title' => 'Sesje API klientów',
+                'info' => 'Klienci zalogowani do API sklepu z aplikacji webowych, mobilnych, POS lub desktopowych. Unieważnienie sesji natychmiast wylogowuje to urządzenie.',
+            ],
+
+            'fields' => [
+                'customer' => 'Klient',
+                'email' => 'E-mail',
+                'channel' => 'Kanał',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Unieważnij wszystkie sesje klienta',
+            ],
+
+            'card' => [
+                'title' => 'Sesje API (:count)',
+                'empty' => 'Ten klient nie ma aktywnych sesji API.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Nie masz uprawnień do zarządzania sesjami API klientów.',
+            ],
+        ],
+
         'customer-auth' => [
             'configuration' => [
                 'title' => 'Uwierzytelnianie klientów',
@@ -2003,6 +2034,7 @@ return [
                 'session' => 'Sesja logowania',
                 'api-token' => 'Token API',
                 'integration' => 'Token integracji (usunięty)',
+                'customer-session' => 'Sesja logowania klienta',
             ],
 
             'channels' => [
