@@ -14,6 +14,7 @@ use ApiPlatform\OpenApi\Model\Parameter;
 use ApiPlatform\OpenApi\Model\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Webkul\BagistoApi\Dto\ProductDetail\ProductDetailDto;
+use Webkul\BagistoApi\Models\Concerns\ProductCardSummary;
 use Webkul\BagistoApi\Models\Concerns\ProductPricing;
 use Webkul\BagistoApi\Models\Concerns\ProductRelations;
 use Webkul\BagistoApi\Models\Concerns\ProductSystemAttributes;
@@ -436,6 +437,7 @@ use Webkul\Product\Models\Product as BaseProduct;
 )]
 class Product extends BaseProduct
 {
+    use ProductCardSummary;
     use ProductPricing;
     use ProductRelations;
     use ProductSystemAttributes;
@@ -611,7 +613,8 @@ class Product extends BaseProduct
      */
     public function availableForSaleAttribute(): bool
     {
-        return $this->status && $this->isSaleable();
+        return $this->status
+            && $this->isSaleable();
     }
 
     /**
@@ -623,7 +626,8 @@ class Product extends BaseProduct
     )]
     public function availableForSale(): bool
     {
-        return $this->status && $this->isSaleable();
+        return $this->status
+            && $this->isSaleable();
     }
 
     /**
@@ -959,10 +963,12 @@ class Product extends BaseProduct
 
         if (
             $attributeValue
-            && $attributeValue?->integer_value
-            && in_array($attributeValue?->attribute?->type, ['select', 'multiselect', 'checkbox'])
+            && $attributeValue->integer_value
+            && in_array($attributeValue->attribute?->type, ['select', 'multiselect', 'checkbox'])
         ) {
-            $attributeValue->setValue($attributeValue->attribute->options()->where('id', $attributeValue->value)->first()?->label);
+            return $this->attributeValueCache[$attributeCode] = (string) $attributeValue->attribute->options()
+                ->where('id', $attributeValue->integer_value)
+                ->first()?->label;
         }
 
         return $this->attributeValueCache[$attributeCode] = ($attributeValue ? $attributeValue->value : '');

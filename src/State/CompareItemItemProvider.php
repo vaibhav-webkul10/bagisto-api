@@ -4,10 +4,11 @@ namespace Webkul\BagistoApi\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use Illuminate\Support\Facades\Auth;
 use Webkul\BagistoApi\Exception\AuthorizationException;
 use Webkul\BagistoApi\Exception\ResourceNotFoundException;
 use Webkul\BagistoApi\Models\CompareItem;
+use Webkul\BagistoApi\Models\Product;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 
 class CompareItemItemProvider implements ProviderInterface
 {
@@ -16,7 +17,7 @@ class CompareItemItemProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        $customer = Auth::guard('sanctum')->user();
+        $customer = CurrentCustomer::user();
 
         if (! $customer) {
             throw new AuthorizationException(__('bagistoapi::app.graphql.logout.unauthenticated'));
@@ -33,7 +34,7 @@ class CompareItemItemProvider implements ProviderInterface
 
         $compareItem = CompareItem::where('id', (int) $id)
             ->where('customer_id', $customer->id)
-            ->with(['product', 'customer'])
+            ->with(['product' => fn ($query) => Product::withReviewSummary($query), 'customer'])
             ->first();
 
         if (! $compareItem) {

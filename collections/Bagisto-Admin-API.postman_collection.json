@@ -759,7 +759,7 @@
                                         "login"
                                     ]
                                 },
-                                "description": "Starts a session and returns a short-lived JWT access token and a refresh token. Send the access token as `Authorization: Bearer <accessToken>` and exchange the refresh token at `/api/admin/auth/refresh` before or after the access token expires. When the admin has two-factor authentication enabled, the response is `202` with `twoFactorRequired: true` and a single-use `challengeToken` valid for 5 minutes, and no tokens: send it with the code to `/api/admin/auth/two-factor`. Five failed attempts per email and address in a minute lock the login for that minute.",
+                                "description": "Starts a session and returns a short-lived JWT access token and a refresh token. Send the access token as `Authorization: Bearer <accessToken>` and exchange the refresh token at `/api/admin/auth/refresh` before or after the access token expires. When the admin has two-factor authentication enabled, the response is `202` with `twoFactorRequired: true` and a single-use `challengeToken` valid for 5 minutes by default, and no tokens: send it with the code to `/api/admin/auth/two-factor`. Five failed attempts per email and address lock the login for 60 seconds by default; both are configurable under Configuration → API → Admin Authentication → Login Protection.",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"email\": \"{{adminEmail}}\",\n    \"password\": \"{{adminPassword}}\",\n    \"device_name\": \"Postman\",\n    \"client_type\": \"other\"\n}",
@@ -812,7 +812,7 @@
                                         "two-factor"
                                     ]
                                 },
-                                "description": "Exchanges the `challengeToken` of a `202` login, with the 6-digit authenticator `code` or a `backupCode`, for the access and refresh token pair. A challenge works once and for 5 minutes; five wrong codes revoke it, and five wrong codes a minute for the same admin lock further codes for that minute. A code from an already used time window is refused, and a backup code is used up.",
+                                "description": "Exchanges the `challengeToken` of a `202` login, with the 6-digit authenticator `code` or a `backupCode`, for the access and refresh token pair. A challenge works once and for 5 minutes by default; five wrong codes revoke it, and five wrong codes a minute for the same admin (configurable) lock further codes for that minute. A code from an already used time window is refused, and a backup code is used up.",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"challenge_token\": \"{{adminChallengeToken}}\",\n    \"code\": \"123456\"\n}",
@@ -1063,7 +1063,7 @@
                                         "forgot-password"
                                     ]
                                 },
-                                "description": "Sends core's admin password reset email when the address belongs to an admin. The answer is the same whether or not it does. Five requests a minute per client address are allowed.",
+                                "description": "Sends core's admin password reset email when the address belongs to an admin. The answer is the same whether or not it does. Five requests a minute per client address are allowed by default (configurable).",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"email\": \"admin@example.com\"\n}",
@@ -1095,7 +1095,7 @@
                                         "reset-password"
                                     ]
                                 },
-                                "description": "Sets a new password with the token from the reset email, through core's admin password broker. Every API session of the admin is revoked, and every API token too when *Revoke API Tokens on Password Change* is on; log in again afterwards. Five requests a minute per client address are allowed.",
+                                "description": "Sets a new password with the token from the reset email, through core's admin password broker. Every API session of the admin is revoked, and every API token too when *Revoke API Tokens on Password Change* is on; log in again afterwards. Five requests a minute per client address are allowed by default (configurable).",
                                 "body": {
                                     "mode": "raw",
                                     "raw": "{\n    \"token\": \"6f1c0e...\",\n    \"email\": \"admin@example.com\",\n    \"password\": \"new-secret\",\n    \"password_confirmation\": \"new-secret\"\n}",
@@ -4620,6 +4620,210 @@
                     "name": "Customers",
                     "item": [
                         {
+                            "name": "API Sessions",
+                            "item": [
+                                {
+                                    "name": "End every storefront session of a customer",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{baseUrl}}/customers/:customerId/revoke-api-sessions",
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "path": [
+                                                "customers",
+                                                ":customerId",
+                                                "revoke-api-sessions"
+                                            ],
+                                            "variable": [
+                                                {
+                                                    "key": "customerId",
+                                                    "value": "1529",
+                                                    "description": "Customer ID."
+                                                }
+                                            ]
+                                        },
+                                        "description": "Ends every live storefront session of the customer, on every device; their access and refresh tokens stop working at once and the customer has to log in again. Requires `customers.api_sessions.delete`.",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "[]",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "List a customer's active storefront sessions",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [],
+                                        "url": {
+                                            "raw": "{{baseUrl}}/customers/:customerId/api-sessions",
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "path": [
+                                                "customers",
+                                                ":customerId",
+                                                "api-sessions"
+                                            ],
+                                            "query": [
+                                                {
+                                                    "key": "page",
+                                                    "value": "1",
+                                                    "description": "Page (1-based).",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "key": "per_page",
+                                                    "value": "10",
+                                                    "description": "Items per page (default 10, max 50).",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "key": "client_type",
+                                                    "value": "",
+                                                    "description": "Filter by client type.",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "key": "channel_id",
+                                                    "value": "",
+                                                    "description": "Filter by the channel the session was created on.",
+                                                    "disabled": true
+                                                }
+                                            ],
+                                            "variable": [
+                                                {
+                                                    "key": "customerId",
+                                                    "value": "1529",
+                                                    "description": "Customer ID."
+                                                }
+                                            ]
+                                        },
+                                        "description": "The live storefront login sessions of one customer, newest first. Requires `customers.api_sessions`."
+                                    }
+                                },
+                                {
+                                    "name": "List every active storefront customer session",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [],
+                                        "url": {
+                                            "raw": "{{baseUrl}}/customers/api-sessions",
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "path": [
+                                                "customers",
+                                                "api-sessions"
+                                            ],
+                                            "query": [
+                                                {
+                                                    "key": "page",
+                                                    "value": "1",
+                                                    "description": "Page (1-based).",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "key": "per_page",
+                                                    "value": "10",
+                                                    "description": "Items per page (default 10, max 50).",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "key": "customer_id",
+                                                    "value": "",
+                                                    "description": "Filter by customer ID.",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "key": "client_type",
+                                                    "value": "",
+                                                    "description": "Filter by client type.",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "key": "channel_id",
+                                                    "value": "",
+                                                    "description": "Filter by the channel the session was created on.",
+                                                    "disabled": true
+                                                }
+                                            ]
+                                        },
+                                        "description": "Every live storefront login session of every customer, newest first, with where each was last used from. Requires `customers.api_sessions`."
+                                    }
+                                },
+                                {
+                                    "name": "Revoke a customer session",
+                                    "request": {
+                                        "method": "DELETE",
+                                        "header": [],
+                                        "url": {
+                                            "raw": "{{baseUrl}}/customers/api-sessions/:id",
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "path": [
+                                                "customers",
+                                                "api-sessions",
+                                                ":id"
+                                            ],
+                                            "variable": [
+                                                {
+                                                    "key": "id",
+                                                    "value": "41",
+                                                    "description": "Session ID."
+                                                }
+                                            ]
+                                        },
+                                        "description": "Ends one live storefront session of a customer; its access and refresh tokens stop working at once. Requires `customers.api_sessions.delete`."
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Create a new customer",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/customers",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "customers"
+                                    ]
+                                },
+                                "description": "Creates a verified customer on the given channel (the current one by default). `first_name`, `last_name`, a unique `email` and `customer_group_id` are required; by default a password is generated and emailed, or send `send_password: false` with a `password` of at least 6 characters.",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"email\": \"jane@example.com\",\n    \"phone\": \"\",\n    \"gender\": \"\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"customer_group_id\": 2,\n    \"channel_id\": 1,\n    \"status\": 1,\n    \"subscribed_to_news_letter\": false,\n    \"send_password\": true,\n    \"password\": \"\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
                             "name": "Add a note to a customer",
                             "request": {
                                 "method": "POST",
@@ -4689,37 +4893,6 @@
                                     ]
                                 },
                                 "description": "One saved address of the customer. The address must belong to `customerId`; an address of another customer, or an unknown ID, is a 404. Needs the `customers.addresses` permission."
-                            }
-                        },
-                        {
-                            "name": "Create a new customer",
-                            "request": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{baseUrl}}/customers",
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "path": [
-                                        "customers"
-                                    ]
-                                },
-                                "description": "Creates a verified customer on the given channel (the current one by default). `first_name`, `last_name`, a unique `email` and `customer_group_id` are required; by default a password is generated and emailed, or send `send_password: false` with a `password` of at least 6 characters.",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"email\": \"jane@example.com\",\n    \"phone\": \"\",\n    \"gender\": \"\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"customer_group_id\": 2,\n    \"channel_id\": 1,\n    \"status\": 1,\n    \"subscribed_to_news_letter\": false,\n    \"send_password\": true,\n    \"password\": \"\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "language": "json"
-                                        }
-                                    }
-                                }
                             }
                         },
                         {
@@ -4972,32 +5145,6 @@
                                     ]
                                 },
                                 "description": "Items the customer has in their own storefront cart (`carts.is_active = 1`). Used by the Create-Order screen's right sidebar so the admin can pull items into the draft cart."
-                            }
-                        },
-                        {
-                            "name": "Issue an impersonation token for a customer",
-                            "request": {
-                                "method": "POST",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{baseUrl}}/customers/:customerId/impersonate",
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "path": [
-                                        "customers",
-                                        ":customerId",
-                                        "impersonate"
-                                    ],
-                                    "variable": [
-                                        {
-                                            "key": "customerId",
-                                            "value": "1",
-                                            "description": "Customer ID"
-                                        }
-                                    ]
-                                },
-                                "description": "Returns a Sanctum customer token that the admin can use to act as the customer. The token expires in 1 hour and is audited as having been issued by the calling admin. No request body — the customer is identified by the path."
                             }
                         },
                         {
@@ -16792,7 +16939,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "mutation DeleteAdminCustomerGdprRequest($input: deleteAdminCustomerGdprRequestInput!) {\n  deleteAdminCustomerGdprRequest(input: $input) {\n    adminCustomerGdprRequest {\n      _id\n      createdAt\n      customerId\n      customerName\n      email\n      id\n      message\n      revokedAt\n      status\n      type\n      updatedAt\n    }\n    clientMutationId\n  }\n}\n",
+                                                "query": "mutation DeleteAdminCustomerGdprRequest($input: deleteAdminCustomerGdprRequestInput!) {\n  deleteAdminCustomerGdprRequest(input: $input) {\n    adminCustomerGdprRequest {\n      _id\n      createdAt\n      customerId\n      customerName\n      email\n      id\n      message\n      revokedAt\n      status\n      type\n      typeLabel\n      updatedAt\n    }\n    clientMutationId\n  }\n}\n",
                                                 "variables": "{\n    \"input\": {\n        \"id\": \"1\"\n    }\n}"
                                             }
                                         },
@@ -16823,7 +16970,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "mutation UpdateAdminCustomerGdprRequest($input: updateAdminCustomerGdprRequestInput!) {\n  updateAdminCustomerGdprRequest(input: $input) {\n    adminCustomerGdprRequest {\n      _id\n      createdAt\n      customerId\n      customerName\n      email\n      id\n      message\n      revokedAt\n      status\n      type\n      updatedAt\n    }\n    clientMutationId\n  }\n}\n",
+                                                "query": "mutation UpdateAdminCustomerGdprRequest($input: updateAdminCustomerGdprRequestInput!) {\n  updateAdminCustomerGdprRequest(input: $input) {\n    adminCustomerGdprRequest {\n      _id\n      createdAt\n      customerId\n      customerName\n      email\n      id\n      message\n      revokedAt\n      status\n      type\n      typeLabel\n      updatedAt\n    }\n    clientMutationId\n  }\n}\n",
                                                 "variables": "{\n    \"input\": {\n        \"status\": \"processing\",\n        \"message\": \"Reviewing the request.\"\n    }\n}"
                                             }
                                         },
@@ -16859,7 +17006,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query AdminCustomerGdprRequest($id: ID!) {\n  adminCustomerGdprRequest(id: $id) {\n    _id\n    createdAt\n    customerId\n    customerName\n    email\n    id\n    message\n    revokedAt\n    status\n    type\n    updatedAt\n  }\n}\n",
+                                                "query": "query AdminCustomerGdprRequest($id: ID!) {\n  adminCustomerGdprRequest(id: $id) {\n    _id\n    createdAt\n    customerId\n    customerName\n    email\n    id\n    message\n    revokedAt\n    status\n    type\n    typeLabel\n    updatedAt\n  }\n}\n",
                                                 "variables": "{\n    \"id\": \"1\"\n}"
                                             }
                                         },
@@ -16890,7 +17037,7 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query AdminCustomerGdprRequests($first: Int) {\n  adminCustomerGdprRequests(first: $first) {\n    edges {\n      node {\n        _id\n        createdAt\n        customerId\n        customerName\n        email\n        id\n        message\n        revokedAt\n        status\n        type\n        updatedAt\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
+                                                "query": "query AdminCustomerGdprRequests($first: Int) {\n  adminCustomerGdprRequests(first: $first) {\n    edges {\n      node {\n        _id\n        createdAt\n        customerId\n        customerName\n        email\n        id\n        message\n        revokedAt\n        status\n        type\n        typeLabel\n        updatedAt\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"first\": 10\n}"
                                             }
                                         },
@@ -17756,6 +17903,114 @@
                     "name": "Customers",
                     "item": [
                         {
+                            "name": "API Sessions",
+                            "item": [
+                                {
+                                    "name": "Mutations",
+                                    "item": [
+                                        {
+                                            "name": "createAdminCustomerApiSessionRevoke",
+                                            "request": {
+                                                "method": "POST",
+                                                "header": [
+                                                    {
+                                                        "key": "Content-Type",
+                                                        "value": "application/json"
+                                                    }
+                                                ],
+                                                "url": {
+                                                    "raw": "{{url}}/api/admin/graphql",
+                                                    "host": [
+                                                        "{{url}}"
+                                                    ],
+                                                    "path": [
+                                                        "api",
+                                                        "admin",
+                                                        "graphql"
+                                                    ]
+                                                },
+                                                "body": {
+                                                    "mode": "graphql",
+                                                    "graphql": {
+                                                        "query": "mutation CreateAdminCustomerApiSessionRevoke($input: createAdminCustomerApiSessionRevokeInput!) {\n  createAdminCustomerApiSessionRevoke(input: $input) {\n    adminCustomerApiSessionRevoke {\n      customerId\n      id\n      message\n      revoked\n    }\n    clientMutationId\n  }\n}\n",
+                                                        "variables": "{\n    \"input\": {\n        \"customerId\": 1\n    }\n}"
+                                                    }
+                                                },
+                                                "description": "End every storefront session of a customer. Becomes createAdminCustomerApiSessionRevoke; requires customers.api_sessions.delete."
+                                            }
+                                        },
+                                        {
+                                            "name": "deleteAdminCustomerApiSession",
+                                            "request": {
+                                                "method": "POST",
+                                                "header": [
+                                                    {
+                                                        "key": "Content-Type",
+                                                        "value": "application/json"
+                                                    }
+                                                ],
+                                                "url": {
+                                                    "raw": "{{url}}/api/admin/graphql",
+                                                    "host": [
+                                                        "{{url}}"
+                                                    ],
+                                                    "path": [
+                                                        "api",
+                                                        "admin",
+                                                        "graphql"
+                                                    ]
+                                                },
+                                                "body": {
+                                                    "mode": "graphql",
+                                                    "graphql": {
+                                                        "query": "mutation DeleteAdminCustomerApiSession($input: deleteAdminCustomerApiSessionInput!) {\n  deleteAdminCustomerApiSession(input: $input) {\n    adminCustomerApiSession {\n      _id\n      channelId\n      clientType\n      createdAt\n      customerEmail\n      customerId\n      customerName\n      expiresAt\n      id\n      ipAddress\n      lastChannel\n      lastIpAddress\n      lastUsedAt\n      lastUserAgent\n      message\n      name\n      refreshExpiresAt\n      revokedAt\n      revokedReason\n      userAgent\n    }\n    clientMutationId\n  }\n}\n",
+                                                        "variables": "{\n    \"input\": {\n        \"id\": \"1\"\n    }\n}"
+                                                    }
+                                                },
+                                                "description": "End one storefront customer session. Becomes deleteAdminCustomerApiSession; requires customers.api_sessions.delete."
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Queries",
+                                    "item": [
+                                        {
+                                            "name": "adminCustomerApiSessions",
+                                            "request": {
+                                                "method": "POST",
+                                                "header": [
+                                                    {
+                                                        "key": "Content-Type",
+                                                        "value": "application/json"
+                                                    }
+                                                ],
+                                                "url": {
+                                                    "raw": "{{url}}/api/admin/graphql",
+                                                    "host": [
+                                                        "{{url}}"
+                                                    ],
+                                                    "path": [
+                                                        "api",
+                                                        "admin",
+                                                        "graphql"
+                                                    ]
+                                                },
+                                                "body": {
+                                                    "mode": "graphql",
+                                                    "graphql": {
+                                                        "query": "query AdminCustomerApiSessions($first: Int) {\n  adminCustomerApiSessions(first: $first) {\n    edges {\n      node {\n        _id\n        channelId\n        clientType\n        createdAt\n        customerEmail\n        customerId\n        customerName\n        expiresAt\n        id\n        ipAddress\n        lastChannel\n        lastIpAddress\n        lastUsedAt\n        lastUserAgent\n        message\n        name\n        refreshExpiresAt\n        revokedAt\n        revokedReason\n        userAgent\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
+                                                        "variables": "{\n    \"first\": 10\n}"
+                                                    }
+                                                },
+                                                "description": "Every active storefront customer session, or one customer's with customer_id (cursor pagination). Requires customers.api_sessions."
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
                             "name": "Mutations",
                             "item": [
                                 {
@@ -17818,37 +18073,6 @@
                                             }
                                         },
                                         "description": "Create customer address. Becomes createAdminCustomerAddress."
-                                    }
-                                },
-                                {
-                                    "name": "createAdminCustomerImpersonate",
-                                    "request": {
-                                        "method": "POST",
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            }
-                                        ],
-                                        "url": {
-                                            "raw": "{{url}}/api/admin/graphql",
-                                            "host": [
-                                                "{{url}}"
-                                            ],
-                                            "path": [
-                                                "api",
-                                                "admin",
-                                                "graphql"
-                                            ]
-                                        },
-                                        "body": {
-                                            "mode": "graphql",
-                                            "graphql": {
-                                                "query": "mutation CreateAdminCustomerImpersonate($input: createAdminCustomerImpersonateInput!) {\n  createAdminCustomerImpersonate(input: $input) {\n    adminCustomerImpersonate {\n      _id\n      customerEmail\n      customerId\n      customerName\n      expiresAt\n      id\n      impersonatedByAdminId\n      token\n    }\n    clientMutationId\n  }\n}\n",
-                                                "variables": "{\n    \"input\": {\n        \"customerId\": 1\n    }\n}"
-                                            }
-                                        },
-                                        "description": "Creates a AdminCustomerImpersonate."
                                     }
                                 },
                                 {
@@ -18221,11 +18445,11 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query AdminCustomerCartItems($customerId: Int!) {\n  adminCustomerCartItems(customerId: $customerId) {\n    edges {\n      node {\n        _id\n        additional\n        formattedPrice\n        formattedTotal\n        id\n        name\n        price\n        productId\n        quantity\n        sku\n        total\n        type\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
+                                                "query": "query AdminCustomerCartItems($customerId: Int!) {\n  adminCustomerCartItems(customerId: $customerId) {\n    edges {\n      node {\n        _id\n        additional\n        cartId\n        formattedPrice\n        formattedPriceInclTax\n        formattedTotal\n        formattedTotalInclTax\n        id\n        isOptionsRequired\n        isSaleable\n        name\n        options\n        price\n        priceInclTax\n        productId\n        productImage\n        qtyAvailable\n        quantity\n        sku\n        total\n        totalInclTax\n        type\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"customerId\": 1\n}"
                                             }
                                         },
-                                        "description": "Top-level items in the active cart of customer `customerId`, all in one page (no pagination arguments); empty when the customer has no active cart. Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+                                        "description": "Top-level items in the active cart of customer `customerId`, all in one page (no pagination arguments); empty when the customer has no active cart. It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
                                     }
                                 },
                                 {
@@ -18252,11 +18476,11 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query AdminCustomerCompareItems($customerId: Int!) {\n  adminCustomerCompareItems(customerId: $customerId) {\n    edges {\n      node {\n        _id\n        formattedPrice\n        id\n        name\n        price\n        productId\n        productImage\n        sku\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
+                                                "query": "query AdminCustomerCompareItems($customerId: Int!) {\n  adminCustomerCompareItems(customerId: $customerId) {\n    edges {\n      node {\n        _id\n        formattedPrice\n        id\n        isOptionsRequired\n        isSaleable\n        name\n        price\n        productId\n        productImage\n        qtyAvailable\n        sku\n        type\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"customerId\": 1\n}"
                                             }
                                         },
-                                        "description": "Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+                                        "description": "Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
                                     }
                                 },
                                 {
@@ -18318,7 +18542,7 @@
                                                 "variables": "{\n    \"customerId\": 1\n}"
                                             }
                                         },
-                                        "description": "Up to 5 top-level items from the most recent orders of customer `customerId`, one per product, newest first, in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+                                        "description": "Up to 5 top-level items from the most recent orders of customer `customerId`, one per product, newest first, in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
                                     }
                                 },
                                 {
@@ -18345,11 +18569,11 @@
                                         "body": {
                                             "mode": "graphql",
                                             "graphql": {
-                                                "query": "query AdminCustomerWishlistItems($customerId: Int!) {\n  adminCustomerWishlistItems(customerId: $customerId) {\n    edges {\n      node {\n        _id\n        additional\n        formattedPrice\n        id\n        name\n        price\n        productId\n        productImage\n        sku\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
+                                                "query": "query AdminCustomerWishlistItems($customerId: Int!) {\n  adminCustomerWishlistItems(customerId: $customerId) {\n    edges {\n      node {\n        _id\n        additional\n        formattedPrice\n        id\n        isOptionsRequired\n        isSaleable\n        name\n        price\n        productId\n        productImage\n        qtyAvailable\n        sku\n        type\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
                                                 "variables": "{\n    \"customerId\": 1\n}"
                                             }
                                         },
-                                        "description": "Every product in the wishlist of customer `customerId`, all in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+                                        "description": "Every product in the wishlist of customer `customerId`, all in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
                                     }
                                 },
                                 {
@@ -21148,7 +21372,7 @@
                                                 "body": {
                                                     "mode": "graphql",
                                                     "graphql": {
-                                                        "query": "query AdminInvoice($id: ID!) {\n  adminInvoice(id: $id) {\n    _id\n    baseCurrencyCode\n    baseDiscountAmount\n    baseGrandTotal\n    baseShippingAmount\n    baseShippingAmountInclTax\n    baseShippingTaxAmount\n    baseSubTotal\n    baseSubTotalInclTax\n    baseTaxAmount\n    channelCurrencyCode\n    channelName\n    createdAt\n    customerEmail\n    customerName\n    discountAmount\n    emailSent\n    formattedBaseDiscountAmount\n    formattedBaseGrandTotal\n    formattedBaseShippingAmount\n    formattedBaseShippingAmountInclTax\n    formattedBaseShippingTaxAmount\n    formattedBaseSubTotal\n    formattedBaseSubTotalInclTax\n    formattedBaseTaxAmount\n    formattedDiscountAmount\n    formattedGrandTotal\n    formattedShippingAmount\n    formattedShippingAmountInclTax\n    formattedShippingTaxAmount\n    formattedSubTotal\n    formattedSubTotalInclTax\n    formattedTaxAmount\n    grandTotal\n    id\n    incrementId\n    nextReminderAt\n    order {\n      _id\n      appliedCartRuleIds\n      baseCurrencyCode\n      baseDiscountAmount\n      baseDiscountInvoiced\n      baseDiscountRefunded\n      baseGrandTotal\n      baseGrandTotalInvoiced\n      baseGrandTotalRefunded\n      baseShippingAmount\n      baseShippingAmountInclTax\n      baseShippingDiscountAmount\n      baseShippingInvoiced\n      baseShippingRefunded\n      baseShippingTaxAmount\n      baseShippingTaxRefunded\n      baseSubTotal\n      baseSubTotalInclTax\n      baseSubTotalInvoiced\n      baseSubTotalRefunded\n      baseTaxAmount\n      baseTaxAmountInvoiced\n      baseTaxAmountRefunded\n      baseTotalDue\n      cartId\n      channelCurrencyCode\n      channelId\n      channelName\n      channelType\n      couponCode\n      createdAt\n      customerEmail\n      customerFirstName\n      customerLastName\n      customerType\n      discountAmount\n      discountInvoiced\n      discountPercent\n      discountRefunded\n      formattedDiscountAmount\n      formattedGrandTotal\n      formattedGrandTotalInvoiced\n      formattedGrandTotalRefunded\n      formattedShippingAmount\n      formattedSubTotal\n      formattedTaxAmount\n      formattedTotalDue\n      grandTotal\n      grandTotalInvoiced\n      grandTotalRefunded\n      id\n      incrementId\n      isGift\n      isGuest\n      orderCurrencyCode\n      paymentMethod\n      paymentTitle\n      shippingAmount\n      shippingAmountInclTax\n      shippingDescription\n      shippingDiscountAmount\n      shippingInvoiced\n      shippingMethod\n      shippingRefunded\n      shippingTaxAmount\n      shippingTaxRefunded\n      shippingTitle\n      status\n      statusLabel\n      subTotal\n      subTotalInclTax\n      subTotalInvoiced\n      subTotalRefunded\n      taxAmount\n      taxAmountInvoiced\n      taxAmountRefunded\n      totalDue\n      totalItemCount\n      totalQtyOrdered\n      updatedAt\n    }\n    orderCurrencyCode\n    orderDate\n    orderIncrementId\n    orderStatus\n    orderStatusLabel\n    reminders\n    shippingAmount\n    shippingAmountInclTax\n    shippingTaxAmount\n    state\n    subTotal\n    subTotalInclTax\n    taxAmount\n    totalQty\n    transactionId\n    updatedAt\n  }\n}\n",
+                                                        "query": "query AdminInvoice($id: ID!) {\n  adminInvoice(id: $id) {\n    _id\n    baseCurrencyCode\n    baseDiscountAmount\n    baseGrandTotal\n    baseShippingAmount\n    baseShippingAmountInclTax\n    baseShippingTaxAmount\n    baseSubTotal\n    baseSubTotalInclTax\n    baseTaxAmount\n    channelCurrencyCode\n    channelName\n    createdAt\n    customerEmail\n    customerName\n    discountAmount\n    emailSent\n    formattedBaseDiscountAmount\n    formattedBaseGrandTotal\n    formattedBaseShippingAmount\n    formattedBaseShippingAmountInclTax\n    formattedBaseShippingTaxAmount\n    formattedBaseSubTotal\n    formattedBaseSubTotalInclTax\n    formattedBaseTaxAmount\n    formattedDiscountAmount\n    formattedGrandTotal\n    formattedShippingAmount\n    formattedShippingAmountInclTax\n    formattedShippingTaxAmount\n    formattedSubTotal\n    formattedSubTotalInclTax\n    formattedTaxAmount\n    grandTotal\n    id\n    incrementId\n    nextReminderAt\n    order {\n      _id\n      appliedCartRuleIds\n      baseCurrencyCode\n      baseDiscountAmount\n      baseDiscountInvoiced\n      baseDiscountRefunded\n      baseGrandTotal\n      baseGrandTotalInvoiced\n      baseGrandTotalRefunded\n      baseShippingAmount\n      baseShippingAmountInclTax\n      baseShippingDiscountAmount\n      baseShippingInvoiced\n      baseShippingRefunded\n      baseShippingTaxAmount\n      baseShippingTaxRefunded\n      baseSubTotal\n      baseSubTotalInclTax\n      baseSubTotalInvoiced\n      baseSubTotalRefunded\n      baseTaxAmount\n      baseTaxAmountInvoiced\n      baseTaxAmountRefunded\n      baseTotalDue\n      cartId\n      channelCurrencyCode\n      channelId\n      channelName\n      channelType\n      couponCode\n      createdAt\n      customerEmail\n      customerFirstName\n      customerLastName\n      customerType\n      discountAmount\n      discountInvoiced\n      discountPercent\n      discountRefunded\n      formattedDiscountAmount\n      formattedGrandTotal\n      formattedGrandTotalInvoiced\n      formattedGrandTotalRefunded\n      formattedShippingAmount\n      formattedShippingAmountInclTax\n      formattedSubTotal\n      formattedSubTotalInclTax\n      formattedTaxAmount\n      formattedTotalDue\n      grandTotal\n      grandTotalInvoiced\n      grandTotalRefunded\n      id\n      incrementId\n      isGift\n      isGuest\n      orderCurrencyCode\n      paymentMethod\n      paymentTitle\n      shippingAmount\n      shippingAmountInclTax\n      shippingDescription\n      shippingDiscountAmount\n      shippingInvoiced\n      shippingMethod\n      shippingRefunded\n      shippingTaxAmount\n      shippingTaxRefunded\n      shippingTitle\n      status\n      statusLabel\n      subTotal\n      subTotalInclTax\n      subTotalInvoiced\n      subTotalRefunded\n      taxAmount\n      taxAmountInvoiced\n      taxAmountRefunded\n      totalDue\n      totalItemCount\n      totalQtyOrdered\n      updatedAt\n    }\n    orderCurrencyCode\n    orderDate\n    orderIncrementId\n    orderStatus\n    orderStatusLabel\n    reminders\n    shippingAmount\n    shippingAmountInclTax\n    shippingTaxAmount\n    state\n    subTotal\n    subTotalInclTax\n    taxAmount\n    totalQty\n    transactionId\n    updatedAt\n  }\n}\n",
                                                         "variables": "{\n    \"id\": \"1\"\n}"
                                                     }
                                                 },
@@ -21318,7 +21542,7 @@
                                                 "body": {
                                                     "mode": "graphql",
                                                     "graphql": {
-                                                        "query": "query AdminOrderDetail($id: ID!) {\n  adminOrderDetail(id: $id) {\n    _id\n    appliedCartRuleIds\n    baseCurrencyCode\n    baseDiscountAmount\n    baseDiscountInvoiced\n    baseDiscountRefunded\n    baseGrandTotal\n    baseGrandTotalInvoiced\n    baseGrandTotalRefunded\n    baseShippingAmount\n    baseShippingAmountInclTax\n    baseShippingDiscountAmount\n    baseShippingInvoiced\n    baseShippingRefunded\n    baseShippingTaxAmount\n    baseShippingTaxRefunded\n    baseSubTotal\n    baseSubTotalInclTax\n    baseSubTotalInvoiced\n    baseSubTotalRefunded\n    baseTaxAmount\n    baseTaxAmountInvoiced\n    baseTaxAmountRefunded\n    baseTotalDue\n    cartId\n    channelCurrencyCode\n    channelId\n    channelName\n    channelType\n    couponCode\n    createdAt\n    customer {\n      _id\n      channelId\n      createdAt\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      image\n      isSuspended\n      isVerified\n      lastName\n      name\n      phone\n      status\n      subscribedToNewsLetter\n      updatedAt\n    }\n    customerEmail\n    customerFirstName\n    customerLastName\n    customerType\n    discountAmount\n    discountInvoiced\n    discountPercent\n    discountRefunded\n    formattedDiscountAmount\n    formattedGrandTotal\n    formattedGrandTotalInvoiced\n    formattedGrandTotalRefunded\n    formattedShippingAmount\n    formattedSubTotal\n    formattedTaxAmount\n    formattedTotalDue\n    grandTotal\n    grandTotalInvoiced\n    grandTotalRefunded\n    id\n    incrementId\n    isGift\n    isGuest\n    orderCurrencyCode\n    paymentMethod\n    paymentTitle\n    shippingAmount\n    shippingAmountInclTax\n    shippingDescription\n    shippingDiscountAmount\n    shippingInvoiced\n    shippingMethod\n    shippingRefunded\n    shippingTaxAmount\n    shippingTaxRefunded\n    shippingTitle\n    status\n    statusLabel\n    subTotal\n    subTotalInclTax\n    subTotalInvoiced\n    subTotalRefunded\n    taxAmount\n    taxAmountInvoiced\n    taxAmountRefunded\n    totalDue\n    totalItemCount\n    totalQtyOrdered\n    updatedAt\n  }\n}\n",
+                                                        "query": "query AdminOrderDetail($id: ID!) {\n  adminOrderDetail(id: $id) {\n    _id\n    appliedCartRuleIds\n    baseCurrencyCode\n    baseDiscountAmount\n    baseDiscountInvoiced\n    baseDiscountRefunded\n    baseGrandTotal\n    baseGrandTotalInvoiced\n    baseGrandTotalRefunded\n    baseShippingAmount\n    baseShippingAmountInclTax\n    baseShippingDiscountAmount\n    baseShippingInvoiced\n    baseShippingRefunded\n    baseShippingTaxAmount\n    baseShippingTaxRefunded\n    baseSubTotal\n    baseSubTotalInclTax\n    baseSubTotalInvoiced\n    baseSubTotalRefunded\n    baseTaxAmount\n    baseTaxAmountInvoiced\n    baseTaxAmountRefunded\n    baseTotalDue\n    cartId\n    channelCurrencyCode\n    channelId\n    channelName\n    channelType\n    couponCode\n    createdAt\n    customer {\n      _id\n      channelId\n      createdAt\n      dateOfBirth\n      email\n      firstName\n      gender\n      id\n      image\n      isSuspended\n      isVerified\n      lastName\n      name\n      phone\n      status\n      subscribedToNewsLetter\n      updatedAt\n    }\n    customerEmail\n    customerFirstName\n    customerLastName\n    customerType\n    discountAmount\n    discountInvoiced\n    discountPercent\n    discountRefunded\n    formattedDiscountAmount\n    formattedGrandTotal\n    formattedGrandTotalInvoiced\n    formattedGrandTotalRefunded\n    formattedShippingAmount\n    formattedShippingAmountInclTax\n    formattedSubTotal\n    formattedSubTotalInclTax\n    formattedTaxAmount\n    formattedTotalDue\n    grandTotal\n    grandTotalInvoiced\n    grandTotalRefunded\n    id\n    incrementId\n    isGift\n    isGuest\n    orderCurrencyCode\n    paymentMethod\n    paymentTitle\n    shippingAmount\n    shippingAmountInclTax\n    shippingDescription\n    shippingDiscountAmount\n    shippingInvoiced\n    shippingMethod\n    shippingRefunded\n    shippingTaxAmount\n    shippingTaxRefunded\n    shippingTitle\n    status\n    statusLabel\n    subTotal\n    subTotalInclTax\n    subTotalInvoiced\n    subTotalRefunded\n    taxAmount\n    taxAmountInvoiced\n    taxAmountRefunded\n    totalDue\n    totalItemCount\n    totalQtyOrdered\n    updatedAt\n  }\n}\n",
                                                         "variables": "{\n    \"id\": \"1\"\n}"
                                                     }
                                                 },

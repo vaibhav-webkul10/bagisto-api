@@ -4,6 +4,7 @@ namespace Webkul\BagistoApi\Tests\Feature\RestApi;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Testing\TestResponse;
 use Webkul\Attribute\Models\Attribute;
 use Webkul\BagistoApi\Tests\RestApiTestCase;
@@ -43,6 +44,26 @@ class AddProductInCartTest extends RestApiTestCase
         expect((bool) ($data['isGuest'] ?? false))->toBeTrue();
         expect((int) ($data['items'][0]['productId'] ?? 0))->toBe($product->id);
         expect((string) ($data['items'][0]['type'] ?? ''))->toBe('simple');
+    }
+
+    /**
+     * Adding to the cart fires core's cart events only, as the storefront does.
+     */
+    public function test_add_to_cart_fires_only_core_cart_events(): void
+    {
+        $token = $this->createGuestCartToken();
+        $product = $this->createSimpleProduct();
+
+        Event::fake(['checkout.cart.add.after', 'cart.before.add', 'cart.after.add']);
+
+        $this->guestPostWithToken($this->addProductUrl, $token, [
+            'productId' => $product->id,
+            'quantity' => 1,
+        ])->assertSuccessful();
+
+        Event::assertDispatched('checkout.cart.add.after');
+        Event::assertNotDispatched('cart.before.add');
+        Event::assertNotDispatched('cart.after.add');
     }
 
     /**
@@ -89,6 +110,64 @@ class AddProductInCartTest extends RestApiTestCase
             $payload['productId'],
             $payload['selectedConfigurableOption'],
         ]);
+    }
+
+    /**
+     * Test a configurable product without its options is refused with 400, and the guest token keeps its cart.
+     */
+    public function test_failed_add_is_a_400_and_keeps_the_guest_token_working(): void
+    {
+        $token = $this->createGuestCartToken();
+        $payload = $this->createConfigurableProductPayload();
+
+        $failed = $this->guestPostWithToken($this->addProductUrl, $token, [
+            'productId' => $payload['productId'],
+            'quantity' => 1,
+        ]);
+
+        expect($failed->getStatusCode())->toBe(400);
+
+        $simple = $this->createSimpleProduct();
+
+        $added = $this->assertAddToCartResponse($this->guestPostWithToken($this->addProductUrl, $token, [
+            'productId' => $simple->id,
+            'quantity' => 1,
+        ]));
+
+        expect($added['cartToken'] ?? $token)->toBe($token);
+
+        $read = $this->guestPostWithToken('/api/shop/cart', $token, []);
+
+        expect($read->getStatusCode())->toBeIn([200, 201]);
+        expect((int) $read->json('itemsCount'))->toBe(1);
+    }
+
+    /**
+     * Test removing the last item keeps the guest token on an empty cart.
+     */
+    public function test_removing_the_last_item_keeps_the_guest_token_working(): void
+    {
+        $token = $this->createGuestCartToken();
+        $simple = $this->createSimpleProduct();
+
+        $added = $this->assertAddToCartResponse($this->guestPostWithToken($this->addProductUrl, $token, [
+            'productId' => $simple->id,
+            'quantity' => 1,
+        ]));
+
+        $this->guestPostWithToken('/api/shop/remove-cart-item', $token, [
+            'cartItemId' => (int) $added['items'][0]['id'],
+        ])->assertSuccessful();
+
+        $read = $this->guestPostWithToken('/api/shop/cart', $token, []);
+
+        expect($read->getStatusCode())->toBeIn([200, 201]);
+        expect((int) $read->json('itemsCount'))->toBe(0);
+
+        $this->assertAddToCartResponse($this->guestPostWithToken($this->addProductUrl, $token, [
+            'productId' => $simple->id,
+            'quantity' => 1,
+        ]));
     }
 
     /**

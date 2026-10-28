@@ -61,7 +61,7 @@ use Webkul\BagistoApi\Admin\State\AdminCustomerCompareItemProvider;
         new QueryCollection(
             provider: AdminCustomerCompareItemProvider::class,
             paginationType: 'cursor',
-            description: 'Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error.',
+            description: 'Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error.',
 
             args: ['customerId' => [
                 'type' => 'Int!',
@@ -115,4 +115,28 @@ class AdminCustomerCompareItem
      */
     #[ApiProperty(writable: false)]
     public ?string $product_image = null;
+
+    /**
+     * The product type.
+     */
+    #[ApiProperty(writable: false)]
+    public ?string $type = null;
+
+    /**
+     * Whether the product can be bought.
+     */
+    #[ApiProperty(writable: false)]
+    public ?bool $is_saleable = null;
+
+    /**
+     * The quantity available for sale, or null where stock does not apply.
+     */
+    #[ApiProperty(writable: false)]
+    public ?int $qty_available = null;
+
+    /**
+     * Whether the product needs options chosen before it can be added to a cart.
+     */
+    #[ApiProperty(writable: false)]
+    public ?bool $is_options_required = null;
 }

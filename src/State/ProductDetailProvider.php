@@ -24,6 +24,9 @@ use Webkul\BagistoApi\Dto\ProductDetail\SuperAttributeOptionDto;
 use Webkul\BagistoApi\Dto\ProductDetail\VariantSummaryDto;
 use Webkul\BagistoApi\Exception\ResourceNotFoundException;
 use Webkul\BagistoApi\Models\Product;
+use Webkul\Product\Helpers\ConfigurableOption;
+use Webkul\Product\Helpers\View;
+use Webkul\Product\Models\Product as CoreProduct;
 
 class ProductDetailProvider implements ProviderInterface
 {
@@ -114,12 +117,30 @@ class ProductDetailProvider implements ProviderInterface
         $dto->created_at = $product->created_at?->toAtomString();
         $dto->updated_at = $product->updated_at?->toAtomString();
         $dto->is_saleable = $product->isSaleable();
+        $dto->guest_checkout = (bool) $product->guest_checkout;
+        $dto->visible_individually = (bool) $product->visible_individually;
+        $dto->on_sale = $product->on_sale;
+        $dto->average_rating = $product->average_rating;
+        $dto->total_rating = $product->total_rating;
+        $dto->reviews_count = $product->reviews_count;
+        $dto->additional_attributes = collect(app(View::class)->getAdditionalData($this->coreProduct($product)))
+            ->map(fn (array $attribute) => [
+                'id' => $attribute['id'] ?? null,
+                'code' => $attribute['code'] ?? null,
+                'label' => $attribute['label'] ?? null,
+                'adminName' => $attribute['admin_name'] ?? null,
+                'type' => $attribute['type'] ?? null,
+                'value' => $attribute['value'] ?? null,
+            ])
+            ->values()
+            ->all();
+        $dto->customer_group_offers = $product->getTypeInstance()->getCustomerGroupPricingOffers();
         $dto->is_in_wishlist = app(ProductRelationFlagResolver::class)->isInWishlist((int) $product->id) ? 1 : 0;
         $dto->is_in_compare = app(ProductRelationFlagResolver::class)->isInCompare((int) $product->id) ? 1 : 0;
         $dto->attributes = $this->buildAttributes($product);
-        $dto->color = $this->intOrNull($product->color);
-        $dto->size = $this->intOrNull($product->size);
-        $dto->brand = $this->intOrNull($product->brand);
+        $dto->color = $this->labelOrNull($product->color);
+        $dto->size = $this->labelOrNull($product->size);
+        $dto->brand = $this->labelOrNull($product->brand);
     }
 
     /**
@@ -201,6 +222,8 @@ class ProductDetailProvider implements ProviderInterface
      */
     private function fillConfigurable(ProductDetailDto $dto, Product $product): void
     {
+        $dto->configurable_config = app(ConfigurableOption::class)->getConfigurationConfig($this->coreProduct($product));
+
         $superAttributeIds = $product->super_attributes->pluck('id')->toArray();
         $superAttributeCodeMap = $product->super_attributes->pluck('code', 'id')->toArray();
 
@@ -434,22 +457,21 @@ class ProductDetailProvider implements ProviderInterface
     }
 
     /**
-     * Int or null.
+     * The product as core's model, whose option attributes read as option ids rather than the labels this API returns.
      */
-    private function intOrNull($value): ?int
+    private function coreProduct(Product $product): CoreProduct
     {
-        if (
-            $value === null
-            || $value === ''
-            || $value === false
-        ) {
-            return null;
-        }
-        if (is_numeric($value)) {
-            return (int) $value;
-        }
+        return (new CoreProduct)->newFromBuilder($product->getAttributes())->setRelations($product->getRelations());
+    }
 
-        return null;
+    /**
+     * An option attribute's label, or null when the product has none.
+     */
+    private function labelOrNull(mixed $value): ?string
+    {
+        return filled($value)
+            ? (string) $value
+            : null;
     }
 
     /**

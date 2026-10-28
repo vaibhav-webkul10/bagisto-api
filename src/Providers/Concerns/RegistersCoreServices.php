@@ -17,6 +17,7 @@ use Webkul\BagistoApi\Admin\Services\Jwt\JwtKeyStore;
 use Webkul\BagistoApi\Admin\Services\Jwt\JwtSigner;
 use Webkul\BagistoApi\Admin\Services\Jwt\JwtVerifier;
 use Webkul\BagistoApi\Facades\CartTokenFacade;
+use Webkul\BagistoApi\Metadata\AccessorReturnTypePropertyMetadataFactory;
 use Webkul\BagistoApi\Metadata\DatabaseIndependentColumnTypePropertyMetadataFactory;
 use Webkul\BagistoApi\Metadata\PathGatedResourceNameCollectionFactory;
 use Webkul\BagistoApi\Metadata\SourceDocblockPropertyMetadataFactory;
@@ -28,6 +29,7 @@ use Webkul\BagistoApi\Serializer\AdminCollectionEnvelopeNormalizer;
 use Webkul\BagistoApi\Serializer\PaginationHeaderNormalizer;
 use Webkul\BagistoApi\Serializer\TokenHeaderDenormalizer;
 use Webkul\BagistoApi\Services\CartTokenService;
+use Webkul\BagistoApi\Services\CustomerAuth\CustomerApiAuthSettings;
 use Webkul\BagistoApi\Services\StorefrontKeyService;
 use Webkul\BagistoApi\Services\TokenHeaderService;
 use Webkul\BagistoApi\Support\CoreCapabilities;
@@ -47,12 +49,15 @@ trait RegistersCoreServices
 
         $this->mergeConfigFrom(__DIR__.'/../../Admin/Config/admin-auth.php', 'bagistoapi.admin_auth');
 
+        $this->mergeConfigFrom(__DIR__.'/../../Config/customer-auth.php', 'bagistoapi.customer_auth');
+
         $this->mergeConfigFrom(__DIR__.'/../../../config/storefront.php', 'storefront');
 
         $this->app->singleton(AdminApiAuditContext::class);
         $this->app->singleton(AdminApiAuditRecorder::class);
 
         $this->app->singleton(AdminApiAuthSettings::class);
+        $this->app->singleton(CustomerApiAuthSettings::class);
         $this->app->singleton(JwtKeyStore::class);
         $this->app->singleton(JwtSigner::class);
         $this->app->singleton(JwtVerifier::class);
@@ -103,6 +108,13 @@ trait RegistersCoreServices
             PropertyMetadataFactoryInterface::class,
             function ($decorated) {
                 return new SourceDocblockPropertyMetadataFactory($decorated);
+            }
+        );
+
+        $this->app->extend(
+            PropertyMetadataFactoryInterface::class,
+            function ($decorated) {
+                return new AccessorReturnTypePropertyMetadataFactory($decorated);
             }
         );
 

@@ -286,13 +286,32 @@ type Query {
     customerId: Int!
   ): AdminCustomerAddressCursorConnection
 
-  "Top-level items in the active cart of customer `customerId`, all in one page (no pagination arguments); empty when the customer has no active cart. Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+  "Every active storefront customer session, or one customer's with customer_id (cursor pagination). Requires customers.api_sessions."
+  adminCustomerApiSessions(
+    "Returns the first n elements from the list."
+    first: Int
+
+    "Returns the last n elements from the list."
+    last: Int
+
+    "Returns the elements in the list that come before the specified cursor."
+    before: String
+
+    "Returns the elements in the list that come after the specified cursor."
+    after: String
+
+    customer_id: Int
+    client_type: String
+    channel_id: Int
+  ): AdminCustomerApiSessionCursorConnection
+
+  "Top-level items in the active cart of customer `customerId`, all in one page (no pagination arguments); empty when the customer has no active cart. It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
   adminCustomerCartItems(
     "Customer ID"
     customerId: Int!
   ): AdminCustomerCartItemCursorConnection
 
-  "Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+  "Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
   adminCustomerCompareItems(
     "Customer ID"
     customerId: Int!
@@ -356,7 +375,7 @@ type Query {
     customerId: Int!
   ): AdminCustomerNoteCursorConnection
 
-  "Up to 5 top-level items from the most recent orders of customer `customerId`, one per product, newest first, in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+  "Up to 5 top-level items from the most recent orders of customer `customerId`, one per product, newest first, in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
   adminCustomerRecentOrderItems(
     "Customer ID"
     customerId: Int!
@@ -389,7 +408,7 @@ type Query {
     order: String
   ): AdminCustomerReviewCursorConnection
 
-  "Every product in the wishlist of customer `customerId`, all in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+  "Every product in the wishlist of customer `customerId`, all in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
   adminCustomerWishlistItems(
     "Customer ID"
     customerId: Int!
@@ -1281,9 +1300,9 @@ type AdminAppearanceSection implements Node {
   createdAt: String
   draftSortOrder: Int
   draftStatus: Boolean
-  hasDraft: String
+  hasDraft: Int
   id: ID!
-  isPinned: String
+  isPinned: Int
   message: String
   name: String!
   sortOrder: Int!
@@ -1660,7 +1679,7 @@ type AdminCatalogProduct implements Node {
     "Returns the elements in the list that come after the specified cursor."
     after: String
   ): AdminProductDetailCategoryCursorConnection
-  categoryId: String
+  categoryId: Int
   categoryName: String
   channel: String
   channels(
@@ -1743,7 +1762,7 @@ type AdminCatalogProduct implements Node {
     "Returns the elements in the list that come after the specified cursor."
     after: String
   ): AdminProductDetailDownloadableSampleCursorConnection
-  featured: String
+  featured: Boolean
   formattedPrice: String
   formattedSpecialPrice: String
   id: ID!
@@ -1760,8 +1779,8 @@ type AdminCatalogProduct implements Node {
     "Returns the elements in the list that come after the specified cursor."
     after: String
   ): AdminProductDetailImageCursorConnection
-  imagesCount: String
-  inStock: String
+  imagesCount: Int
+  inStock: Boolean
   inventories(
     "Returns the first n elements from the list."
     first: Int
@@ -1789,15 +1808,15 @@ type AdminCatalogProduct implements Node {
     after: String
   ): AdminProductDetailGroupedProductCursorConnection
   locale: String
-  manageStock: String
+  manageStock: Boolean
   metaDescription: String
   metaKeywords: String
   metaTitle: String
   name: String
-  new: String
+  new: Boolean
   parentId: Int
   price: String
-  quantity: String
+  quantity: Int
   relatedProducts(
     "Returns the first n elements from the list."
     first: Int
@@ -1816,7 +1835,7 @@ type AdminCatalogProduct implements Node {
   specialPrice: String
   specialPriceFrom: String
   specialPriceTo: String
-  status: String
+  status: Int
   superAttributes(
     "Returns the first n elements from the list."
     first: Int
@@ -1830,7 +1849,7 @@ type AdminCatalogProduct implements Node {
     "Returns the elements in the list that come after the specified cursor."
     after: String
   ): AdminProductDetailSuperAttributeCursorConnection
-  taxCategoryId: String
+  taxCategoryId: Int
   translations(
     "Returns the first n elements from the list."
     first: Int
@@ -1886,9 +1905,9 @@ type AdminCatalogProduct implements Node {
     "Returns the elements in the list that come after the specified cursor."
     after: String
   ): AdminProductDetailVideoCursorConnection
-  visibleIndividually: String
+  visibleIndividually: Boolean
   warnings: String
-  weight: String
+  weight: Float
 }
 
 "Cursor connection for AdminProductDetailImage."
@@ -2013,7 +2032,7 @@ type AdminProductDetailInventory implements Node {
   productId: Int!
   qty: Int!
   sourceCode: String
-  sourceId: String
+  sourceId: Int
   vendorId: Int!
 }
 
@@ -2239,11 +2258,11 @@ type AdminProductDetailVariant implements Node {
   createdAt: String
   formattedPrice: String
   id: ID!
-  inStock: String
+  inStock: Boolean
   name: String
   parentId: Int
   price: String
-  quantity: String
+  quantity: Int
   sku: String!
   type: String!
   updatedAt: String
@@ -2275,7 +2294,7 @@ type AdminProductDetailAttributeValue implements Node {
   groupCode: String
   id: ID!
   integerValue: Int
-  isRequired: String
+  isRequired: Boolean
   jsonValue: String
   locale: String
   productId: Int!
@@ -2319,7 +2338,7 @@ type AdminProductDetailBundleOption implements Node {
   id: ID!
   isRequired: Boolean!
   label: String
-  position: String
+  position: Int
   productId: Int!
   products(
     "Returns the first n elements from the list."
@@ -3113,9 +3132,9 @@ type AdminCustomer implements Node {
   phone: String
   status: Int!
   subscribedToNewsLetter: Boolean!
-  totalAddresses: String
-  totalAmountSpent: String
-  totalOrders: String
+  totalAddresses: Int
+  totalAmountSpent: Float
+  totalOrders: Int
   updatedAt: String
 }
 
@@ -3178,6 +3197,51 @@ type AdminCustomerAddressPageInfo {
   startCursor: String
 }
 
+"Cursor connection for AdminCustomerApiSession."
+type AdminCustomerApiSessionCursorConnection {
+  edges: [AdminCustomerApiSessionEdge]
+  pageInfo: AdminCustomerApiSessionPageInfo!
+  totalCount: Int!
+}
+
+"Edge of AdminCustomerApiSession."
+type AdminCustomerApiSessionEdge {
+  cursor: String!
+  node: AdminCustomerApiSession
+}
+
+"Every active storefront customer session, or one customer's with customer_id (cursor pagination). Requires customers.api_sessions."
+type AdminCustomerApiSession implements Node {
+  _id: Int
+  channelId: Int
+  clientType: String
+  createdAt: String
+  customerEmail: String
+  customerId: Int
+  customerName: String
+  expiresAt: String
+  id: ID!
+  ipAddress: String
+  lastChannel: String
+  lastIpAddress: String
+  lastUsedAt: String
+  lastUserAgent: String
+  message: String
+  name: String
+  refreshExpiresAt: String
+  revokedAt: String
+  revokedReason: String
+  userAgent: String
+}
+
+"Information about the current page."
+type AdminCustomerApiSessionPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 "Cursor connection for AdminCustomerCartItem."
 type AdminCustomerCartItemCursorConnection {
   edges: [AdminCustomerCartItemEdge]
@@ -3191,19 +3255,29 @@ type AdminCustomerCartItemEdge {
   node: AdminCustomerCartItem
 }
 
-"Top-level items in the active cart of customer `customerId`, all in one page (no pagination arguments); empty when the customer has no active cart. Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+"Top-level items in the active cart of customer `customerId`, all in one page (no pagination arguments); empty when the customer has no active cart. It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
 type AdminCustomerCartItem implements Node {
   _id: Int
   additional: Iterable
+  cartId: Int
   formattedPrice: String
+  formattedPriceInclTax: String
   formattedTotal: String
+  formattedTotalInclTax: String
   id: ID!
+  isOptionsRequired: Boolean
+  isSaleable: Boolean
   name: String
+  options: Iterable
   price: Float
+  priceInclTax: Float
   productId: Int
+  productImage: String
+  qtyAvailable: Int
   quantity: Int
   sku: String
   total: Float
+  totalInclTax: Float
   type: String
 }
 
@@ -3228,16 +3302,20 @@ type AdminCustomerCompareItemEdge {
   node: AdminCustomerCompareItem
 }
 
-"Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+"Every product in the compare list of customer `customerId`, all in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
 type AdminCustomerCompareItem implements Node {
   _id: Int
   formattedPrice: String
   id: ID!
+  isOptionsRequired: Boolean
+  isSaleable: Boolean
   name: String
   price: Float
   productId: Int
   productImage: String
+  qtyAvailable: Int
   sku: String
+  type: String
 }
 
 "Information about the current page."
@@ -3273,6 +3351,7 @@ type AdminCustomerGdprRequest implements Node {
   revokedAt: String
   status: String
   type: String
+  typeLabel: String
   updatedAt: String
 }
 
@@ -3362,7 +3441,7 @@ type AdminCustomerRecentOrderItemEdge {
   node: AdminCustomerRecentOrderItem
 }
 
-"Up to 5 top-level items from the most recent orders of customer `customerId`, one per product, newest first, in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+"Up to 5 top-level items from the most recent orders of customer `customerId`, one per product, newest first, in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
 type AdminCustomerRecentOrderItem implements Node {
   _id: Int
   additional: Iterable
@@ -3512,17 +3591,21 @@ type AdminCustomerWishlistItemEdge {
   node: AdminCustomerWishlistItem
 }
 
-"Every product in the wishlist of customer `customerId`, all in one page (no pagination arguments). Part of the Create-Order flow, so it needs the `sales.orders.create` permission; an unknown customer is an error."
+"Every product in the wishlist of customer `customerId`, all in one page (no pagination arguments). It needs the `customers.customers` permission, as the customer page in the admin panel does; an unknown customer is an error."
 type AdminCustomerWishlistItem implements Node {
   _id: Int
   additional: Iterable
   formattedPrice: String
   id: ID!
+  isOptionsRequired: Boolean
+  isSaleable: Boolean
   name: String
   price: Float
   productId: Int
   productImage: String
+  qtyAvailable: Int
   sku: String
+  type: String
 }
 
 "Information about the current page."
@@ -3760,7 +3843,7 @@ type AdminOrderDetail implements Node {
   baseTaxAmount: String
   baseTaxAmountInvoiced: String
   baseTaxAmountRefunded: String
-  baseTotalDue: String
+  baseTotalDue: Float
   cartId: Int
   channelCurrencyCode: String
   channelId: Int
@@ -3795,7 +3878,9 @@ type AdminOrderDetail implements Node {
   formattedGrandTotalInvoiced: String
   formattedGrandTotalRefunded: String
   formattedShippingAmount: String
+  formattedShippingAmountInclTax: String
   formattedSubTotal: String
+  formattedSubTotalInclTax: String
   formattedTaxAmount: String
   formattedTotalDue: String
   grandTotal: Float
@@ -3879,7 +3964,7 @@ type AdminOrderDetail implements Node {
   taxAmount: Float
   taxAmountInvoiced: String
   taxAmountRefunded: String
-  totalDue: String
+  totalDue: Float
   totalItemCount: Int
   totalQtyOrdered: Int
   updatedAt: String
@@ -3914,7 +3999,7 @@ type AdminOrderDetailItem implements Node {
   baseTotal: Float!
   baseTotalInclTax: String!
   baseTotalInvoiced: String!
-  child: String
+  child: Iterable
   children(
     "Returns the first n elements from the list."
     first: Int
@@ -3934,7 +4019,7 @@ type AdminOrderDetailItem implements Node {
   discountInvoiced: String
   discountPercent: Float
   discountRefunded: String
-  downloadableLinks: String
+  downloadableLinks: Iterable
   id: ID!
   name: String
   orderId: Int
@@ -6210,7 +6295,7 @@ type AdminSettingsTaxRateRef implements Node {
   id: ID!
   identifier: String
   taxCategoryId: Int!
-  taxRate: String
+  taxRate: Float
   taxRateId: Int!
   updatedAt: String
 }
@@ -6549,6 +6634,9 @@ type Mutation {
   "Create customer address. Becomes createAdminCustomerAddress."
   createAdminCustomerAddress(input: createAdminCustomerAddressInput!): createAdminCustomerAddressPayload
 
+  "End every storefront session of a customer. Becomes createAdminCustomerApiSessionRevoke; requires customers.api_sessions.delete."
+  createAdminCustomerApiSessionRevoke(input: createAdminCustomerApiSessionRevokeInput!): createAdminCustomerApiSessionRevokePayload
+
   "Download GDPR data dump. Becomes createAdminCustomerGdprDownloadData."
   createAdminCustomerGdprDownloadData(input: createAdminCustomerGdprDownloadDataInput!): createAdminCustomerGdprDownloadDataPayload
 
@@ -6560,9 +6648,6 @@ type Mutation {
 
   "Creates a AdminCustomerGroupMassDelete."
   createAdminCustomerGroupMassDelete(input: createAdminCustomerGroupMassDeleteInput!): createAdminCustomerGroupMassDeletePayload
-
-  "Creates a AdminCustomerImpersonate."
-  createAdminCustomerImpersonate(input: createAdminCustomerImpersonateInput!): createAdminCustomerImpersonatePayload
 
   "Creates a AdminCustomerMassDelete."
   createAdminCustomerMassDelete(input: createAdminCustomerMassDeleteInput!): createAdminCustomerMassDeletePayload
@@ -6818,6 +6903,9 @@ type Mutation {
 
   "Delete customer address. Becomes deleteAdminCustomerAddress."
   deleteAdminCustomerAddress(input: deleteAdminCustomerAddressInput!): deleteAdminCustomerAddressPayload
+
+  "End one storefront customer session. Becomes deleteAdminCustomerApiSession; requires customers.api_sessions.delete."
+  deleteAdminCustomerApiSession(input: deleteAdminCustomerApiSessionInput!): deleteAdminCustomerApiSessionPayload
 
   "Delete a GDPR request. Becomes deleteAdminCustomerGdprRequest."
   deleteAdminCustomerGdprRequest(input: deleteAdminCustomerGdprRequestInput!): deleteAdminCustomerGdprRequestPayload
@@ -7146,9 +7234,9 @@ type createAdminAppearanceSectionPayloadData implements Node {
   createdAt: String
   draftSortOrder: Int
   draftStatus: Boolean
-  hasDraft: String
+  hasDraft: Int
   id: ID!
-  isPinned: String
+  isPinned: Int
   message: String
   name: String!
   sortOrder: Int!
@@ -7195,9 +7283,9 @@ type updateAdminAppearanceSectionPayloadData implements Node {
   createdAt: String
   draftSortOrder: Int
   draftStatus: Boolean
-  hasDraft: String
+  hasDraft: Int
   id: ID!
-  isPinned: String
+  isPinned: Int
   message: String
   name: String
   sortOrder: Int
@@ -8126,7 +8214,7 @@ type createAdminCatalogProductPayloadData implements Node {
   bookingProduct: String
   bundleOptions: AdminProductDetailBundleOptionCursorConnection
   categories: AdminProductDetailCategoryCursorConnection
-  categoryId: String
+  categoryId: Int
   categoryName: String
   channel: String
   channels: AdminProductDetailChannelCursorConnection
@@ -8137,34 +8225,34 @@ type createAdminCatalogProductPayloadData implements Node {
   description: String
   downloadableLinks: AdminProductDetailDownloadableLinkCursorConnection
   downloadableSamples: AdminProductDetailDownloadableSampleCursorConnection
-  featured: String
+  featured: Boolean
   formattedPrice: String
   formattedSpecialPrice: String
   id: ID!
   images: AdminProductDetailImageCursorConnection
-  imagesCount: String
-  inStock: String
+  imagesCount: Int
+  inStock: Boolean
   inventories: AdminProductDetailInventoryCursorConnection
   linkedProducts: AdminProductDetailGroupedProductCursorConnection
   locale: String
-  manageStock: String
+  manageStock: Boolean
   metaDescription: String
   metaKeywords: String
   metaTitle: String
   name: String
-  new: String
+  new: Boolean
   parentId: Int
   price: String
-  quantity: String
+  quantity: Int
   relatedProducts: AdminProductDetailProductRefCursorConnection
   shortDescription: String
   sku: String!
   specialPrice: String
   specialPriceFrom: String
   specialPriceTo: String
-  status: String
+  status: Int
   superAttributes: AdminProductDetailSuperAttributeCursorConnection
-  taxCategoryId: String
+  taxCategoryId: Int
   translations: AdminProductDetailTranslationCursorConnection
   type: String!
   upSells: AdminProductDetailProductRefCursorConnection
@@ -8172,9 +8260,9 @@ type createAdminCatalogProductPayloadData implements Node {
   urlKey: String
   variants: AdminProductDetailVariantCursorConnection
   videos: AdminProductDetailVideoCursorConnection
-  visibleIndividually: String
+  visibleIndividually: Boolean
   warnings: String
-  weight: String
+  weight: Float
 }
 
 "Admin catalog product update. Pass the resource IRI as id. Free-shape payload: send only the fields you want to change. Sub-resource fields (images / inventories / customerGroupPrices / videos) are stripped — use the dedicated endpoints. Becomes updateAdminCatalogProduct in GraphQL."
@@ -8227,7 +8315,7 @@ type updateAdminCatalogProductPayloadData implements Node {
   bookingProduct: String
   bundleOptions: AdminProductDetailBundleOptionCursorConnection
   categories: AdminProductDetailCategoryCursorConnection
-  categoryId: String
+  categoryId: Int
   categoryName: String
   channel: String
   channels: AdminProductDetailChannelCursorConnection
@@ -8238,34 +8326,34 @@ type updateAdminCatalogProductPayloadData implements Node {
   description: String
   downloadableLinks: AdminProductDetailDownloadableLinkCursorConnection
   downloadableSamples: AdminProductDetailDownloadableSampleCursorConnection
-  featured: String
+  featured: Boolean
   formattedPrice: String
   formattedSpecialPrice: String
   id: ID!
   images: AdminProductDetailImageCursorConnection
-  imagesCount: String
-  inStock: String
+  imagesCount: Int
+  inStock: Boolean
   inventories: AdminProductDetailInventoryCursorConnection
   linkedProducts: AdminProductDetailGroupedProductCursorConnection
   locale: String
-  manageStock: String
+  manageStock: Boolean
   metaDescription: String
   metaKeywords: String
   metaTitle: String
   name: String
-  new: String
+  new: Boolean
   parentId: Int
   price: String
-  quantity: String
+  quantity: Int
   relatedProducts: AdminProductDetailProductRefCursorConnection
   shortDescription: String
   sku: String
   specialPrice: String
   specialPriceFrom: String
   specialPriceTo: String
-  status: String
+  status: Int
   superAttributes: AdminProductDetailSuperAttributeCursorConnection
-  taxCategoryId: String
+  taxCategoryId: Int
   translations: AdminProductDetailTranslationCursorConnection
   type: String
   upSells: AdminProductDetailProductRefCursorConnection
@@ -8273,9 +8361,9 @@ type updateAdminCatalogProductPayloadData implements Node {
   urlKey: String
   variants: AdminProductDetailVariantCursorConnection
   videos: AdminProductDetailVideoCursorConnection
-  visibleIndividually: String
+  visibleIndividually: Boolean
   warnings: String
-  weight: String
+  weight: Float
 }
 
 "Admin catalog product delete. Pass the resource IRI as id. Configurable variants cascade. Becomes deleteAdminCatalogProduct in GraphQL."
@@ -9017,6 +9105,40 @@ type setDefaultAdminCustomerAddressPayload {
   clientMutationId: String
 }
 
+"End one storefront customer session. Becomes deleteAdminCustomerApiSession; requires customers.api_sessions.delete."
+input deleteAdminCustomerApiSessionInput {
+  clientMutationId: String
+  id: ID!
+}
+
+"End one storefront customer session. Becomes deleteAdminCustomerApiSession; requires customers.api_sessions.delete."
+type deleteAdminCustomerApiSessionPayload {
+  adminCustomerApiSession: AdminCustomerApiSession
+  clientMutationId: String
+}
+
+"End every storefront session of a customer. Becomes createAdminCustomerApiSessionRevoke; requires customers.api_sessions.delete."
+input createAdminCustomerApiSessionRevokeInput {
+  clientMutationId: String
+
+  "The customer ID; over REST it comes from the path."
+  customerId: Int
+}
+
+"End every storefront session of a customer. Becomes createAdminCustomerApiSessionRevoke; requires customers.api_sessions.delete."
+type createAdminCustomerApiSessionRevokePayload {
+  adminCustomerApiSessionRevoke: createAdminCustomerApiSessionRevokePayloadData
+  clientMutationId: String
+}
+
+"End every storefront session of a customer. Becomes createAdminCustomerApiSessionRevoke; requires customers.api_sessions.delete."
+type createAdminCustomerApiSessionRevokePayloadData implements Node {
+  customerId: Int
+  id: ID!
+  message: String
+  revoked: Int
+}
+
 "Download GDPR data dump. Becomes createAdminCustomerGdprDownloadData."
 input createAdminCustomerGdprDownloadDataInput {
   clientMutationId: String
@@ -9158,29 +9280,6 @@ type AdminCustomerGroupMassDelete implements Node {
   id: ID!
   message: String
   skipped: Iterable
-}
-
-"Creates a AdminCustomerImpersonate."
-input createAdminCustomerImpersonateInput {
-  clientMutationId: String
-  customerId: Int
-}
-
-"Creates a AdminCustomerImpersonate."
-type createAdminCustomerImpersonatePayload {
-  adminCustomerImpersonate: AdminCustomerImpersonate
-  clientMutationId: String
-}
-
-type AdminCustomerImpersonate implements Node {
-  _id: Int
-  customerEmail: String
-  customerId: Int
-  customerName: String
-  expiresAt: String
-  id: ID!
-  impersonatedByAdminId: Int
-  token: String
 }
 
 "Creates a AdminCustomerMassDelete."

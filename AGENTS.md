@@ -63,7 +63,7 @@ If your harness has no skill loader and the skills are not present, this file is
 │   ├── GraphQl/                # scoped schema builders (shop + admin)
 │   ├── Exception/              # the package's exception → status mapping
 │   ├── Console/Commands/       # bagisto-api-platform:* and bagisto-api:* commands
-│   ├── Database/Migrations/    # cart_tokens, storefront_keys, admin_api_{sessions,refresh_tokens,tokens,two_factor_challenges,audits}
+│   ├── Database/Migrations/    # cart_tokens, storefront_keys, admin_api_{sessions,refresh_tokens,tokens,two_factor_challenges,audits}, customer_api_{sessions,refresh_tokens}
 │   ├── Providers/              # BagistoApiServiceProvider + binding providers (+ Concerns/)
 │   ├── Resources/lang/{locale}/app.php   # the single lang file, 22 locales
 │   ├── Attributes/, CacheProfiles/, Contracts/, Facades/, Helper/, Input/, Jobs/,
@@ -117,7 +117,7 @@ the matching one (`bagistoapi-config`).
 
 The shop and admin GraphQL endpoints are **physically separate** — separate middleware, auth and a
 scoped schema (`QueryScopedSchemaBuilder` / `ScopedSchemaBuilder`). A change to one surface must not
-leak types into the other. Storefront auth is Laravel Sanctum; admin auth is the custom
+leak types into the other. Storefront auth is ES256 JWT customer access tokens (`CustomerApiGuard`); admin auth is the custom
 **`admin-api` guard** (`src/Admin/Auth/AdminApiGuard.php`), which accepts ES256 JWT access tokens
 and API tokens.
 

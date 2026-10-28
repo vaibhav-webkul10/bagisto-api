@@ -46,7 +46,6 @@ return [
             'add-product-failed' => 'Échec de l\'ajout du produit au panier',
             'update-item-failed' => 'Échec de la mise à jour de l\'article du panier',
             'remove-item-failed' => 'Échec de la suppression de l\'article du panier',
-            'apply-coupon-failed' => 'Échec de l\'application du coupon',
             'remove-coupon-failed' => 'Échec de la suppression du coupon',
             'coupon-applied' => 'Coupon appliqué avec succès',
             'coupon-removed' => 'Coupon supprimé avec succès',
@@ -275,6 +274,14 @@ return [
             'token-required' => 'Authentication token is required. Please provide the token either in the GraphQL mutation input field or in the Authorization header as "Bearer <token>"',
             'unknown-resource' => 'Ressource inconnue',
             'cannot-update-other-profile' => 'Non autorisé : impossible de mettre à jour le profil d\'un autre client',
+            'refresh-token-invalid' => 'Le jeton de rafraîchissement est invalide ou a expiré. Veuillez vous reconnecter.',
+            'too-many-login-attempts' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
+            'too-many-refresh-requests' => 'Trop de renouvellements de jeton. Veuillez réessayer dans :seconds secondes.',
+            'rate-limit-exceeded' => 'Trop de tentatives.',
+            'access-token-expired' => 'Le jeton d\'accès a expiré. Rafraîchissez-le pour continuer.',
+            'logged-out-all' => 'Vous avez été déconnecté de toutes les sessions.',
+            'session-not-found' => 'Session introuvable.',
+            'session-revoked' => 'La session a été révoquée.',
         ],
 
         'upload' => [
@@ -844,10 +851,6 @@ return [
                 'created' => 'Note ajoutée avec succès.',
             ],
 
-            'impersonate' => [
-                'success' => 'Jeton d\'usurpation d\'identité émis.',
-            ],
-
             'review' => [
                 'not-found' => 'Avis introuvable.',
                 'no-permission' => 'Vous n\'avez pas la permission d\'effectuer cette action.',
@@ -980,7 +983,6 @@ return [
             'section' => [
                 'not-found' => 'Section introuvable.',
                 'invalid-payload' => 'Contenu de section non pris en charge.',
-                'footer-links-exists' => 'Ce canal possède déjà une section de liens de pied de page.',
                 'options-required' => 'Les options sont requises.',
                 'status-required' => 'Le statut est requis.',
                 'section-ids-required' => 'Au moins une section est requise.',
@@ -1625,6 +1627,91 @@ return [
                 'no-permission' => 'Vous n\'avez pas la permission de gérer les termes de recherche.',
             ],
         ],
+        'customer-api-sessions' => [
+            'menu' => [
+                'title' => 'Sessions API',
+            ],
+
+            'acl' => [
+                'title' => 'Sessions API',
+                'delete' => 'Révoquer',
+            ],
+
+            'index' => [
+                'title' => 'Sessions API des clients',
+                'info' => 'Clients connectés à l\'API de la boutique depuis des applications web, mobiles, de caisse ou de bureau. Révoquer une session déconnecte cet appareil immédiatement.',
+            ],
+
+            'fields' => [
+                'customer' => 'Client',
+                'email' => 'E-mail',
+                'channel' => 'Canal',
+            ],
+
+            'datagrid' => [
+                'revoke-all' => 'Révoquer toutes les sessions du client',
+            ],
+
+            'card' => [
+                'title' => 'Sessions API (:count)',
+                'empty' => 'Ce client n\'a aucune session API active.',
+            ],
+
+            'errors' => [
+                'no-permission' => 'Vous n\'avez pas l\'autorisation de gérer les sessions API des clients.',
+            ],
+        ],
+
+        'customer-auth' => [
+            'configuration' => [
+                'title' => 'Authentification des clients',
+                'info' => 'Durées des jetons, limites et règles de session pour les connexions des clients de la boutique.',
+
+                'tokens' => [
+                    'title' => 'Durées des jetons',
+                    'info' => 'Durée de validité des jetons d\'accès, des jetons de rafraîchissement et des sessions. Les modifications s\'appliquent aux jetons émis ensuite.',
+                    'access-token-ttl' => 'Durée du jeton d\'accès (minutes)',
+                    'access-token-ttl-info' => 'Entre 5 et 60 minutes. Par défaut 15.',
+                    'refresh-token-ttl' => 'Durée du jeton de rafraîchissement (jours)',
+                    'refresh-token-ttl-info' => 'Entre 1 et 90 jours. Par défaut 30.',
+                    'session-lifetime' => 'Durée maximale de la session (jours)',
+                    'session-lifetime-info' => 'Entre 1 et 365 jours. Par défaut 90. Ensuite, le client doit se reconnecter, quel que soit le nombre de rafraîchissements.',
+                    'max-sessions' => 'Nombre maximal de sessions actives par client',
+                    'max-sessions-info' => 'Une fois la limite atteinte, la session la plus ancienne est fermée. Entre 0 et 100. 0 signifie aucune limite.',
+                ],
+
+                'rate-limits' => [
+                    'title' => 'Limites de requêtes',
+                    'info' => 'Nombre maximal de requêtes à l\'API de la boutique par minute pour chaque client connecté.',
+                    'requests-per-minute' => 'Requêtes par minute par client connecté',
+                    'requests-per-minute-info' => 'Entre 1 et 100000. Par défaut 120.',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protection de la connexion',
+                    'info' => 'Nombre de connexions échouées et de renouvellements de jeton autorisés avant que le client doive patienter.',
+                    'login-max-attempts' => 'Connexions échouées avant blocage',
+                    'login-max-attempts-info' => 'Par adresse e-mail et adresse IP. Entre 3 et 20. Par défaut 5.',
+                    'login-lockout-seconds' => 'Blocage de la connexion (secondes)',
+                    'login-lockout-seconds-info' => 'Entre 60 et 3600. Par défaut 60.',
+                    'refresh-requests-per-minute' => 'Renouvellements de jeton par minute par session',
+                    'refresh-requests-per-minute-info' => 'Entre 1 et 60. Par défaut 10.',
+                ],
+
+                'security' => [
+                    'title' => 'Sécurité',
+                    'info' => 'Ce qui ferme les autres sessions d\'un client.',
+                    'revoke-sessions-on-password-change' => 'Révoquer les sessions lors d\'un changement de mot de passe',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservation des données',
+                    'info' => 'Durée de conservation des sessions terminées des clients.',
+                    'session-prune-days' => 'Conserver les sessions terminées (jours)',
+                    'session-prune-days-info' => 'Les sessions révoquées ou expirées sont supprimées après ce nombre de jours. Entre 1 et 365. Par défaut 30.',
+                ],
+            ],
+        ],
         'auth' => [
             'configuration' => [
                 'title' => 'Authentification administrateur',
@@ -1646,6 +1733,10 @@ return [
                     'info' => 'Nombre maximal de requêtes à l\'API d\'administration par minute.',
                     'session-requests-per-minute' => 'Requêtes par minute par administrateur connecté',
                     'api-token-requests-per-minute' => 'Requêtes par minute par jeton d\'API',
+                    'session-requests-per-minute-info' => 'Entre 1 et 100000. Par défaut 60.',
+                    'api-token-requests-per-minute-info' => 'Entre 1 et 100000. Par défaut 60.',
+                    'unauthenticated-requests-per-minute' => 'Requêtes par minute sans jeton, par adresse IP',
+                    'unauthenticated-requests-per-minute-info' => 'Entre 10 et 1000. Par défaut 60. Couvre les requêtes de connexion, de double authentification, de renouvellement et de mot de passe.',
                 ],
 
                 'security' => [
@@ -1658,6 +1749,30 @@ return [
                     'domain-binding-mode-info' => 'DNS vérifie que la requête provient d\'une adresse IP vers laquelle pointe le domaine du jeton. Origin vérifie l\'en-tête Origin ou Referer et ne convient qu\'aux navigateurs.',
                     'domain-binding-dns' => 'DNS (adresse IP du client)',
                     'domain-binding-origin' => 'En-tête Origin',
+                ],
+
+                'login-protection' => [
+                    'title' => 'Protection de la connexion',
+                    'info' => 'Nombre de connexions échouées, de codes de double authentification erronés et de requêtes de mot de passe autorisés avant que le client doive patienter.',
+                    'login-max-attempts' => 'Connexions échouées avant blocage',
+                    'login-max-attempts-info' => 'Par adresse e-mail et adresse IP. Entre 3 et 20. Par défaut 5.',
+                    'login-lockout-seconds' => 'Blocage de la connexion (secondes)',
+                    'login-lockout-seconds-info' => 'Entre 60 et 3600. Par défaut 60.',
+                    'two-factor-challenge-lifetime' => 'Durée du défi de double authentification (minutes)',
+                    'two-factor-challenge-lifetime-info' => 'Entre 1 et 15. Par défaut 5.',
+                    'two-factor-max-failures' => 'Codes de double authentification erronés par minute',
+                    'two-factor-max-failures-info' => 'Par administrateur, sur tous les défis. Entre 3 et 20. Par défaut 5.',
+                    'password-requests-per-minute' => 'Requêtes de mot de passe par minute',
+                    'password-requests-per-minute-info' => 'Requêtes d\'oubli et de réinitialisation du mot de passe par adresse IP. Entre 1 et 20. Par défaut 5.',
+                ],
+
+                'retention' => [
+                    'title' => 'Conservation des données',
+                    'info' => 'Durée de conservation des sessions terminées et de l\'historique d\'audit de l\'API.',
+                    'session-prune-days' => 'Conserver les sessions terminées (jours)',
+                    'session-prune-days-info' => 'Les sessions révoquées ou expirées sont supprimées après ce nombre de jours. Entre 1 et 365. Par défaut 30.',
+                    'audit-retention-days' => 'Conserver l\'historique d\'audit de l\'API (jours)',
+                    'audit-retention-days-info' => 'Les entrées plus anciennes sont supprimées chaque jour. Entre 0 et 3650. Vide ou 0 les conserve indéfiniment.',
                 ],
             ],
 
@@ -1917,6 +2032,7 @@ return [
                 'session' => 'Session de connexion',
                 'api-token' => 'Jeton d\'API',
                 'integration' => 'Jeton d\'intégration (supprimé)',
+                'customer-session' => 'Session de connexion client',
             ],
 
             'channels' => [

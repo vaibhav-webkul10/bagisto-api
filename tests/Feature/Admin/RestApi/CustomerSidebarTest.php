@@ -42,7 +42,25 @@ class CustomerSidebarTest extends AdminApiTestCase
         $response->assertOk();
         expect($response->json())->toHaveKeys(['data', 'meta']);
         expect($response->json('data'))->toBeArray()->not->toBeEmpty();
-        expect($response->json('data.0'))->toHaveKeys(['id', 'productId', 'sku', 'type', 'name', 'quantity', 'price']);
+        expect($response->json('data.0'))->toHaveKeys(['id', 'productId', 'sku', 'type', 'name', 'quantity', 'price', 'cartId', 'priceInclTax', 'formattedPriceInclTax', 'totalInclTax', 'formattedTotalInclTax', 'options', 'productImage', 'isSaleable', 'qtyAvailable', 'isOptionsRequired']);
+    }
+
+    /**
+     * Test the customer item lists need customers.customers, as core's routes do, not sales.orders.create.
+     */
+    public function test_customer_item_lists_need_the_customers_permission(): void
+    {
+        $customerId = $this->createCustomer()->id;
+
+        $orderCreator = $this->createAdminWithRolePermissions(['sales', 'sales.orders', 'sales.orders.create']);
+        $customerViewer = $this->createAdminWithRolePermissions(['customers', 'customers.customers']);
+
+        foreach (['cart-items', 'compare-items', 'wishlist-items', 'recent-order-items'] as $list) {
+            $url = '/api/admin/customers/'.$customerId.'/'.$list;
+
+            $this->adminGet($orderCreator, $url)->assertForbidden();
+            $this->adminGet($customerViewer, $url)->assertOk();
+        }
     }
 
     /**
@@ -66,7 +84,7 @@ class CustomerSidebarTest extends AdminApiTestCase
         $response->assertOk();
         expect($response->json())->toHaveKeys(['data', 'meta']);
         expect($response->json('data'))->toBeArray()->not->toBeEmpty();
-        expect($response->json('data.0'))->toHaveKeys(['id', 'productId', 'sku', 'name', 'price', 'productImage']);
+        expect($response->json('data.0'))->toHaveKeys(['id', 'productId', 'sku', 'name', 'price', 'productImage', 'type', 'isSaleable', 'qtyAvailable', 'isOptionsRequired']);
     }
 
     /**
@@ -126,7 +144,8 @@ class CustomerSidebarTest extends AdminApiTestCase
         $response->assertOk();
         expect($response->json())->toHaveKeys(['data', 'meta']);
         expect($response->json('data'))->toHaveCount(1);
-        expect($response->json('data.0'))->toHaveKeys(['id', 'productId', 'sku', 'name', 'price', 'formattedPrice', 'productImage']);
+        expect($response->json('data.0'))->toHaveKeys(['id', 'productId', 'sku', 'name', 'price', 'formattedPrice', 'productImage', 'type', 'isSaleable', 'qtyAvailable', 'isOptionsRequired']);
+        expect($response->json('data.0.type'))->toBe($product->type);
         expect($response->json('data.0.id'))->toBe($compareItem->id);
         expect($response->json('data.0.productId'))->toBe($product->id);
         expect($response->json('data.0.sku'))->toBe($product->sku);
@@ -140,10 +159,10 @@ class CustomerSidebarTest extends AdminApiTestCase
         [$customer] = $this->aCustomerWithCompareItem();
 
         $role = Role::create([
-            'name' => 'NoOrderCreate '.uniqid(),
-            'description' => 'no order create',
+            'name' => 'NoCustomers '.uniqid(),
+            'description' => 'no customers permission',
             'permission_type' => 'custom',
-            'permissions' => ['customers', 'customers.customers'],
+            'permissions' => ['sales', 'sales.orders', 'sales.orders.create'],
         ]);
         $admin = $this->createAdmin(['role_id' => $role->id]);
 

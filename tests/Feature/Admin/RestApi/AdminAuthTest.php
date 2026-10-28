@@ -580,6 +580,23 @@ class AdminAuthTest extends AdminApiTestCase
     // ========================================================================
 
     /**
+     * Test a logout sent without a JSON body, as a bare curl POST sends it, still ends the session.
+     */
+    public function test_logout_needs_no_json_body(): void
+    {
+        $pair = $this->adminTokenPair($this->createAdmin());
+
+        $this->call('POST', '/api/admin/auth/logout', server: [
+            'HTTP_AUTHORIZATION' => 'Bearer '.$pair->accessToken,
+            'HTTP_ACCEPT' => 'application/json',
+        ])
+            ->assertOk()
+            ->assertJsonPath('success', true);
+
+        $this->withBearer('GET', self::PROFILE, $pair->accessToken)->assertStatus(401);
+    }
+
+    /**
      * Test logout ends the current session only.
      */
     public function test_logout_ends_the_current_session_only(): void
@@ -864,8 +881,10 @@ class AdminAuthTest extends AdminApiTestCase
     public function test_a_password_reset_revokes_every_session(): void
     {
         $admin = $this->createAdmin();
-        $first = $this->adminAccessToken($admin);
-        $second = $this->adminAccessToken($admin);
+        $firstPair = $this->adminTokenPair($admin);
+        $secondPair = $this->adminTokenPair($admin);
+        $first = $firstPair->accessToken;
+        $second = $secondPair->accessToken;
 
         $this->postJson('/api/admin/auth/reset-password', [
             'token' => Password::broker('admins')->createToken($admin),
@@ -876,6 +895,19 @@ class AdminAuthTest extends AdminApiTestCase
 
         $this->withBearer('GET', self::PROFILE, $first)->assertStatus(401);
         $this->withBearer('GET', self::PROFILE, $second)->assertStatus(401);
+
+        $this->assertSame(AdminApiSession::REVOKED_PASSWORD_RESET, $firstPair->session->fresh()->revoked_reason);
+        $this->assertSame(AdminApiSession::REVOKED_PASSWORD_RESET, $secondPair->session->fresh()->revoked_reason);
+
+        $reasons = AdminApiAudit::query()
+            ->where('event', AdminApiAuthAuditor::EVENT_CREDENTIALS_AUTO_REVOKED)
+            ->where('user_id', $admin->id)
+            ->get()
+            ->map(fn ($audit) => $audit->new_values['reason'] ?? null)
+            ->all();
+
+        $this->assertContains(AdminApiSession::REVOKED_PASSWORD_RESET, $reasons);
+        $this->assertNotContains(AdminApiSession::REVOKED_PASSWORD_CHANGE, $reasons);
 
         $this->login($admin->email, 'reset-secret-1')->assertOk();
     }

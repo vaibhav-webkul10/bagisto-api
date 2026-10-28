@@ -7,14 +7,18 @@ use ApiPlatform\Laravel\Eloquent\State\LinksHandler;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Webkul\BagistoApi\Contracts\PreloadsCollection;
 use Webkul\BagistoApi\Models\Category;
+use Webkul\BagistoApi\Models\Page;
 use Webkul\BagistoApi\State\Concerns\ClampsPageSize;
 use Webkul\BagistoApi\State\Concerns\ResolvesCursorWindow;
+use Webkul\BagistoApi\State\Concerns\ScopesNestedConnections;
 
 class CursorAwareCollectionProvider implements ProviderInterface
 {
     use ClampsPageSize;
     use ResolvesCursorWindow;
+    use ScopesNestedConnections;
 
     /**
      * Create a new instance.
@@ -36,7 +40,7 @@ class CursorAwareCollectionProvider implements ProviderInterface
         $first = isset($args['first']) ? (int) $args['first'] : null;
         $last = isset($args['last']) ? (int) $args['last'] : null;
         $requested = $first ?? $last ?? 10;
-        $limit = $requested > 0 ? $this->clampPageSize($requested) : 0;
+        $limit = $requested > 0 ? $this->clampPageSize($requested, $operation->getPaginationMaximumItemsPerPage()) : 0;
 
         $query = $this->linksHandler->handleLinks(
             $model->newQuery(),
@@ -47,8 +51,14 @@ class CursorAwareCollectionProvider implements ProviderInterface
             ] + $context
         );
 
+        $this->scopeToParent($query, $context);
+
         if ($model instanceof Category) {
             $query->where($model->getTable().'.status', 1);
+        }
+
+        if ($model instanceof Page) {
+            $query->inCurrentChannel();
         }
 
         $filters = $context['filters'] ?? [];
@@ -70,6 +80,10 @@ class CursorAwareCollectionProvider implements ProviderInterface
         $items = $limit > 0
             ? $query->offset($offset)->limit($limit)->get()
             : $model->newCollection();
+
+        if (is_a($model, PreloadsCollection::class)) {
+            $model::preloadCollection($items);
+        }
 
         $divisor = max(1, $limit);
         $currentPage = $total > 0 ? (int) floor($offset / $divisor) + 1 : 1;

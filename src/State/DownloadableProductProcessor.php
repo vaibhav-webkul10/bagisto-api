@@ -4,12 +4,12 @@ namespace Webkul\BagistoApi\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use Illuminate\Support\Facades\Auth;
 use Webkul\BagistoApi\Dto\DownloadableProductDownloadLinkOutput;
 use Webkul\BagistoApi\Exception\AuthenticationException;
 use Webkul\BagistoApi\Exception\AuthorizationException;
 use Webkul\BagistoApi\Exception\InvalidInputException;
 use Webkul\BagistoApi\Exception\ResourceNotFoundException;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 use Webkul\Customer\Models\Customer;
 use Webkul\Sales\Repositories\DownloadableLinkPurchasedRepository;
 
@@ -150,11 +150,11 @@ class DownloadableProductProcessor implements ProcessorInterface
     }
 
     /**
-     * Retrieve the customer authenticated through the Sanctum guard.
+     * Retrieve the customer behind the customer access token.
      */
     private function getAuthenticatedCustomer(): ?Customer
     {
-        $customer = Auth::guard('sanctum')->user();
+        $customer = CurrentCustomer::user();
 
         return $customer instanceof Customer ? $customer : null;
     }

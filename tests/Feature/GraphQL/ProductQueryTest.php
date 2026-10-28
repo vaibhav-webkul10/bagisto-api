@@ -4,8 +4,10 @@ namespace Webkul\BagistoApi\Tests\Feature\GraphQL;
 
 use Illuminate\Support\Facades\DB;
 use Webkul\Attribute\Models\Attribute;
+use Webkul\BagistoApi\Models\Product as ApiProduct;
 use Webkul\BagistoApi\Tests\GraphQLTestCase;
 use Webkul\BookingProduct\Models\BookingProduct;
+use Webkul\Product\Models\ProductReview;
 
 class ProductQueryTest extends GraphQLTestCase
 {
@@ -733,5 +735,134 @@ class ProductQueryTest extends GraphQLTestCase
         $response->assertSuccessful();
 
         expect($response->json('data.product.sku'))->toBe($product->sku);
+    }
+
+    /**
+     * Numeric and boolean product fields come back typed, not as strings.
+     */
+    public function test_product_scalars_are_typed(): void
+    {
+        $product = $this->createBaseProduct('simple');
+
+        $response = $this->graphQL('query($id: ID!) { product(id: $id) { price featured new status isSaleable isInWishlist reviewsCount averageRating } }', [
+            'id' => '/api/shop/products/'.$product->id,
+        ]);
+
+        $response->assertOk();
+
+        $data = $response->json('data.product');
+
+        expect($response->json('errors'))->toBeNull()
+            ->and(is_int($data['price']) || is_float($data['price']))->toBeTrue()
+            ->and($data['featured'])->toBeBool()
+            ->and($data['new'])->toBeBool()
+            ->and($data['status'])->toBeBool()
+            ->and($data['isSaleable'])->toBeTrue()
+            ->and($data['isInWishlist'])->toBe(0)
+            ->and($data['reviewsCount'])->toBe(0)
+            ->and(is_int($data['averageRating']) || is_float($data['averageRating']))->toBeTrue();
+    }
+
+    /**
+     * A product resolves its sale badge and review summary over GraphQL, on the item and in the list.
+     */
+    public function test_product_resolves_the_sale_badge_and_review_summary(): void
+    {
+        $product = $this->createBaseProduct('simple');
+        $customer = $this->createCustomer();
+
+        foreach ([4, 5] as $rating) {
+            ProductReview::factory()->create([
+                'product_id' => $product->id,
+                'customer_id' => $customer->id,
+                'name' => 'Reviewer',
+                'status' => 'approved',
+                'rating' => $rating,
+            ]);
+        }
+
+        $response = $this->graphQL('query($id: ID!) { product(id: $id) { _id onSale averageRating totalRating reviewsCount } products(first: 50) { edges { node { _id averageRating reviewsCount } } } }', [
+            'id' => '/api/shop/products/'.$product->id,
+        ]);
+
+        $response->assertOk();
+        expect($response->json('errors'))->toBeNull()
+            ->and((float) $response->json('data.product.averageRating'))->toBe(4.5)
+            ->and((int) $response->json('data.product.totalRating'))->toBe(9)
+            ->and((int) $response->json('data.product.reviewsCount'))->toBe(2)
+            ->and((int) $response->json('data.product.onSale'))->toBe(0);
+
+        $node = collect($response->json('data.products.edges'))->firstWhere('node._id', $product->id);
+
+        expect($node)->not->toBeNull()
+            ->and((int) $node['node']['reviewsCount'])->toBe(2);
+    }
+
+    /**
+     * Reading a select attribute returns the option label without writing it back over the stored option id.
+     */
+    /**
+     * GraphQL and REST both return the color as its option label.
+     */
+    public function test_color_is_the_option_label_on_both_transports(): void
+    {
+        $this->seedRequiredData();
+
+        $color = Attribute::query()->where('code', 'color')->with('options')->first();
+
+        if (
+            ! $color
+            || $color->options->isEmpty()
+        ) {
+            $this->markTestSkipped('The color attribute has no options.');
+        }
+
+        $option = $color->options->first();
+        $product = $this->createBaseProduct('simple');
+
+        $this->upsertProductAttributeValue($product->id, 'color', $option->id, null, null);
+
+        $graphQL = $this->graphQL('query($id: ID!) { product(id: $id) { color } }', [
+            'id' => '/api/shop/products/'.$product->id,
+        ]);
+
+        $rest = $this->getJson('/api/shop/products/'.$product->id, $this->storefrontHeaders());
+
+        $rest->assertOk();
+
+        expect($graphQL->json('errors'))->toBeNull()
+            ->and($graphQL->json('data.product.color'))->toBe((string) $option->label)
+            ->and($rest->json('color'))->toBe((string) $option->label);
+    }
+
+    public function test_select_attribute_read_does_not_overwrite_the_stored_option(): void
+    {
+        $this->seedRequiredData();
+
+        $color = Attribute::query()->where('code', 'color')->with('options')->first();
+
+        if (
+            ! $color
+            || $color->options->isEmpty()
+        ) {
+            $this->markTestSkipped('The color attribute has no options.');
+        }
+
+        $option = $color->options->first();
+        $product = $this->createBaseProduct('simple');
+
+        $this->upsertProductAttributeValue($product->id, 'color', $option->id, null, null);
+
+        $model = ApiProduct::query()->with('attribute_values.attribute')->find($product->id);
+
+        $stored = $model->attribute_values->firstWhere('attribute_id', $color->id);
+
+        expect($model->color)->toBe((string) $option->label);
+        expect((int) $stored->integer_value)->toBe((int) $option->id);
+        expect((int) $stored->value)->toBe((int) $option->id);
+
+        $again = ApiProduct::query()->find($product->id);
+
+        expect($again->color)->toBe((string) $option->label);
     }
 }

@@ -6,11 +6,12 @@ use ApiPlatform\Laravel\Eloquent\Paginator;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\Pagination\Pagination;
 use ApiPlatform\State\ProviderInterface;
-use Illuminate\Support\Facades\Auth;
 use Webkul\BagistoApi\Exception\AuthorizationException;
 use Webkul\BagistoApi\Models\CompareItem;
+use Webkul\BagistoApi\Models\Product;
 use Webkul\BagistoApi\State\Concerns\ClampsPageSize;
 use Webkul\BagistoApi\State\Concerns\ResolvesCursorWindow;
+use Webkul\BagistoApi\Support\CurrentCustomer;
 
 class CompareItemProvider implements ProviderInterface
 {
@@ -29,7 +30,7 @@ class CompareItemProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        $customer = Auth::guard('sanctum')->user();
+        $customer = CurrentCustomer::user();
 
         if (! $customer) {
             throw new AuthorizationException(__('bagistoapi::app.graphql.logout.unauthenticated'));
@@ -40,7 +41,7 @@ class CompareItemProvider implements ProviderInterface
         $limit = $requested > 0 ? $this->clampPageSize($requested) : 0;
 
         $query = CompareItem::where('customer_id', $customer->id)
-            ->with(['product', 'customer'])
+            ->with(['product' => fn ($query) => Product::withReviewSummary($query), 'customer'])
             ->orderBy('id', 'asc');
 
         return new Paginator($this->paginateCursorWindow($query, $args, $limit));
